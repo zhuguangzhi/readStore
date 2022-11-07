@@ -11,11 +11,10 @@ html {
 body {
   overflow: hidden !important;
   position: relative;
-  color: #333;
-  font-size: 14px;
-  font-family: var(--pingFangRegular);
   width: 100vw;
   min-width: 1200px;
+  background-color: #f4f5f9;
+  min-height: 100vh;
 }
 
 * {
@@ -24,8 +23,27 @@ body {
 }
 
 .webContainer {
-  position: relative;
+  display: flex;
+  flex-direction: column;
   margin: 0 auto;
   width: 1198px;
+  min-height: 100vh;
   overflow: auto;
+  color: #333;
+  font-size: 14px;
+  font-family: var(--pingFangRegular);
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+.iconpark-icon {
+  width: 15px;
+  height: 15px;
+  font-weight: bold;
+  user-select: none;
 }
