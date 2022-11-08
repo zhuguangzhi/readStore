@@ -44,7 +44,7 @@ const Header = () => {
 
   return (
     <div className={'header'}>
-      <img className={'header_logo'} src={logoUrl} alt="logo" />
+      <img className={'header_logo cursor'} src={logoUrl} alt="logo" />
       <div className={'header_item'}>
         {optionList.map((item) => {
           return (

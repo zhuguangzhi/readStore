@@ -9,7 +9,7 @@ module.exports = {
     // ↓禁止使用any类型
     '@typescript-eslint/no-explicit-any': 'error',
     // ↓除导入语句外，禁止使用require语句
-    '@typescript-eslint/no-var-requires': 'error',
+    '@typescript-eslint/no-var-requires': 'off',
     // ↓禁止使用空函数
     '@typescript-eslint/no-empty-function': 'warn',
     // ↓禁止定义前使用
