@@ -1,6 +1,7 @@
 // 书籍信息
 import { authorProps } from '@/type/user';
 
+//书本类型
 export type bookProps = {
   id: number;
   title: string;
@@ -18,8 +19,8 @@ export type bookProps = {
 
 //来源信息
 export type sourceProps = {
-  sourceId: number;
+  id: number;
   type: 'Topic'; //"Topic":话题
-  name: string; //标题
+  title: string; //标题
   desc: string; //标题描述
 };

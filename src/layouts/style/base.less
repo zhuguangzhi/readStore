@@ -2,6 +2,10 @@
   --border: 1px solid #ebebeb;
   --pingFangMedium: pingfangsc-medium, sans-serif; //苹方-简 中黑体
   --pingFangRegular: pingfangsc-regular, sans-serif; //苹方-简 常规体
+  --pingFangUltralight: PingFangSC-Ultralight, sans-serif; //苹方-简 极细体
+  --pingFangLight: PingFangSC-Light, sans-serif; //苹方-简 细体
+  --pingFangThin: PingFangSC-Thin, sans-serif; //苹方-简 纤细体
+  --pingFangSemibold: PingFangSC-Semibold, sans-serif; //苹方-简 中粗体
 }
 
 html {
@@ -9,18 +13,26 @@ html {
 }
 
 body {
-  overflow: hidden !important;
+  overflow-x: hidden !important;
   position: relative;
   width: 100vw;
   min-width: 1200px;
   background-color: #f4f5f9;
-  min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
+}
+//解决icon无法使用color修改颜色问题
+svg {
+  fill: currentColor;
 }
 
 *,
 p {
   padding: 0;
   margin: 0;
+}
+ul {
+  list-style: none;
 }
 
 .webContainer {
@@ -33,6 +45,10 @@ p {
   color: #333;
   font-size: 14px;
   font-family: var(--pingFangRegular);
+}
+
+._title {
+  font-family: var(--pingFangMedium);
 }
 
 .icon {

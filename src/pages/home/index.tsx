@@ -6,6 +6,8 @@ import { bookProps } from '@/type/book';
 import { IconFont } from '@/components/IconFont';
 import { swiperDuration } from '@/assets/config';
 import { useMounted } from '@/hook';
+import { BookList } from '@/pages/home/bookList';
+import { NoticeList } from '@/pages/home/noticeList';
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 const SampleNextArrow = (props: any) => {
@@ -249,6 +251,7 @@ const Index = () => {
 
   return (
     <div className={'home'}>
+      {/*banner*/}
       <div className={'home_carousel'}>
         <div className={'home_carousel_desc'}>
           <p className={'font_24'}>
@@ -283,6 +286,11 @@ const Index = () => {
           })}
         </Slider>
       </div>
+      {/*  container*/}
+      <main className={'justify_between'}>
+        <BookList />
+        <NoticeList />
+      </main>
     </div>
   );
 };
