@@ -8,8 +8,8 @@ export const BookItem = ({
   bookList,
   onClick,
 }: {
-  bookList: bookProps[];
-  onClick?: (book: bookProps) => void;
+  bookList: Partial<bookProps>[];
+  onClick?: (book: Partial<bookProps>) => void;
 }) => {
   return (
     <>
@@ -19,12 +19,12 @@ export const BookItem = ({
             {/*左侧书皮*/}
             <div className={'book_left'}>
               <img className={'face'} src={book.face} alt="封面" />
-              <p className={'font_14 textOverflow'}>{book.title}</p>
+              <p className={'font_14 font_bold textOverflow'}>{book.title}</p>
             </div>
             {/*    右侧内容*/}
             <div className={'book_right'}>
               {/*标题*/}
-              <p className={'font_18 _title cursor'}>{book.title}</p>
+              <p className={'font_18 font_bold cursor'}>{book.title}</p>
               {/*内容*/}
               <div className={'container'}>
                 {book.tags?.map((tags, index) => {

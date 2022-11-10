@@ -36,7 +36,7 @@ const SamplePrevArrow = (props: any) => {
 
 const Index = () => {
   //swiper内容信息
-  const [swiperBookInfo] = useState<bookProps[]>([
+  const [swiperBookInfo] = useState<Partial<bookProps>[]>([
     {
       id: 1,
       title: '赶尸列车',
@@ -254,7 +254,7 @@ const Index = () => {
       {/*banner*/}
       <div className={'home_carousel'}>
         <div className={'home_carousel_desc'}>
-          <p className={'font_24'}>
+          <p className={'font_24 font_bold'}>
             {swiperBookInfo[currentSwiperIndex].title}
           </p>
           <p style={{ width: '100%' }} className={'font_16 textOverflow'}>
@@ -267,11 +267,7 @@ const Index = () => {
               <img
                 key={book.id}
                 className={`home_carousel_book_image 
-                                        ${
-                                          currentSwiperIndex === index
-                                            ? ' image_select'
-                                            : ''
-                                        }`}
+                     ${currentSwiperIndex === index ? ' image_select' : ''}`}
                 onMouseOver={() => {
                   clearInterval(timer.current as NodeJS.Timer);
                   setScrollIndex(index);
@@ -287,7 +283,7 @@ const Index = () => {
         </Slider>
       </div>
       {/*  container*/}
-      <main className={'justify_between'}>
+      <main className={'justify_between'} style={{ marginBottom: '12px' }}>
         <BookList />
         <NoticeList />
       </main>

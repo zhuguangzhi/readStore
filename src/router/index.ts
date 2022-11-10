@@ -5,10 +5,20 @@ const useHeaderRouter = {
   routes: [
     {
       path: '/home',
+      title: '首页',
       component: '@/pages/home/index',
-      state: {
-        useHeader: true,
-      },
+    },
+    {
+      path: '/personal',
+      title: '个人中心',
+      component: '@/pages/personalCenter/index',
+      routes: [
+        {
+          path: 'bookShelf',
+          title: '我的书架',
+          component: '@/pages/personalCenter/bookShelf',
+        },
+      ],
     },
   ],
 };
@@ -16,7 +26,7 @@ const useHeaderRouter = {
 export const routes = [
   {
     path: '/',
-    redirect: '/home',
+    redirect: '/personal/bookShelf',
     component: '@/layouts/index',
   },
 

@@ -7,6 +7,7 @@ import { useSetState } from '@/hook';
 import { UseNode } from '@/components/UseNode';
 import { authorProps } from '@/type/user';
 import './style/noticeList.less';
+import { WebInfo } from '@/components/WebInfo';
 
 const NewsIcon = () => (
   <IconFont
@@ -209,7 +210,7 @@ export const NoticeList = () => {
         content: '',
         bookshelf: false,
       },
-    ] as bookProps[], // 风向标列表
+    ] as Partial<bookProps>[], // 风向标列表
     authorRecommend: [
       { id: 0, name: '读点小故事', tag: '玄幻' },
       { id: 1, name: '读点小故事', tag: '玄幻' },
@@ -241,7 +242,7 @@ export const NoticeList = () => {
           {state.newList.map((news, index) => {
             return (
               <p className={'news_item textOverflow'} key={index}>
-                <span className={'_title'}>【公告】</span>
+                <span className={'font_bold'}>【公告】</span>
                 <span>{news.title}</span>
               </p>
             );
@@ -258,7 +259,7 @@ export const NoticeList = () => {
                 onMouseOver={() => changeState({ currenVaneIndex: index })}
               >
                 {/*    排名*/}
-                <span className={'font_18 _title vane_rank'}>{index + 1}</span>
+                <span className={'font_18 vane_rank'}>{index + 1}</span>
                 <div className={'vane_book'}>
                   <p style={{ width: '100%' }} className={'textOverflow'}>
                     {vane.title}
@@ -270,7 +271,7 @@ export const NoticeList = () => {
                         src={vane.face}
                         alt="封面"
                       />
-                      <div style={{ flex: 1 }}>
+                      <div style={{ flex: 1, width: '20px' }}>
                         <p
                           style={{ width: '100%' }}
                           className={'font_14 textOverflow'}
@@ -287,7 +288,7 @@ export const NoticeList = () => {
               </div>
             );
           })}
-          <p className={'vane_all'}>查看完整榜单</p>
+          <p className={'vane_all cursor'}>查看完整榜单</p>
         </div>
       </NoticeBox>
       <NoticeBox title={'作者推荐'} Icon={<AuthorIcon />}>
@@ -312,13 +313,14 @@ export const NoticeList = () => {
           {state.topicList.map((topic, index) => {
             return (
               <p key={index} className={'news_item textOverflow'}>
-                <span className={'_title'}>【话题】</span>
+                <span className={'font_bold'}>【话题】</span>
                 <span>{topic.title}</span>
               </p>
             );
           })}
         </div>
       </NoticeBox>
+      <WebInfo />
     </div>
   );
 };

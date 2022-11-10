@@ -5,7 +5,7 @@ import { BookItem } from '@/pages/home/components/bookItem';
 import './style/bookList.less';
 
 export const BookList = () => {
-  const [bookList] = useState<bookProps[]>([
+  const [bookList] = useState<Partial<bookProps>[]>([
     {
       id: 1,
       title: '赶尸列车',

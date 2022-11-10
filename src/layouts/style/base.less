@@ -1,11 +1,13 @@
 :root {
   --border: 1px solid #ebebeb;
-  --pingFangMedium: pingfangsc-medium, sans-serif; //苹方-简 中黑体
-  --pingFangRegular: pingfangsc-regular, sans-serif; //苹方-简 常规体
-  --pingFangUltralight: PingFangSC-Ultralight, sans-serif; //苹方-简 极细体
-  --pingFangLight: PingFangSC-Light, sans-serif; //苹方-简 细体
-  --pingFangThin: PingFangSC-Thin, sans-serif; //苹方-简 纤细体
-  --pingFangSemibold: PingFangSC-Semibold, sans-serif; //苹方-简 中粗体
+  --themeColor: #f77a2a;
+  --headerHeight: 79px;
+  //--pingFangMedium: pingfangsc-medium, sans-serif; //苹方-简 中黑体
+  //--pingFangRegular: pingfangsc-regular, sans-serif; //苹方-简 常规体
+  //--pingFangUltralight: PingFangSC-Ultralight, sans-serif; //苹方-简 极细体
+  //--pingFangLight: PingFangSC-Light, sans-serif; //苹方-简 细体
+  //--pingFangThin: PingFangSC-Thin, sans-serif; //苹方-简 纤细体
+  //--pingFangSemibold: PingFangSC-Semibold, sans-serif; //苹方-简 中粗体
 }
 
 html {
@@ -20,6 +22,9 @@ body {
   background-color: #f4f5f9;
   height: 100vh;
   overflow-y: auto;
+}
+#root {
+  position: relative !important;
 }
 //解决icon无法使用color修改颜色问题
 svg {
@@ -44,11 +49,6 @@ ul {
   overflow: auto;
   color: #333;
   font-size: 14px;
-  font-family: var(--pingFangRegular);
-}
-
-._title {
-  font-family: var(--pingFangMedium);
 }
 
 .icon {

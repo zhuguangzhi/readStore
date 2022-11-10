@@ -1,0 +1,116 @@
+.personal {
+  display: flex;
+  width: 100%;
+  height: 300rem;
+  flex: 1;
+  background-color: white;
+  border-radius: 10px;
+  padding-top: 106px;
+  //面包屑
+  &_breadcrumb {
+    position: absolute;
+    top: var(--headerHeight);
+    user-select: none;
+    cursor: default;
+    margin-left: 21px;
+    height: 106px;
+    line-height: 106px;
+    font-size: 16px;
+    color: #6d6d6d;
+  }
+  &_side,
+  &_container {
+    min-height: calc(100vh - var(--headerHeight) - 106px - 32px);
+    width: 218px;
+    padding: 37px 31px;
+    box-shadow: 0 0 21px 0 rgba(176, 175, 175, 0.26);
+    border-radius: 10px;
+    margin-bottom: 32px;
+    margin-left: 21px;
+    z-index: 2;
+    background-color: white;
+    .user_info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      &_photo {
+        width: 80px;
+        height: 80px;
+        border-radius: 80px;
+      }
+      &_name {
+        color: #2c2c2c !important;
+        font-size: 18px !important;
+        font-weight: bold;
+        padding: 19px 0 12px 0 !important;
+      }
+      p {
+        color: #6d6d6d;
+        font-size: 14px;
+        padding: 5px 0;
+      }
+    }
+
+    .menu {
+      margin-top: 12px;
+      &_item {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0 19px;
+        width: 100%;
+        height: 40px;
+        color: #2c2c2c;
+        font-size: 18px;
+        margin: 10px 0;
+        border-radius: 10px;
+        cursor: pointer;
+        span {
+          display: inline-block;
+          margin-left: 12px;
+        }
+      }
+      &_item:hover {
+        color: var(--themeColor);
+      }
+      &Select {
+        position: relative;
+        background-color: var(--themeColor);
+        color: white !important;
+        padding: 0 30px;
+        width: 203px;
+        box-shadow: 0 0 10px 2px rgba(#f77a2a, 0.5);
+      }
+      &Select::after {
+        content: '';
+        position: absolute;
+        right: 5px;
+        bottom: -8px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: var(--themeColor) transparent transparent
+          var(--themeColor);
+      }
+    }
+  }
+  &_container {
+    position: relative;
+    flex: 1;
+    padding: 21px;
+    margin-left: -10px;
+    margin-right: 21px;
+    z-index: 1;
+  }
+}
+.personal::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--headerHeight);
+  bottom: 0;
+  background-color: white;
+  z-index: -2; // -2是为了让header头的border显示出来 header的是-1
+}
