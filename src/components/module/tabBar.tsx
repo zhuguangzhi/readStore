@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import './style/tabBar.less';
+import { UseNode } from '@/components/UseNode';
 
 type tabProps = {
   key: string;
@@ -10,6 +11,10 @@ export type TabBarProps = {
   defaultSelect: tabProps['key'];
   selectChange?: (tab: tabProps) => void;
   className?: string;
+  selectClassName?: string; //选中时样式
+  tabClassName?: string; //标签样式
+  useIcon?: boolean; //是否使用图标
+  Icon?: ReactElement; //选中时展示的图标
 };
 
 export const TabBar = ({
@@ -17,6 +22,7 @@ export const TabBar = ({
   defaultSelect,
   selectChange,
   className,
+  ...props
 }: TabBarProps) => {
   const [select, setSelect] = useState(defaultSelect);
   const onClick = (tab: tabProps) => {
@@ -30,10 +36,15 @@ export const TabBar = ({
           <li
             onClick={() => onClick(tab)}
             key={tab.key}
-            className={`tab_list ${
-              select === tab.key ? 'tab_list_select' : ''
+            className={`tab_list ${props.tabClassName} ${
+              select === tab.key
+                ? props.selectClassName + ' tab_list_select'
+                : ''
             }`}
           >
+            <UseNode rIf={props.useIcon && select === tab.key}>
+              {props.Icon ? props.Icon : <i className={'tab_list_icon'} />}
+            </UseNode>
             {tab.label}
           </li>
         );

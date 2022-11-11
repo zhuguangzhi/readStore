@@ -1,0 +1,218 @@
+.recently {
+  display: flex;
+  width: 401px;
+  height: 200px;
+  background: #ffffff;
+  box-shadow: 0 2px 32px 0 rgba(4, 0, 0, 0.1);
+  border-radius: 20px;
+  &_face {
+    margin: -30px 23px 17px 23px;
+  }
+  &_info {
+    height: 100%;
+    width: 100px;
+    flex: 1;
+    padding: 26px 28px 0 0;
+    box-sizing: border-box;
+
+    //进度条背景色
+    .ant-progress-bg {
+      background-color: var(--themeColor) !important;
+    }
+    .ant-progress-text {
+      color: var(--themeColor) !important;
+    }
+
+    &_topic {
+      height: 50px;
+      width: 100%;
+      font-size: 16px;
+      color: #2e3143;
+      line-height: 25px;
+    }
+    &_title {
+      display: inline-block;
+      margin: 8px 0 -6px 0;
+      font-size: 16px;
+      color: #f77a2a;
+      width: 100%;
+    }
+
+    &_read {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 114px;
+      height: 41px;
+      background: #ffffff;
+      box-shadow: 0 2px 13px 0 rgba(4, 0, 0, 0.1);
+      border-radius: 4px;
+      color: var(--themeColor);
+      font-size: 16px;
+      span {
+        display: inline-block;
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+//封面--start
+.bookShelf_face,
+.bookShelf_face_mask {
+  position: relative;
+  width: 146.6px;
+  height: 213.7px;
+  border-radius: 10px 25px 20px 10px;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 2;
+  box-shadow: 0 0 5px 0 rgba(4, 0, 0, 0.09);
+  &_icon {
+    position: absolute;
+    top: 13px;
+    right: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .ant-checkbox-checked .ant-checkbox-inner,
+  .ant-checkbox-checked .ant-checkbox-inner:hover {
+    background-color: var(--themeColor) !important;
+    border-color: var(--themeColor) !important;
+  }
+  .ant-checkbox-checked::after {
+    border-color: var(--themeColor) !important;
+  }
+}
+.bookShelf_face_mask {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: transparent;
+}
+.bookShelf_face_check {
+  opacity: 0;
+}
+.showMask,
+.bookShelf_face_mask:hover {
+  background: rgba(#000000, 0.5);
+  color: #ffffff;
+  z-index: 10;
+  .bookShelf_face_check {
+    opacity: 1;
+  }
+}
+//封面--end
+
+.textOverflow_2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.bookShelf {
+  background-color: #fdfdfd;
+  //最近阅读
+  &_recentlyBox {
+    display: flex;
+    cursor: pointer;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 86px;
+    padding: 0 20px;
+  }
+  //  书架
+  &_book {
+    width: 100%;
+    padding-top: 39px;
+    &_layer {
+      margin-bottom: 120px;
+      &_item,
+      .addBook {
+        display: flex;
+        justify-content: center;
+        position: relative;
+        width: calc(100% / 5);
+        margin-bottom: 6px;
+        &_face {
+          position: relative;
+          width: 122px;
+          height: 177px;
+        }
+
+        .bookInfo {
+          width: 123px;
+          position: absolute;
+          bottom: -89px;
+          height: 57px;
+          &_tag {
+            display: inline-block;
+            padding: 0 7px;
+            color: #ffffff;
+            font-size: 12px;
+            height: 15px;
+            line-height: 15px;
+            background-color: #e57070;
+            border-radius: 6px;
+            margin-right: 4px;
+          }
+          p {
+            width: 100%;
+            color: var(--themeColor);
+          }
+        }
+      }
+
+      //  新增
+      .addBook {
+        position: relative;
+        width: 123px;
+        height: 177px;
+        align-items: center;
+        box-shadow: inset 0 3px 5px 0 rgba(4, 0, 0, 0.09);
+        border-radius: 10px 25px 20px 10px;
+        background: #eef1f3;
+        z-index: 2;
+        margin: 0;
+      }
+    }
+  }
+}
+
+//进度条 start
+.progress {
+  position: relative;
+  width: 59px;
+  height: 59px;
+  transform-origin: center center;
+  .circle {
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    margin-left: -3px;
+    z-index: 2;
+    background-color: var(--themeColor);
+    width: 6px;
+    height: 6px;
+    border-radius: 8px;
+  }
+  .rotate {
+    transform-origin: center center;
+  }
+  .ant-progress-text {
+    background-color: #ffffff;
+    width: 60%;
+    height: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--themeColor) !important;
+    border-radius: 50%;
+  }
+}
+//进度条 end

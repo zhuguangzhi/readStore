@@ -15,6 +15,7 @@ export type bookProps = {
   source: sourceProps | null; //来源 比如话题 无就null
   tags?: string[]; //标签列表
   bookshelf: boolean; //是否加入书架
+  progress: number; //阅读进度
 };
 
 //来源信息
