@@ -4,10 +4,13 @@ import { IconFont } from '@/components/IconFont';
 
 import './style/index.less';
 import { netName } from '@/assets/config';
-import { useSetState } from '@/hook';
+import { useMounted, useSetState } from '@/hook';
 import { Outlet } from 'react-router';
+import router, { useGetUrlPath } from '@/hook/url';
 
 export const PersonalCenter = () => {
+  //获取当前路由信息
+  const routeInfo = useGetUrlPath();
   const [state, setState] = useState({
     userInfo: {
       name: '读点小故事',
@@ -22,6 +25,17 @@ export const PersonalCenter = () => {
     currentMenuKey: 'bookShelf', //当前菜单选中项
   });
   const changeState = useSetState(state, setState);
+  //路由跳转
+  const onChangeRoute = (menu: typeof state.sideMenuList[0]) => {
+    changeState({ currentMenuKey: menu.key });
+    router.push('/personal/' + menu.key);
+  };
+
+  useMounted(() => {
+    if (routeInfo)
+      changeState({ currentMenuKey: routeInfo[routeInfo.length - 1] });
+  });
+
   return (
     <div className={'personal'}>
       {/*    面包屑*/}
@@ -55,7 +69,7 @@ export const PersonalCenter = () => {
                   menu.key === state.currentMenuKey ? 'menuSelect' : ''
                 }`}
                 key={menu.key}
-                onClick={() => changeState({ currentMenuKey: menu.key })}
+                onClick={() => onChangeRoute(menu)}
               >
                 <IconFont width={'19px'} height={'19px'} icon={menu.icon} />
                 <span>{menu.label}</span>

@@ -1,0 +1,42 @@
+.commentItem {
+  font-size: 14px;
+  color: #0d0d0d;
+  padding: 19px 42px 19px 50px;
+  box-sizing: border-box;
+  width: 100%;
+  border-bottom: var(--border);
+
+  &_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &_photo {
+      width: 37.3px;
+      height: 37.3px;
+      border-radius: 37.3px;
+      margin-right: 16px;
+      margin-left: -8px;
+    }
+    &_name {
+      display: inline-block;
+      margin-right: 14px;
+      color: var(--themeColor);
+      font-weight: bold;
+    }
+  }
+  &_footer {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-top: 14px;
+    &_reply {
+      cursor: pointer;
+      display: inline-block;
+      margin-left: 25px;
+      color: var(--themeColor);
+    }
+    &_time {
+      color: #747474;
+    }
+  }
+}

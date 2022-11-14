@@ -272,7 +272,7 @@ export default () => {
         open={delPopup.open}
         showClose={true}
       >
-        <p>删除后30天内可在回收站中找回哦！</p>
+        <p>移出书架后可重新添加哦！</p>
       </ReadPopup>
     </div>
   );

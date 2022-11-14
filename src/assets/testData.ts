@@ -1,4 +1,5 @@
-import { bookProps } from '@/type/book';
+// TODO：测试数据 对接后删除
+import { bookProps, commentProps } from '@/type/book';
 
 export const testBookData: readonly bookProps[] = [
   {
@@ -180,4 +181,94 @@ export const testBookData: readonly bookProps[] = [
     bookshelf: false,
     progress: 58,
   },
+];
+
+export const testCommentData: readonly commentProps[] = [
+  {
+    id: 1,
+    book_id: 3,
+    reply_user_id: 4,
+    content: '非常推荐大家去看，小说恐怖如斯',
+    reply_user_name: '看点小故事',
+    target_id: 9,
+    reply_content: '小说非常精彩，感谢楼上推荐',
+    time: '2022-11-14 12:39',
+    target_type: 2,
+    book_title: '赶尸列车',
+    description:
+      '网络大电影《漫长一夜之赶尸列车》原著小说，同名电影由“中国梦之声”第一季冠军李祥祥倾情出演，《最漫长的那一夜》系列首部改编电影惊悚上线！改编自悬疑第一人蔡骏现象级作品《最漫长的那一夜》经典短篇之一——《最漫长的那一夜之春运赶尸列车一夜》。民工意外死亡，幸存者是赶尸匠末代传人， 发誓把他们带回家过年。春运火车将穿越大半个中国，漫漫长夜，一个赶尸匠与几具尸体，会发生多少故事？恐惧、爆笑还有流泪，祝你一路顺风！另有精彩电影拍摄花絮抢先看，更有《最漫长的那一夜之哭坟人的一夜》带你体验别样的“哭坟”故事！',
+    cover:
+      'http://book.img.ireader.com/idc_1/m_1,w_117,h_156,q_100/38c8173a/group6/M00/16/18/CmQUOVaxXIiEJY9AAAAAAFHYwBQ342446061.jpg?v=RWQwIuVB&t=CmQUOVq03UE.',
+  }, //回复
+  {
+    id: 2,
+    book_id: 3,
+    reply_user_id: 4,
+    content: '非常推荐大家去看，小说恐怖如斯',
+    reply_user_name: '看点小故事',
+    target_id: 9,
+    reply_content: '小说非常精彩，感谢楼上推荐',
+    time: '2022-11-14 12:39',
+    target_type: 2,
+    book_title: '赶尸列车',
+    description:
+      '网络大电影《漫长一夜之赶尸列车》原著小说，同名电影由“中国梦之声”第一季冠军李祥祥倾情出演，《最漫长的那一夜》系列首部改编电影惊悚上线！改编自悬疑第一人蔡骏现象级作品《最漫长的那一夜》经典短篇之一——《最漫长的那一夜之春运赶尸列车一夜》。民工意外死亡，幸存者是赶尸匠末代传人， 发誓把他们带回家过年。春运火车将穿越大半个中国，漫漫长夜，一个赶尸匠与几具尸体，会发生多少故事？恐惧、爆笑还有流泪，祝你一路顺风！另有精彩电影拍摄花絮抢先看，更有《最漫长的那一夜之哭坟人的一夜》带你体验别样的“哭坟”故事！',
+    cover:
+      'http://book.img.ireader.com/idc_1/m_1,w_117,h_156,q_100/38c8173a/group6/M00/16/18/CmQUOVaxXIiEJY9AAAAAAFHYwBQ342446061.jpg?v=RWQwIuVB&t=CmQUOVq03UE.',
+  },
+  {
+    id: 3,
+    book_id: 3,
+    target_id: 9,
+    content: '非常推荐大家去看，小说恐怖如斯',
+    time: '2022-11-14 12:39',
+    target_type: 1,
+    book_title: '赶尸列车',
+    description:
+      '网络大电影《漫长一夜之赶尸列车》原著小说，同名电影由“中国梦之声”第一季冠军李祥祥倾情出演，《最漫长的那一夜》系列首部改编电影惊悚上线！改编自悬疑第一人蔡骏现象级作品《最漫长的那一夜》经典短篇之一——《最漫长的那一夜之春运赶尸列车一夜》。民工意外死亡，幸存者是赶尸匠末代传人， 发誓把他们带回家过年。春运火车将穿越大半个中国，漫漫长夜，一个赶尸匠与几具尸体，会发生多少故事？恐惧、爆笑还有流泪，祝你一路顺风！另有精彩电影拍摄花絮抢先看，更有《最漫长的那一夜之哭坟人的一夜》带你体验别样的“哭坟”故事！',
+    cover:
+      'http://book.img.ireader.com/idc_1/m_1,w_117,h_156,q_100/38c8173a/group6/M00/16/18/CmQUOVaxXIiEJY9AAAAAAFHYwBQ342446061.jpg?v=RWQwIuVB&t=CmQUOVq03UE.',
+  }, //评论
+  {
+    id: 4,
+    book_id: 3,
+    target_id: 9,
+    content: '非常推荐大家去看，小说恐怖如斯',
+    time: '2022-11-14 12:39',
+    target_type: 1,
+    book_title: '赶尸列车',
+    description:
+      '网络大电影《漫长一夜之赶尸列车》原著小说，同名电影由“中国梦之声”第一季冠军李祥祥倾情出演，《最漫长的那一夜》系列首部改编电影惊悚上线！改编自悬疑第一人蔡骏现象级作品《最漫长的那一夜》经典短篇之一——《最漫长的那一夜之春运赶尸列车一夜》。民工意外死亡，幸存者是赶尸匠末代传人， 发誓把他们带回家过年。春运火车将穿越大半个中国，漫漫长夜，一个赶尸匠与几具尸体，会发生多少故事？恐惧、爆笑还有流泪，祝你一路顺风！另有精彩电影拍摄花絮抢先看，更有《最漫长的那一夜之哭坟人的一夜》带你体验别样的“哭坟”故事！',
+    cover:
+      'http://book.img.ireader.com/idc_1/m_1,w_117,h_156,q_100/38c8173a/group6/M00/16/18/CmQUOVaxXIiEJY9AAAAAAFHYwBQ342446061.jpg?v=RWQwIuVB&t=CmQUOVq03UE.',
+  }, //评论
+  {
+    id: 5,
+    book_id: 3,
+    reply_user_id: 4,
+    content: '非常推荐大家去看，小说恐怖如斯',
+    reply_user_name: '看点小故事',
+    target_id: 9,
+    reply_content: '小说非常精彩，感谢楼上推荐',
+    time: '2022-11-14 12:39',
+    target_type: 2,
+    book_title: '赶尸列车',
+    description:
+      '网络大电影《漫长一夜之赶尸列车》原著小说，同名电影由“中国梦之声”第一季冠军李祥祥倾情出演，《最漫长的那一夜》系列首部改编电影惊悚上线！改编自悬疑第一人蔡骏现象级作品《最漫长的那一夜》经典短篇之一——《最漫长的那一夜之春运赶尸列车一夜》。民工意外死亡，幸存者是赶尸匠末代传人， 发誓把他们带回家过年。春运火车将穿越大半个中国，漫漫长夜，一个赶尸匠与几具尸体，会发生多少故事？恐惧、爆笑还有流泪，祝你一路顺风！另有精彩电影拍摄花絮抢先看，更有《最漫长的那一夜之哭坟人的一夜》带你体验别样的“哭坟”故事！',
+    cover:
+      'http://book.img.ireader.com/idc_1/m_1,w_117,h_156,q_100/38c8173a/group6/M00/16/18/CmQUOVaxXIiEJY9AAAAAAFHYwBQ342446061.jpg?v=RWQwIuVB&t=CmQUOVq03UE.',
+  },
+  {
+    id: 6,
+    book_id: 3,
+    target_id: 9,
+    content: '非常推荐大家去看，小说恐怖如斯',
+    time: '2022-11-14 12:39',
+    target_type: 1,
+    book_title: '赶尸列车',
+    description:
+      '网络大电影《漫长一夜之赶尸列车》原著小说，同名电影由“中国梦之声”第一季冠军李祥祥倾情出演，《最漫长的那一夜》系列首部改编电影惊悚上线！改编自悬疑第一人蔡骏现象级作品《最漫长的那一夜》经典短篇之一——《最漫长的那一夜之春运赶尸列车一夜》。民工意外死亡，幸存者是赶尸匠末代传人， 发誓把他们带回家过年。春运火车将穿越大半个中国，漫漫长夜，一个赶尸匠与几具尸体，会发生多少故事？恐惧、爆笑还有流泪，祝你一路顺风！另有精彩电影拍摄花絮抢先看，更有《最漫长的那一夜之哭坟人的一夜》带你体验别样的“哭坟”故事！',
+    cover:
+      'http://book.img.ireader.com/idc_1/m_1,w_117,h_156,q_100/38c8173a/group6/M00/16/18/CmQUOVaxXIiEJY9AAAAAAFHYwBQ342446061.jpg?v=RWQwIuVB&t=CmQUOVq03UE.',
+  }, //评论
 ];

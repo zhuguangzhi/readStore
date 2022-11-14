@@ -18,6 +18,11 @@ const useHeaderRouter = {
           title: '我的书架',
           component: '@/pages/personalCenter/bookShelf',
         },
+        {
+          path: 'comment',
+          title: '我的评论',
+          component: '@/pages/personalCenter/myComment',
+        },
       ],
     },
   ],

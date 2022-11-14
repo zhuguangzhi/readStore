@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 export const isVoid = (val: unknown) =>
   val === null || val === undefined || val === '';
@@ -12,4 +14,12 @@ export const cleanObject = (object: { [key: string]: unknown }) => {
     }
   });
   return result;
+};
+//阻止事件冒泡
+export const stopProp = (
+  e: React.MouseEvent<HTMLDivElement>,
+  callback: Function,
+) => {
+  e.stopPropagation();
+  callback();
 };
