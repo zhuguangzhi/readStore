@@ -3,13 +3,13 @@ import { bookProps } from '@/type/book';
 import { Checkbox, Progress } from 'antd';
 import { IconFont } from '@/components/IconFont';
 import './style/bookShelf.less';
-import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { PersonalHeader } from '@/pages/personalCenter/components/personalHeader';
 import { ShelfFloor } from '@/pages/personalCenter/components/shelfFloor';
 import { useMounted } from '@/hook';
 //测试数据
 import { testBookData } from '@/assets/testData';
 import ReadPopup from '@/components/module/ReadPopup';
+import { DelPopup } from '@/pages/personalCenter/utils';
 
 export default () => {
   const tabBars = [
@@ -23,27 +23,14 @@ export default () => {
   const [bookList, setBookList] = useState<(bookProps | null)[][]>([]);
   //需要删除的id list
   // 删除 确认弹窗
-  const [delPopup, setDelPopup] = useState({
-    open: false, //打开？
-    title: '', //标题
-    id: [] as number[], //删除的id数组
+  const [popupOption, setPopupOption] = useState({
+    ids: [] as number[],
+    open: false,
+    title: '',
   });
+  // 操作实例
+  const delPopup = new DelPopup(popupOption, setPopupOption);
 
-  //改变多选框
-  const onChangeCheckBox = (value: CheckboxChangeEvent, bookId: number) => {
-    let arr = [...delPopup.id];
-    if (value.target.checked) arr.push(bookId);
-    else arr.splice(arr.indexOf(bookId), 1);
-    setDelPopup({ ...delPopup, id: [...arr] });
-  };
-  //删除按钮点击
-  const onDelChange = (book?: bookProps) => {
-    setDelPopup({
-      title: book ? book.title : '选中书本',
-      id: book ? [book.id] : delPopup.id,
-      open: true,
-    });
-  };
   //  设置书架数据
   const setBookData = () => {
     let resData = [...testBookData, null];
@@ -60,7 +47,7 @@ export default () => {
   };
   //edit为false时清空delPopup.id
   useEffect(() => {
-    if (!edit) setDelPopup({ ...delPopup, id: [] });
+    if (!edit) delPopup.clearPopup();
   }, [edit]);
 
   useMounted(() => {
@@ -93,12 +80,12 @@ export default () => {
             <Checkbox
               className={'bookShelf_face_icon bookShelf_face_check'}
               defaultChecked={false}
-              checked={delPopup.id.includes(book.id)}
-              onChange={(e) => onChangeCheckBox(e, book.id)}
+              checked={popupOption.ids.includes(book.id)}
+              onChange={(e) => delPopup.onChangeCheckBox(e, book.id)}
             />
           ) : (
             <IconFont
-              onClick={() => onDelChange(book)}
+              onClick={() => delPopup.onDelChange(book.title, book.id)}
               className={'bookShelf_face_icon'}
               icon={'delete'}
             />
@@ -150,7 +137,7 @@ export default () => {
         tabs={tabBars}
         defaultSelect={'myBookShelf'}
         useIcon={true}
-        onDelete={onDelChange}
+        onDelete={() => delPopup.onDelChange('所选书籍')}
       />
 
       {/*最近阅读*/}
@@ -267,9 +254,9 @@ export default () => {
       </div>
       {/*删除*/}
       <ReadPopup
-        onClose={() => setDelPopup({ ...delPopup, open: false, id: [] })}
-        title={`是否移除 "${delPopup.title}"`}
-        open={delPopup.open}
+        onClose={delPopup.clearPopup}
+        title={`是否移除 "${popupOption.title}"`}
+        open={popupOption.open}
         showClose={true}
       >
         <p>移出书架后可重新添加哦！</p>
