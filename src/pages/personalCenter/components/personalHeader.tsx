@@ -23,7 +23,10 @@ export const PersonalHeader = ({
       />
       <div className={'flex'}>
         <UseNode rIf={useEdit}>
-          <div className={'personalHeader_delete'}>
+          <div
+            className={'personalHeader_delete'}
+            onClick={() => props.onDelete?.()}
+          >
             <IconFont icon={'delete'} />
             <span>移除</span>
           </div>
