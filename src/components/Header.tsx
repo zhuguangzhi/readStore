@@ -5,6 +5,7 @@ import { useSetState } from '@/hook';
 import { IconFont } from '@/components/IconFont';
 import { inputEvent } from '@/type';
 import { logoUrl } from '@/assets/config';
+import router from '@/hook/url';
 
 import './style/header.less';
 
@@ -74,6 +75,7 @@ const Header = () => {
         />
         <div className={'header_user'}>
           <img
+            onClick={() => router.push('/personal/bookShelf')}
             className={'cursor'}
             src={require('../assets/test/personPhoto.png')}
             alt=""

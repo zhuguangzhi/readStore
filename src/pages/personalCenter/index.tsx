@@ -41,7 +41,7 @@ export const PersonalCenter = () => {
       {/*    面包屑*/}
       <div className={'personal_breadcrumb'}>
         <span>当前位置：</span>
-        <span className={'cursor'}>
+        <span className={'cursor'} onClick={() => router.push('/home')}>
           {netName}
           {'>'}
         </span>

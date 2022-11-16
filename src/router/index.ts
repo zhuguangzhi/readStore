@@ -34,6 +34,17 @@ export const routes = [
     redirect: '/personal/bookShelf',
     component: '@/layouts/index',
   },
+  {
+    path: '/admin',
+    component: '@/pages/authorAdmin/index',
+    routes: [
+      {
+        path: 'home',
+        name: '读者后台首页',
+        component: '@/pages/authorAdmin/home',
+      },
+    ],
+  },
 
   //使用头部的路由
   { ...useHeaderRouter },

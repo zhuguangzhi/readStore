@@ -16,6 +16,7 @@ export const testBookData: readonly bookProps[] = [
     content: '',
     bookshelf: false,
     progress: 58,
+    tags: ['新书'],
   },
   {
     id: 2,

@@ -35,7 +35,7 @@ export const ReadPopup = (props: PopupProps) => {
     }: PopupProps) => {
       if (!props.open) return <></>;
       return (
-        <div className={'container animate__animated animate__fadeIn'}>
+        <div className={'read_container animate__animated animate__fadeIn'}>
           <UseNode rIf={mask}>
             <div onClick={props.onClose} className={'mask'}></div>
           </UseNode>

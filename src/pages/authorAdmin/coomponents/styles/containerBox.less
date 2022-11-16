@@ -1,0 +1,54 @@
+.containerBox {
+  position: relative;
+  width: 400rem;
+  height: 319rem;
+  background: #ffffff;
+  box-shadow: 0 2px 21px 0 rgba(52, 100, 224, 0.15);
+  border-radius: 8px;
+  color: #333333;
+  z-index: 2;
+  opacity: 1;
+  transform-style: preserve-3d;
+  &_title {
+    position: relative;
+    width: 100%;
+    height: 46px;
+    align-items: center;
+    padding: 0 20px;
+    margin-bottom: 10px;
+  }
+  &_title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50%;
+    height: 1px;
+    background-color: #e5e5e5;
+  }
+}
+.containerBox::after,
+.containerBox::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: -10px;
+  width: 380rem;
+  height: 300rem;
+  border-radius: 8px;
+  background-color: #ffffff;
+  opacity: 0.6;
+  z-index: -2;
+  box-shadow: 0 2px 21px 0 rgba(52, 100, 224, 0.35);
+  transform: translateZ(-1px) // Z轴方向位移-1px
+;
+}
+.containerBox::after {
+  left: 20px;
+  top: -20px;
+  width: 360px;
+  height: 280px;
+  opacity: 0.4;
+  transform: translateZ(-2px) // Z轴方向位移-1px
+;
+}

@@ -1,0 +1,230 @@
+.adminHome {
+  color: #ffffff;
+  &_header {
+    color: #ffffff;
+    .adminSearch_search,
+    .ant-input {
+      background-color: #1e47af !important;
+    }
+  }
+  &_manuscript {
+    padding: 0 47px;
+    font-size: 16px;
+    p {
+      padding: 8px 0;
+    }
+    &_title {
+      font-size: 37px;
+      font-family: HuangYingQiZhaoPaiTi, sans-serif;
+      font-weight: 400;
+      color: #3464e0;
+    }
+    &_item {
+      display: flex;
+      align-items: center;
+      i {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border-radius: 3px;
+        margin-right: 8px;
+      }
+    }
+  }
+
+  &_works {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 23px;
+    &_container {
+      display: flex;
+      align-items: flex-start;
+      height: 170px;
+      font-size: 14.96px;
+      margin-bottom: 35px;
+      color: #b7b7b7;
+      &_img {
+        width: 128px;
+        height: 170px;
+        background: #d3d3d3;
+        border: 1px solid;
+        border-image: linear-gradient(0deg, #dfe9f3, #ffffff) 10 10;
+        border-radius: 5px;
+        margin-right: 33px;
+      }
+      &_info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        padding: 12px 0;
+        box-sizing: border-box;
+      }
+    }
+
+    &_operate {
+      height: 27px;
+      display: flex;
+      justify-content: space-between;
+      span {
+        display: inline-block;
+        width: 100px;
+        height: 27px;
+        background: #3464e0;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #ffffff;
+        text-align: center;
+        line-height: 27px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  &_time {
+    &_tip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: default;
+      font-size: 12px;
+      color: #999999;
+      margin: 15px 0;
+      padding: 0 34px 0 36px;
+      width: 100%;
+      &_status {
+        display: flex;
+        align-items: center;
+        i {
+          display: inline-block;
+          width: 13px;
+          height: 13px;
+          margin-right: 4px;
+          margin-left: 43px;
+        }
+      }
+    }
+    .time_calendar {
+      padding: 0 20px;
+      height: 215px;
+      overflow: hidden;
+      > div:first-child {
+        position: absolute;
+        top: 25px;
+        right: 20px;
+        transform: translateY(-50%);
+        z-index: 999;
+        .ant-picker-calendar-mode-switch,
+        .ant-picker-calendar-year-select {
+          display: none;
+        }
+      }
+      .ant-picker-panel {
+        height: 100%;
+        border: 0 !important;
+        cursor: default;
+      }
+      //  去除选中颜色
+      .ant-picker-calendar-date {
+        background: none;
+        color: rgba(0, 0, 0, 0.85);
+      }
+      .ant-picker-cell-inner {
+      }
+    }
+    &_autoStyle {
+      span {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        line-height: 18px;
+        text-align: center;
+      }
+    }
+  }
+
+  &_data {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 44px 67px;
+    box-sizing: border-box;
+    margin: 21px 0;
+    width: 100%;
+    height: 199px;
+    background: #4e7ef9;
+    box-shadow: 0 2px 21px 0 rgba(52, 100, 224, 0.1);
+    &_item {
+      width: 185px;
+      height: 119px;
+      background: #638efa;
+      padding: 28px 30px;
+      color: #ffffff;
+      margin-right: 66px;
+      p:last-child {
+        font-size: 22px;
+        font-weight: bolder;
+        margin-top: 13px;
+      }
+    }
+  }
+  &_data::after {
+    content: '';
+    position: absolute;
+    top: -11px;
+    right: 33px;
+    width: 253px;
+    height: 222px;
+    background: url('@/assets/image/admin/dataPanel.png') no-repeat 100% 100%;
+    background-size: cover;
+  }
+
+  &_charts {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+    height: 347px;
+    color: #333333;
+    font-size: 16px;
+
+    &_fee {
+      flex: 1;
+      padding: 19px 25px;
+      box-sizing: border-box;
+      margin-right: 27px;
+      height: 100%;
+      background: #ffffff;
+      box-shadow: 0 2px 21px 0 rgba(52, 100, 224, 0.1);
+      &_title {
+        display: flex;
+        align-items: center;
+        width: 115px;
+        margin-bottom: 12px;
+        span {
+          display: inline-block;
+          margin-right: 9px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .YearPopoverContent {
+    p {
+      width: 100%;
+      height: 24px;
+      line-height: 24px;
+      padding: 0 18px;
+      margin: 4px 0;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    p:hover {
+      background-color: rgba(#2875da, 0.6);
+      color: white;
+    }
+  }
+}
