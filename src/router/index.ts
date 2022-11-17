@@ -37,11 +37,17 @@ export const routes = [
   {
     path: '/admin',
     component: '@/pages/authorAdmin/index',
+    name: '读者后台',
     routes: [
       {
         path: 'home',
-        name: '读者后台首页',
+        name: '首页',
         component: '@/pages/authorAdmin/home',
+      },
+      {
+        path: 'works',
+        name: '作品管理',
+        component: '@/pages/authorAdmin/works/index',
       },
     ],
   },

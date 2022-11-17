@@ -64,11 +64,9 @@
     }
     &_box {
       flex: 1;
-      height: 20px;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      align-items: flex-start;
+      display: grid;
+      grid-template-columns: 120rem 100rem;
+      grid-template-rows: 120rem 120rem 120rem 100rem;
       margin-top: 81px;
       padding: 54px 50px;
       box-sizing: border-box;
@@ -82,13 +80,13 @@
       justify-content: center;
       font-size: 16px;
       width: 100px;
+      min-width: 100px;
       height: 100px;
       background: #ffffff;
       box-shadow: 0 5px 5px 0 rgba(52, 100, 224, 0.09);
       border-radius: 8px;
       cursor: pointer;
       box-sizing: border-box;
-      margin-bottom: 20px;
     }
     .itemSelect {
       border: 2px solid var(--adminTheme);
@@ -124,8 +122,8 @@
   }
   // 非home使用
   &_box {
-    padding-top: 61px;
     background-color: #f6f9fe;
     border-radius: 40px 0 0 0;
+    padding: 61px 0 0 69px;
   }
 }

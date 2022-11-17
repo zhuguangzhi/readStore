@@ -9,6 +9,7 @@ type operationProps = {
 };
 //缩放
 export const homeZoom = document.documentElement.clientWidth / 1920;
+// export const homeZoom = 1;
 export default () => {
   const routerInfo = useGetUrlPath();
   // 侧边栏选项
@@ -37,8 +38,15 @@ export default () => {
   return (
     <div className={'author_admin'} style={{ zoom: homeZoom }}>
       {/*    banner*/}
-      <p className={'author_admin_back banner'}></p>
-      <div className={'flex'} style={{ marginTop: '-310px' }}>
+      <p
+        className={`author_admin_back  ${
+          currentOperate === 'home' ? 'banner' : ''
+        }`}
+      ></p>
+      <div
+        className={'flex'}
+        style={{ marginTop: '-310px', minHeight: '100%' }}
+      >
         {/*side*/}
         <div className={'author_admin_side'}>
           {/*    用户信息*/}
@@ -52,7 +60,7 @@ export default () => {
               />
             </div>
             <p className={'font_16'}>如若</p>
-            <p className={'font_12'}>ID: 12345678900</p>
+            <p className={'font_14'}>ID: 12345678900</p>
           </div>
           {/*    侧边栏*/}
           <div className={'author_admin_side_box'}>

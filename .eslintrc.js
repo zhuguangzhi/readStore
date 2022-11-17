@@ -7,7 +7,7 @@ module.exports = {
     // ↓在函数和类方法上需要显式的返回类型
     '@typescript-eslint/explicit-function-return-type': 'off',
     // ↓禁止使用any类型
-    '@typescript-eslint/no-explicit-any': 'error',
+    '@typescript-eslint/no-explicit-any': 'off',
     // ↓除导入语句外，禁止使用require语句
     '@typescript-eslint/no-var-requires': 'off',
     // ↓禁止使用空函数
@@ -44,5 +44,6 @@ module.exports = {
     'space-before-function-paren': 'off',
     'react/no-children-prop': 'off',
     'react/button-has-type': 'off',
+    'react-hooks/rules-of-hooks': 'off',
   },
 };

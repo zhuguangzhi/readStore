@@ -3,15 +3,14 @@ import 'moment/locale/zh-cn';
 import { Calendar, Popover } from 'antd';
 import locale from 'antd/es/date-picker/locale/zh_CN';
 
-import { AdminHeader } from '@/pages/authorAdmin/coomponents/adminHeader';
+import { AdminHeader } from '@/pages/authorAdmin/components/adminHeader';
 import './style/home.less';
-import { ContainerBox } from '@/pages/authorAdmin/coomponents/containerBox';
+import { ContainerBox } from '@/pages/authorAdmin/components/containerBox';
 import { testBookData } from '@/assets/testData';
 import { Moment } from 'moment';
 import { IconFont } from '@/components/IconFont';
-import { Column } from '@ant-design/charts';
-import { ColumnConfig } from '@ant-design/plots/es/components/column';
-import { homeZoom } from '@/pages/authorAdmin/index';
+import { ChartsColum } from '@/pages/authorAdmin/components/chartsColum';
+import { ChartsPie } from '@/pages/authorAdmin/components/chartsPie';
 
 export default () => {
   //设置日历颜色
@@ -28,44 +27,6 @@ export default () => {
   const [columnData] = useState([
     6870, 7654, 5982, 8979, 12213, 7950, 9740, 8950, 11209, 15980, 12745, 7543,
   ]);
-
-  const colConfig: ColumnConfig = {
-    data: columnData.map((item, index) => ({
-      type: `${index + 1}月`,
-      value: item,
-    })),
-    xField: 'type',
-    yField: 'value',
-    seriesField: '',
-    legend: false,
-    color: '#00B3F9',
-    height: 280 * homeZoom,
-    pixelRatio: 2,
-    autoFit: false,
-    yAxis: {
-      grid: null,
-      title: null,
-      label: null,
-    },
-    xAxis: {
-      grid: null,
-      line: {
-        style: {
-          stroke: '#3464E0',
-          lineWidth: 2,
-        },
-      },
-      label: {
-        autoHide: true,
-        autoRotate: false,
-      },
-    },
-    meta: {
-      value: {
-        alias: '稿费',
-      },
-    },
-  };
 
   const YearPopoverContent = () => {
     return (
@@ -206,11 +167,18 @@ export default () => {
             </div>
           </Popover>
           {/*    柱状图*/}
-          <Column style={{ zoom: 1 / homeZoom }} {...colConfig} />
+          <ChartsColum
+            data={columnData.map((item, index) => ({
+              type: `${index + 1}月`,
+              value: item,
+            }))}
+          />
         </div>
         {/*    收益分成*/}
         <ContainerBox title={'本月收益分成'}>
-          <div></div>
+          <div style={{ height: '238px' }}>
+            <ChartsPie />
+          </div>
         </ContainerBox>
       </div>
     </div>
