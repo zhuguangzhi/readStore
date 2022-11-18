@@ -47,7 +47,22 @@ export const routes = [
       {
         path: 'works',
         name: '作品管理',
+        component: '@/pages/authorAdmin/worksManager',
+      },
+      {
+        path: 'works/worksInfo',
+        name: '作品信息',
         component: '@/pages/authorAdmin/works/index',
+      },
+      {
+        path: 'message',
+        name: '消息通知',
+        component: '@/pages/authorAdmin/message/index',
+      },
+      {
+        path: 'contract',
+        name: '我的合同',
+        component: '@/pages/authorAdmin/contract',
       },
     ],
   },

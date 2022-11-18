@@ -4,6 +4,7 @@ import { Button, Form, Input, Radio, Select } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import './style/worksInfo.less';
 import { Values } from 'async-validator';
+import router from '@/hook/url';
 
 const formItemLayout = {
   labelCol: {
@@ -108,6 +109,7 @@ export const worksInfo = () => {
               className={'worksInfo_right_button'}
               type="default"
               shape="round"
+              onClick={() => router.back()}
             >
               取消
             </Button>

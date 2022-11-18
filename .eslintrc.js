@@ -7,7 +7,7 @@ module.exports = {
     // ↓在函数和类方法上需要显式的返回类型
     '@typescript-eslint/explicit-function-return-type': 'off',
     // ↓禁止使用any类型
-    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-explicit-any': 'error',
     // ↓除导入语句外，禁止使用require语句
     '@typescript-eslint/no-var-requires': 'off',
     // ↓禁止使用空函数

@@ -91,7 +91,7 @@ const Index = () => {
             {swiperBookInfo[currentSwiperIndex].title}
           </p>
           <p style={{ width: '100%' }} className={'font_16 textOverflow'}>
-            {swiperBookInfo[currentSwiperIndex].abstract}
+            {swiperBookInfo[currentSwiperIndex].description}
           </p>
         </div>
         <Slider {...swiperOptions} className={'home_carousel_book'}>

@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { IconFont } from '@/components/IconFont';
-import { Input } from 'antd';
+import { Badge, Input } from 'antd';
 import { inputEvent } from '@/type';
 import { UseNode } from '@/components/UseNode';
 import './styles/adminHeader.less';
@@ -17,8 +17,8 @@ const SearchIcon = () => (
 export const AdminHeader = ({
   subTitle,
   subIcon,
-  useSearchInput,
   className,
+  useSearchInput = false,
 }: AdminHeaderProps) => {
   // 搜索框事件
   const onSearch = (e: inputEvent) => {
@@ -33,7 +33,7 @@ export const AdminHeader = ({
           <span>{subTitle}</span>
         </div>
         {/*    搜索框*/}
-        <UseNode rIf={!useSearchInput}>
+        <UseNode rIf={useSearchInput}>
           <Input
             className={'adminSearch_search'}
             autoComplete="off"
@@ -44,18 +44,22 @@ export const AdminHeader = ({
         </UseNode>
       </div>
       <div className={'flex flex_align'}>
-        <IconFont
-          className={'cursor'}
-          width={'25px'}
-          marginRight={'28px'}
-          height={'27px'}
-          icon={'tip'}
-        />
+        <Badge count={100} size="small">
+          <i className={'message_tip'} style={{ color: 'var(--adminTheme)' }}>
+            <IconFont
+              className={'cursor'}
+              width={'25px'}
+              height={'27px'}
+              icon={'tip'}
+            />
+          </i>
+        </Badge>
         <IconFont
           className={'cursor'}
           width={'23px'}
           height={'23px'}
           icon={'tuichu'}
+          marginLeft={'28px'}
         />
       </div>
     </div>

@@ -34,7 +34,7 @@ export const BookItem = ({
                     </span>
                   );
                 })}
-                <span>{book.abstract}</span>
+                <span>{book.description}</span>
               </div>
               {/*    底部选项*/}
               <div

@@ -16,6 +16,7 @@
     "@ant-design/pro-components": "^2.0.1",
     "@types/react-window": "^1.8.5",
     "@umijs/max": "^4.0.29",
+    "ali-react-table": "^2.6.1",
     "antd": "^4.24.1",
     "qs": "^6.11.0",
     "react-slick": "^0.29.0",

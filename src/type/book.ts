@@ -1,22 +1,24 @@
 // 书籍信息
 import { authorProps } from '@/type/user';
 
-//书本类型 TODO:未对类型
-export type bookProps = {
+type book = {
   id: number;
   title: string;
-  abstract: string; //摘要
+  description: string; //摘要
   face: string; //封面
   authorInfo: Partial<authorProps>; //作者信息
+};
+//用户阅读书本类型 TODO:未对类型
+export interface bookProps extends book {
+  content: string; //内容
   comment: number; //评论数
   vip: boolean; //是否是vip书籍
   support: boolean; //已赞
-  content: string; //内容
   source: sourceProps | null; //来源 比如话题 无就null
   tags?: string[]; //标签列表
   bookshelf: boolean; //是否加入书架
-  progress: number; //阅读进度
-};
+  progress?: number; //阅读进度
+}
 
 //来源信息
 export type sourceProps = {
@@ -44,3 +46,16 @@ export type commentProps = {
   reply_user_name?: string; //回复用户昵称
   time: string; //回复\评论日期
 };
+
+//作者作品
+export interface worksProps extends book {
+  word_count: number; //字数
+  month_update_count: number; //本月更新字数
+  is_finish: boolean; //连载状态
+  is_contract: boolean; //是否签约
+  channel: 'man' | 'woman'; //man 男频 woman女频
+  tags: string; //标签
+  audit_num: number; //正在审核数
+  all_collection: number; //点赞数
+  create_time?: string; //创建时间
+}

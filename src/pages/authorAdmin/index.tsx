@@ -31,16 +31,15 @@ export default () => {
   };
 
   useEffect(() => {
-    if (routerInfo.length > 0) setOperate(routerInfo[routerInfo.length - 1]);
+    if (routerInfo.length > 0) setOperate(routerInfo[2]);
   }, [routerInfo.length]);
 
   // 首页缩放为1980
   return (
     <div className={'author_admin'} style={{ zoom: homeZoom }}>
-      {/*    banner*/}
       <p
         className={`author_admin_back  ${
-          currentOperate === 'home' ? 'banner' : ''
+          currentOperate === 'home' ? 'banner' : 'banner2'
         }`}
       ></p>
       <div

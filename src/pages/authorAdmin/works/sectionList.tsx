@@ -2,39 +2,35 @@
 import React from 'react';
 import { IconFont } from '@/components/IconFont';
 import './style/sectionList.less';
-import { VirtualTable } from '@/pages/authorAdmin/works/VirtualTable';
+import { ReadTable } from '@/components/module/ReadTable';
 
 export const SectionList = () => {
   const columns = [
     {
-      title: 'A',
-      dataIndex: 'key',
+      name: '章节名称',
+      code: 'key',
+      width: 250,
+    },
+    {
+      name: '状态',
+      code: 'key',
+    },
+    {
+      name: '字数',
+      code: 'key',
       width: 150,
     },
     {
-      title: 'B',
-      dataIndex: 'key',
-      width: 150,
+      name: '发布时间',
+      code: 'key',
+      width: 250,
     },
     {
-      title: 'C',
-      dataIndex: 'key',
-      width: 150,
-    },
-    {
-      title: 'D',
-      dataIndex: 'key',
-      width: 150,
-    },
-    {
-      title: 'E',
-      dataIndex: 'key',
-      width: 200,
-    },
-    {
-      title: 'F',
-      dataIndex: 'key',
-      width: 100,
+      name: '操作',
+      width: 250,
+      render: () => {
+        return <button className={'sectionList_button'}>修改</button>;
+      },
     },
   ];
   const data = Array.from(
@@ -57,12 +53,7 @@ export const SectionList = () => {
         />
         <span>新建章节</span>
       </p>
-      <VirtualTable
-        columns={columns}
-        dataSource={data}
-        scroll={{ y: 600, x: '100%' }}
-      />
-      {/*<Table columns={columns} dataSource={data} pagination={{ pageSize: 50 }}  />*/}
+      <ReadTable columns={columns} dataSource={data} />
     </div>
   );
 };

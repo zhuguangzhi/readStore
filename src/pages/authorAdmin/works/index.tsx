@@ -1,11 +1,9 @@
 import React from 'react';
 import { AdminHeader } from '@/pages/authorAdmin/components/adminHeader';
 import { IconFont } from '@/components/IconFont';
-import './style/index.less';
 import { Tabs } from 'antd';
 import WorksInfo from '@/pages/authorAdmin/works/worksInfo';
 import SectionList from '@/pages/authorAdmin/works/sectionList';
-import DraftBox from '@/pages/authorAdmin/works/draftBox';
 import AddSection from '@/pages/authorAdmin/works/addSection';
 
 const SubIcon = () => (
@@ -28,7 +26,7 @@ export default () => {
     {
       label: '草稿箱',
       key: 'draftBox',
-      children: <DraftBox />,
+      children: <SectionList />,
     },
     {
       label: '上传章节',
@@ -42,7 +40,7 @@ export default () => {
         <AdminHeader subTitle={'作品信息'} subIcon={<SubIcon />} />
       </div>
       {/*    内容*/}
-      <main className={'works_container'}>
+      <main className={'admin_container'}>
         <Tabs defaultActiveKey="1" items={tabList} tabBarGutter={57} />
       </main>
     </div>
