@@ -4,7 +4,7 @@ const MessageBoxStyle: React.CSSProperties = {
   width: '100%',
   height: '112px',
   background: '#FFFFFF',
-  boxShadow: '0px 2px 32px 0px rgba(4,0,0,0.1)',
+  boxShadow: '0 2px 32px 0 rgba(4,0,0,0.1)',
   borderRadius: '20px',
   marginTop: '18px',
   padding: '27px 40px',

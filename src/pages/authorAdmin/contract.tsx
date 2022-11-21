@@ -103,7 +103,7 @@ export default () => {
       <div className={'admin_container contract_container'}>
         <Form style={{ marginBottom: '34px' }} layout={'inline'}>
           <Form.Item name="username" label={'合同查询'}>
-            <Input className={'contract_input'} style={{ width: '500rem' }} />
+            <Input className={'contract_input'} style={{ width: '500px' }} />
           </Form.Item>
 
           <Form.Item>
