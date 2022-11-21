@@ -21,12 +21,12 @@ export default () => {
     {
       label: '章节列表',
       key: 'sectionList',
-      children: <SectionList />,
+      children: <SectionList type={'section'} />,
     },
     {
       label: '草稿箱',
       key: 'draftBox',
-      children: <SectionList />,
+      children: <SectionList type={'draft'} />,
     },
     {
       label: '上传章节',

@@ -3,9 +3,11 @@ import React from 'react';
 import { IconFont } from '@/components/IconFont';
 import './style/sectionList.less';
 import { ReadTable } from '@/components/module/ReadTable';
+import { UseNode } from '@/components/UseNode';
+import { BaseTableProps } from 'ali-react-table';
 
-export const SectionList = () => {
-  const columns = [
+export const SectionList = ({ type }: { type: 'section' | 'draft' }) => {
+  const columns: BaseTableProps['columns'] = [
     {
       name: '章节名称',
       code: 'key',
@@ -44,15 +46,17 @@ export const SectionList = () => {
 
   return (
     <div className={'sectionList'}>
-      <p className={'sectionList_header'}>
-        <IconFont
-          width={'28px'}
-          height={'28px'}
-          marginRight={'12px'}
-          icon={'addSection'}
-        />
-        <span>新建章节</span>
-      </p>
+      <UseNode rIf={type === 'section'}>
+        <p className={'sectionList_header'}>
+          <IconFont
+            width={'28px'}
+            height={'28px'}
+            marginRight={'12px'}
+            icon={'addSection'}
+          />
+          <span>新建章节</span>
+        </p>
+      </UseNode>
       <ReadTable columns={columns} dataSource={data} />
     </div>
   );

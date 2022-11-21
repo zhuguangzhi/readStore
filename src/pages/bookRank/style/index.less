@@ -1,0 +1,57 @@
+.bookRank {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  margin-top: 20px;
+  padding: 34px 0;
+  &_side {
+    width: 141px;
+    border-right: var(--border);
+    p {
+      position: relative;
+      width: 100%;
+      height: 33px;
+      font-size: 16px;
+      text-align: center;
+      line-height: 33px;
+      margin: 6px 0;
+      cursor: pointer;
+    }
+  }
+  &_container {
+    height: 200vh;
+    flex: 1;
+    padding: 0 65px;
+    box-sizing: border-box;
+    &_header {
+      padding-bottom: 12px;
+      border-bottom: var(--border);
+    }
+  }
+
+  //  侧边栏选中
+  .sideSelect {
+    background: rgba(#feaa7e, 0.25);
+    color: #e78140;
+  }
+  .sideSelect::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 5px;
+    height: 100%;
+    background: #e78140;
+  }
+}
+.bookRank:before {
+  content: '';
+  position: absolute;
+  top: calc(20px + var(--headerHeight));
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: -1;
+  background-color: white;
+}

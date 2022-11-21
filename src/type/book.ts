@@ -59,3 +59,23 @@ export interface worksProps extends book {
   all_collection: number; //点赞数
   create_time?: string; //创建时间
 }
+
+//榜单
+export interface bookRankProps {
+  id: number; //榜单id <number>
+  name: string; //榜单名称 <string>
+  list: {
+    book_id: number; //书籍id <integer>
+    book_title: string; //书籍标题 <string>
+    cover: string; //封面 大图 <string>
+    pen_name: string; //作者 <string>
+    is_finish: 'Y' | 'N'; //连载状态 Y：完结 N：连载 <string>
+    description: string; //书籍简介 <string>
+    word_count: number; //总字数 <integer>
+    category_title: null | string; //分类 <string>
+    all_click: number; //点击量 <integer>
+    billing_type: 1 | 2; //1:按章节付费 2：整本付费 <integer>
+    billing_chapter: number; //按章节价格 单位 夜听币 <string>
+    bookshelf: 0 | 1; //1加入书架
+  }[];
+}

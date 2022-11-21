@@ -9,6 +9,11 @@ const useHeaderRouter = {
       component: '@/pages/home/index',
     },
     {
+      path: '/bookRank',
+      title: '首页',
+      component: '@/pages/bookRank/index',
+    },
+    {
       path: '/personal',
       title: '个人中心',
       component: '@/pages/personalCenter/index',
@@ -23,6 +28,11 @@ const useHeaderRouter = {
           title: '我的评论',
           component: '@/pages/personalCenter/myComment',
         },
+        {
+          path: 'notice',
+          title: '我的评论',
+          component: '@/pages/personalCenter/systemMessage',
+        },
       ],
     },
   ],
@@ -31,7 +41,7 @@ const useHeaderRouter = {
 export const routes = [
   {
     path: '/',
-    redirect: '/personal/bookShelf',
+    redirect: '/home',
     component: '@/layouts/index',
   },
   {
@@ -63,6 +73,11 @@ export const routes = [
         path: 'contract',
         name: '我的合同',
         component: '@/pages/authorAdmin/contract',
+      },
+      {
+        path: 'personalInfo',
+        name: '个人信息',
+        component: '@/pages/authorAdmin/personalInfo',
       },
     ],
   },

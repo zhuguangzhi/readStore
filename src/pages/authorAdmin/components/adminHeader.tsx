@@ -4,6 +4,7 @@ import { Badge, Input } from 'antd';
 import { inputEvent } from '@/type';
 import { UseNode } from '@/components/UseNode';
 import './styles/adminHeader.less';
+import router from '@/hook/url';
 
 export type AdminHeaderProps = {
   subTitle?: string;
@@ -60,6 +61,7 @@ export const AdminHeader = ({
           height={'23px'}
           icon={'tuichu'}
           marginLeft={'28px'}
+          onClick={() => router.push('/')}
         />
       </div>
     </div>

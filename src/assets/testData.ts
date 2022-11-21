@@ -1,5 +1,10 @@
 // TODO：测试数据 对接后删除
-import { bookProps, commentProps, worksProps } from '@/type/book';
+import {
+  bookProps,
+  bookRankProps,
+  commentProps,
+  worksProps,
+} from '@/type/book';
 
 export const testBookData: readonly bookProps[] = [
   {
@@ -325,3 +330,91 @@ export const testWorksData: readonly worksProps[] = [
     tags: '新书',
   },
 ];
+
+// 榜单
+export const testBookRankData: bookRankProps = {
+  id: 12,
+  name: '阅读',
+  list: [
+    {
+      book_id: 1,
+      book_title: '零基础学画漫画4：素描技法练习本',
+      cover:
+        'http://book.img.ireader.com/idc_1/m_1,w_117,h_156,q_100/eecae1e3/group6/M00/6C/9B/CmQUNlauC5uETavmAAAAANzPruo172792771.jpg?v=Qr4Ki2iQ',
+      description:
+        '在学习漫画的过程中，最开始的描红练习和临摹练习非常重要。对初次学习漫画绘画的朋友来说，描红无疑是练习用笔和画线的手段。在描红的过程中，读者不仅可以学习到基本线条的练习，还可以掌握漫画人物设定的各种方法，包括头部、表情、发型、身体结构、动态姿势、服装等，针对漫迷关心的重点题材和重点技术进行练习，让读者在动手过程中快速掌握绘画要点。',
+      pen_name: '芳默默',
+      is_finish: 'Y',
+      word_count: 287701,
+      category_title: '科幻',
+      all_click: 219878,
+      bookshelf: 0,
+      billing_type: 2,
+      billing_chapter: 200,
+    },
+    {
+      book_id: 2,
+      book_title: '零基础学画漫画4：素描技法练习本',
+      cover:
+        'http://book.img.ireader.com/idc_1/m_1,w_117,h_156,q_100/eecae1e3/group6/M00/6C/9B/CmQUNlauC5uETavmAAAAANzPruo172792771.jpg?v=Qr4Ki2iQ',
+      description:
+        '在学习漫画的过程中，最开始的描红练习和临摹练习非常重要。对初次学习漫画绘画的朋友来说，描红无疑是练习用笔和画线的手段。在描红的过程中，读者不仅可以学习到基本线条的练习，还可以掌握漫画人物设定的各种方法，包括头部、表情、发型、身体结构、动态姿势、服装等，针对漫迷关心的重点题材和重点技术进行练习，让读者在动手过程中快速掌握绘画要点。',
+      pen_name: '芳默默',
+      is_finish: 'Y',
+      word_count: 287701,
+      category_title: '科幻',
+      all_click: 219878,
+      bookshelf: 0,
+      billing_type: 2,
+      billing_chapter: 200,
+    },
+    {
+      book_id: 3,
+      book_title: '零基础学画漫画4：素描技法练习本',
+      cover:
+        'http://book.img.ireader.com/idc_1/m_1,w_117,h_156,q_100/eecae1e3/group6/M00/6C/9B/CmQUNlauC5uETavmAAAAANzPruo172792771.jpg?v=Qr4Ki2iQ',
+      description:
+        '在学习漫画的过程中，最开始的描红练习和临摹练习非常重要。对初次学习漫画绘画的朋友来说，描红无疑是练习用笔和画线的手段。在描红的过程中，读者不仅可以学习到基本线条的练习，还可以掌握漫画人物设定的各种方法，包括头部、表情、发型、身体结构、动态姿势、服装等，针对漫迷关心的重点题材和重点技术进行练习，让读者在动手过程中快速掌握绘画要点。',
+      pen_name: '芳默默',
+      is_finish: 'Y',
+      word_count: 287701,
+      category_title: '科幻',
+      all_click: 219878,
+      bookshelf: 0,
+      billing_type: 2,
+      billing_chapter: 200,
+    },
+    {
+      book_id: 4,
+      book_title: '零基础学画漫画4：素描技法练习本',
+      cover:
+        'http://book.img.ireader.com/idc_1/m_1,w_117,h_156,q_100/eecae1e3/group6/M00/6C/9B/CmQUNlauC5uETavmAAAAANzPruo172792771.jpg?v=Qr4Ki2iQ',
+      description:
+        '在学习漫画的过程中，最开始的描红练习和临摹练习非常重要。对初次学习漫画绘画的朋友来说，描红无疑是练习用笔和画线的手段。在描红的过程中，读者不仅可以学习到基本线条的练习，还可以掌握漫画人物设定的各种方法，包括头部、表情、发型、身体结构、动态姿势、服装等，针对漫迷关心的重点题材和重点技术进行练习，让读者在动手过程中快速掌握绘画要点。',
+      pen_name: '芳默默',
+      is_finish: 'Y',
+      word_count: 287701,
+      category_title: '科幻',
+      all_click: 219878,
+      bookshelf: 0,
+      billing_type: 2,
+      billing_chapter: 200,
+    },
+    {
+      book_id: 5,
+      book_title: '零基础学画漫画4：素描技法练习本',
+      cover:
+        'http://book.img.ireader.com/idc_1/m_1,w_117,h_156,q_100/eecae1e3/group6/M00/6C/9B/CmQUNlauC5uETavmAAAAANzPruo172792771.jpg?v=Qr4Ki2iQ',
+      description:
+        '在学习漫画的过程中，最开始的描红练习和临摹练习非常重要。对初次学习漫画绘画的朋友来说，描红无疑是练习用笔和画线的手段。在描红的过程中，读者不仅可以学习到基本线条的练习，还可以掌握漫画人物设定的各种方法，包括头部、表情、发型、身体结构、动态姿势、服装等，针对漫迷关心的重点题材和重点技术进行练习，让读者在动手过程中快速掌握绘画要点。',
+      pen_name: '芳默默',
+      is_finish: 'Y',
+      word_count: 287701,
+      category_title: '科幻',
+      all_click: 219878,
+      bookshelf: 0,
+      billing_type: 2,
+      billing_chapter: 200,
+    },
+  ],
+};

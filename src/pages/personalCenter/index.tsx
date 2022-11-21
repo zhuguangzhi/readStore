@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { authorProps } from '@/type/user';
 import { IconFont } from '@/components/IconFont';
 
 import './style/index.less';
 import { netName } from '@/assets/config';
-import { useMounted, useSetState } from '@/hook';
+import { useSetState } from '@/hook';
 import { Outlet } from 'react-router';
 import router, { useGetUrlPath } from '@/hook/url';
 
@@ -31,10 +31,9 @@ export const PersonalCenter = () => {
     router.push('/personal/' + menu.key);
   };
 
-  useMounted(() => {
-    if (routeInfo)
-      changeState({ currentMenuKey: routeInfo[routeInfo.length - 1] });
-  });
+  useEffect(() => {
+    if (routeInfo) changeState({ currentMenuKey: routeInfo[2] });
+  }, [routeInfo[2]]);
 
   return (
     <div className={'personal'}>
