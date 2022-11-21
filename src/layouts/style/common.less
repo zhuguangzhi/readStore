@@ -148,3 +148,10 @@
   text-overflow: ellipsis; /* 超出内容显示为省略号 */
   white-space: nowrap; /* 文本不进行换行 */
 }
+// 超出两行后隐藏
+.textOverflow_2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}

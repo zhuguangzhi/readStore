@@ -187,7 +187,7 @@ export default () => {
                                     className={'rotate'}
                                     style={{
                                       transform: `rotate(${
-                                        -3.6 * book.progress
+                                        -3.6 * (book.progress as number)
                                       }deg)`,
                                     }}
                                     width={59}

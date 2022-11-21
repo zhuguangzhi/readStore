@@ -77,5 +77,6 @@ export interface bookRankProps {
     billing_type: 1 | 2; //1:按章节付费 2：整本付费 <integer>
     billing_chapter: number; //按章节价格 单位 夜听币 <string>
     bookshelf: 0 | 1; //1加入书架
+    last_update_chapter_title: string; // 最后更新章节名称
   }[];
 }

@@ -344,13 +344,14 @@ export const testBookRankData: bookRankProps = {
       description:
         '在学习漫画的过程中，最开始的描红练习和临摹练习非常重要。对初次学习漫画绘画的朋友来说，描红无疑是练习用笔和画线的手段。在描红的过程中，读者不仅可以学习到基本线条的练习，还可以掌握漫画人物设定的各种方法，包括头部、表情、发型、身体结构、动态姿势、服装等，针对漫迷关心的重点题材和重点技术进行练习，让读者在动手过程中快速掌握绘画要点。',
       pen_name: '芳默默',
-      is_finish: 'Y',
+      is_finish: 'N',
       word_count: 287701,
       category_title: '科幻',
       all_click: 219878,
       bookshelf: 0,
       billing_type: 2,
       billing_chapter: 200,
+      last_update_chapter_title: '第九章矛盾',
     },
     {
       book_id: 2,
@@ -367,6 +368,7 @@ export const testBookRankData: bookRankProps = {
       bookshelf: 0,
       billing_type: 2,
       billing_chapter: 200,
+      last_update_chapter_title: '第九章矛盾',
     },
     {
       book_id: 3,
@@ -383,6 +385,7 @@ export const testBookRankData: bookRankProps = {
       bookshelf: 0,
       billing_type: 2,
       billing_chapter: 200,
+      last_update_chapter_title: '第九章矛盾',
     },
     {
       book_id: 4,
@@ -399,6 +402,7 @@ export const testBookRankData: bookRankProps = {
       bookshelf: 0,
       billing_type: 2,
       billing_chapter: 200,
+      last_update_chapter_title: '第九章矛盾',
     },
     {
       book_id: 5,
@@ -415,6 +419,7 @@ export const testBookRankData: bookRankProps = {
       bookshelf: 0,
       billing_type: 2,
       billing_chapter: 200,
+      last_update_chapter_title: '第九章矛盾',
     },
   ],
 };

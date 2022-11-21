@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './style/index.less';
+import { BookBox } from '@/pages/bookRank/bookBox';
+import { testBookRankData } from '@/assets/testData';
 
 export default () => {
   const slideList = [
@@ -45,6 +47,7 @@ export default () => {
           </span>
         </div>
         {/*  书籍  */}
+        <BookBox bookList={testBookRankData} />
       </div>
     </div>
   );
