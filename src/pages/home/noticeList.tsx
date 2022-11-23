@@ -8,6 +8,7 @@ import { UseNode } from '@/components/UseNode';
 import { authorProps } from '@/type/user';
 import './style/noticeList.less';
 import { WebInfo } from '@/components/WebInfo';
+import router from '@/hook/url';
 
 const NewsIcon = () => (
   <IconFont
@@ -237,7 +238,7 @@ export const NoticeList = () => {
 
   return (
     <div style={{ marginLeft: '17px' }}>
-      <NoticeBox title={'新闻公告'} Icon={<NewsIcon />} useMore={true}>
+      <NoticeBox title={'新闻公告'} Icon={<NewsIcon />} useMore={false}>
         <div className={'news'}>
           {state.newList.map((news, index) => {
             return (
@@ -288,7 +289,12 @@ export const NoticeList = () => {
               </div>
             );
           })}
-          <p className={'vane_all cursor'}>查看完整榜单</p>
+          <p
+            onClick={() => router.push('/bookRank')}
+            className={'vane_all cursor'}
+          >
+            查看完整榜单
+          </p>
         </div>
       </NoticeBox>
       <NoticeBox title={'作者推荐'} Icon={<AuthorIcon />}>
@@ -308,7 +314,7 @@ export const NoticeList = () => {
           })}
         </div>
       </NoticeBox>
-      <NoticeBox title={'热门话题'} Icon={<TopicIcon />} useMore={true}>
+      <NoticeBox title={'热门话题'} Icon={<TopicIcon />} useMore={false}>
         <div className={'news'}>
           {state.topicList.map((topic, index) => {
             return (

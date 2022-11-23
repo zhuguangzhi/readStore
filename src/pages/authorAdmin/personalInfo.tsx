@@ -5,8 +5,11 @@ import {
   InfoItem,
   InfoItemListProps,
 } from '@/pages/authorAdmin/components/infoItem';
-import { useMounted, useSetState } from '@/hook';
-import { ModifyIdentity } from '@/pages/authorAdmin/components/modifyIdentity';
+import { useMounted } from '@/hook';
+import {
+  modalTypes,
+  ModifyInfo,
+} from '@/pages/authorAdmin/components/modifyInfo';
 
 const SubIcon = () => (
   <IconFont width={'37px'} height={'42px'} icon={'personal'} />
@@ -30,13 +33,21 @@ export default () => {
         label: 'QQ号码',
         isFinish: false,
         value: '待完善',
-        btnChild: <span>{finish ? '立即修改' : '立即绑定'}</span>,
+        btnChild: (
+          <span onClick={() => changeModal('qq')}>
+            {finish ? '立即修改' : '立即绑定'}
+          </span>
+        ),
       },
       {
         label: '电子邮箱',
         isFinish: false,
         value: '待完善',
-        btnChild: <span>{finish ? '立即修改' : '立即填写'}</span>,
+        btnChild: (
+          <span onClick={() => changeModal('email')}>
+            {finish ? '立即修改' : '立即填写'}
+          </span>
+        ),
       },
     ]);
     setApproveInfo([
@@ -50,7 +61,7 @@ export default () => {
         isFinish: false,
         value: '待完善',
         btnChild: !finish ? (
-          <span onClick={() => modalChange({ identity: true })}>立即绑定</span>
+          <span onClick={() => changeModal('identity')}>立即绑定</span>
         ) : (
           <>
             <span>查看信息</span>
@@ -62,7 +73,11 @@ export default () => {
         label: '银行卡信息',
         isFinish: false,
         value: '待完善',
-        btnChild: <span>{finish ? '立即修改' : '前往认证'}</span>,
+        btnChild: (
+          <span onClick={() => changeModal('bankCard')}>
+            {finish ? '立即修改' : '前往认证'}
+          </span>
+        ),
       },
     ]);
     setAccountSafe([
@@ -70,26 +85,34 @@ export default () => {
         label: '登陆密码',
         isFinish: false,
         value: '待完善',
-        btnChild: <span>{finish ? '立即设置' : '前往修改'}</span>,
+        btnChild: (
+          <span onClick={() => changeModal('password')}>
+            {finish ? '立即设置' : '前往修改'}
+          </span>
+        ),
       },
       {
         label: '手机号码',
         isFinish: false,
         value: '待完善',
-        btnChild: <span>{finish ? '立即修改' : '立即绑定'}</span>,
+        btnChild: (
+          <span onClick={() => changeModal('modifyMobile')}>
+            {finish ? '立即修改' : '立即绑定'}
+          </span>
+        ),
       },
     ]);
   };
-  //所有弹窗 展开、关闭
-  const [modalInfo, setModal] = useState({
-    QQ: false, //qq弹窗
-    email: false,
-    identity: true,
-    bankCard: false,
-    password: false,
-    modifyMobile: false,
-  });
-  const modalChange = useSetState(modalInfo, setModal);
+  //指定弹窗类型
+  const [modalType, setModalType] = useState<modalTypes>('qq');
+  //展示弹窗
+  const [openModal, setOpen] = useState(false);
+
+  //打开弹窗
+  const changeModal = (val: modalTypes) => {
+    setOpen(true);
+    setModalType(val);
+  };
 
   useMounted(() => {
     initInfo(false);
@@ -104,11 +127,12 @@ export default () => {
         <InfoItem title={'认证信息'} list={approveInfoList} />
         <InfoItem title={'账号安全'} list={accountSafeList} />
       </div>
-      {/*qq弹窗  isFinish 是否完成绑定*/}
-      <ModifyIdentity
-        open={modalInfo.identity}
-        onCancel={() => modalChange({ identity: false })}
+      {/*信息修改弹窗*/}
+      <ModifyInfo
+        open={openModal}
+        onCancel={() => setOpen(false)}
         isFinish={false}
+        type={modalType}
       />
     </div>
   );

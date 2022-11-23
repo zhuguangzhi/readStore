@@ -1,9 +1,10 @@
 //身份信息
 
-import { Button, Form, FormInstance, Input, Select } from 'antd';
+import { Form, FormInstance, Input, Select } from 'antd';
 import React, { useState } from 'react';
-import { IconFont } from '@/components/IconFont';
+import '../../style/formCommon.less';
 import './style/identity.less';
+import { UploadImg } from '@/components/module/UploadImg';
 
 type cityProps = {
   n: string; //名称
@@ -14,7 +15,13 @@ interface IdentityProps extends FormInstance {
   idBack?: string; //身份证反面
 }
 
-export const Identity = ({ form }: { form?: IdentityProps }) => {
+export const Identity = ({
+  form,
+  isFinish,
+}: {
+  form?: IdentityProps;
+  isFinish: boolean;
+}) => {
   //省级数据
   const [provinceData] = useState<cityProps[]>([]);
   //市级数据
@@ -23,7 +30,12 @@ export const Identity = ({ form }: { form?: IdentityProps }) => {
   const [areaData] = useState<cityProps[]>([]);
 
   return (
-    <Form labelCol={{ span: 6 }} className={'identity'} form={form}>
+    <Form
+      labelCol={{ span: 6 }}
+      className={'identity'}
+      form={form}
+      disabled={isFinish}
+    >
       <Form.Item label={'真实姓名'} name={'name'}>
         <Input placeholder={'请输入您的真实姓名'} />
       </Form.Item>
@@ -88,7 +100,7 @@ export const Identity = ({ form }: { form?: IdentityProps }) => {
             {form?.idFace ? (
               <img className={'identity_box_img'} src={form.idFace} alt={''} />
             ) : (
-              <IconFont icon={'idFace'} width={'129px'} height={'129px'} />
+              <UploadImg className={'identity_box_uploadFace'} />
             )}
             <p>证件人像面（横向上传）</p>
           </div>
@@ -97,14 +109,11 @@ export const Identity = ({ form }: { form?: IdentityProps }) => {
             {form?.idBack ? (
               <img className={'identity_box_img'} src={form.idFace} alt={''} />
             ) : (
-              <IconFont icon={'idBack'} width={'129px'} height={'129px'} />
+              <UploadImg className={'identity_box_uploadBack'} />
             )}
             <p>证件非人像面（横向上传）</p>
           </div>
         </div>
-        <Button className={'identity_box_btn'} shape="round" type={'primary'}>
-          关闭
-        </Button>
       </div>
     </Form>
   );
