@@ -1,0 +1,121 @@
+.inCome {
+  width: 100%;
+  height: 100%;
+  padding: 16px 0;
+  box-sizing: border-box;
+  margin-top: -61px;
+  &_charts {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    &_line,
+    &_pie {
+      display: flex;
+      flex-direction: column;
+      height: 448px;
+      width: 914px;
+      border-radius: 8px;
+      padding: 16px 24px;
+      box-sizing: border-box;
+      background-color: white;
+      box-shadow: 0 2px 21px 0 rgba(52, 100, 224, 0.15);
+    }
+    &_pie {
+      width: 504px;
+    }
+    &_header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 35px;
+      width: 100%;
+      font-size: 18px;
+      font-weight: bolder;
+    }
+    &_container {
+      flex: 1;
+      position: relative;
+      margin-top: 20px;
+      height: 200px;
+      text-align: center;
+      &_title {
+        position: absolute;
+        top: -10px;
+        left: 0;
+        font-size: 20px;
+        color: #383874;
+        &_money {
+          font-size: 28px;
+          color: #383874;
+          font-weight: bolder;
+        }
+        &_tip {
+          font-size: 14px;
+          color: #6bfff6;
+        }
+      }
+    }
+  }
+
+  &_data {
+    width: 100%;
+    margin-top: 18px;
+    border-radius: 8px;
+    padding: 16px 24px;
+    box-sizing: border-box;
+    background-color: white;
+    box-shadow: 0 2px 21px 0 rgba(52, 100, 224, 0.15);
+    &_box_btn {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      padding: 20px 0 10px 0;
+    }
+
+    &_form {
+      margin-top: 30px;
+      .ant-form-item-label > label {
+        font-size: 16px;
+      }
+    }
+    &_formItem,
+    .ant-select-selector {
+      width: 180px !important;
+      height: 32px;
+      font-size: 16px;
+    }
+  }
+
+  &_icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .ant-form-item-control-input-content {
+    display: flex;
+    align-items: center;
+    .ant-btn-primary {
+      border: none !important;
+      background-color: var(--adminTheme);
+      color: white !important;
+    }
+    .ant-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 9px;
+      width: 134px;
+      height: 48px;
+      border-radius: 4px;
+      font-size: 16px;
+      vertical-align: middle;
+      border: 1px solid #00529b;
+      color: #00529b;
+      span {
+        display: inline-block;
+        margin-left: 8px;
+      }
+    }
+  }
+}

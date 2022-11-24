@@ -1,0 +1,39 @@
+.tableData {
+  width: 100%;
+  height: 123px;
+  font-size: 16px;
+  line-height: 18px;
+  color: #656a7a;
+  margin: 25px 0;
+  & tr td:first-child {
+    width: 166px;
+  }
+  & tr:nth-child(odd) {
+    background-color: #fafbff;
+  }
+  & tr:nth-child(even),
+  & tr td:first-child {
+    background-color: #ecf0fe;
+  }
+  // 选择倒数第一和第二个子元素
+  & tr td {
+    width: calc((1385px - 166px) / 8);
+  }
+  th,
+  td {
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+    text-align: center;
+    padding: 12px 0;
+  }
+}
+.otherTable {
+  & tr:nth-child(odd) {
+    background-color: #ecf0fe;
+  }
+  & tr:nth-child(even),
+  & tr:last-child > td {
+    background-color: #fafbff;
+  }
+}

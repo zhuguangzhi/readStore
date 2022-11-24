@@ -10,7 +10,7 @@ const useHeaderRouter = {
     },
     {
       path: '/bookRank',
-      title: '首页',
+      title: '榜单',
       component: '@/pages/bookRank/index',
     },
     {
@@ -30,7 +30,7 @@ const useHeaderRouter = {
         },
         {
           path: 'notice',
-          title: '我的评论',
+          title: '系统通知',
           component: '@/pages/personalCenter/systemMessage',
         },
       ],
@@ -58,6 +58,11 @@ export const routes = [
         path: 'works',
         name: '作品管理',
         component: '@/pages/authorAdmin/worksManager',
+      },
+      {
+        path: 'income',
+        name: '收入管理',
+        component: '@/pages/authorAdmin/searchInCome',
       },
       {
         path: 'works/worksInfo',

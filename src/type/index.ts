@@ -9,3 +9,6 @@ export type newsProps = {
   title: string;
   content?: string; //内容
 };
+
+//作者签约类型
+export type contractType = 'minimum' | 'buyout' | 'hierarchy';
