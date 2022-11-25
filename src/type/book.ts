@@ -1,16 +1,39 @@
 // 书籍信息
 import { authorProps } from '@/type/user';
 
+// 书的信息
 type book = {
+  id: number; //主键ID
+  cover: string; //封面相对路径
+  name: string; //名称
+  parent_category_id: number; //二级分类ID
+  category_id: number; //三级分类ID
+  is_finish: 1 | 2; //是否完本( 1：是 2：否)
+  channel_type: 1 | 2; //频道类型( 1：男生 2：女生）
+  is_vip: 1 | 2; //是否收费(1：是 2：否)
+  is_display: 1 | 2; //是否前台显示(1：是 2：否）
+  is_shelf: 1 | 2; //是否上架(1：是 2：否)
+  create_time: string; //创建时间
+  update_time: string; //更新时间
+  last_update_chapter_time: string; //最后更新时间
+  chapter_id: number; //最后更新章节ID
+  word_count: number; //总字数
+  is_finish_text: string; //是否完结描述
+  is_vip_text: string; //是否收费描述
+  is_display_text: string; //是否显示描述
+  is_shelf_text: string; //是否上架描述
+  channel_type_text: string; //频道描述
+  cover_url: string; //封面URL地址 绝对路径
+};
+//用户阅读书本类型 TODO:对接口时替换成book
+export interface bookProps {
   id: number;
   title: string;
   description: string; //摘要
   face: string; //封面
-  authorInfo: Partial<authorProps>; //作者信息
-};
-//用户阅读书本类型 TODO:未对类型
-export interface bookProps extends book {
-  content: string; //内容
+  content: string;
+
+  authorInfo: Partial<authorProps>; //作者信息  content: string; //内容
   comment: number; //评论数
   vip: boolean; //是否是vip书籍
   support: boolean; //已赞
@@ -28,6 +51,14 @@ export type sourceProps = {
   desc: string; //标题描述
 };
 
+//书库主题分类
+export type booksThemeProps = {
+  id: number;
+  cover?: string; //主题图标
+  name: string;
+  subTheme?: booksThemeProps[];
+};
+
 //评论 TODO：提供接口类型reply_time改为time 未提供id
 export type commentProps = {
   id: number;
@@ -39,6 +70,7 @@ export type commentProps = {
   is_look?: number; //...
   target_id?: number; //我的评论id
   content?: string; //我的评论内容
+
   reply_id?: number; //回复评论id
   reply_user_id?: number; //回复用户id
   reply_content?: string; //回复内容
@@ -47,8 +79,14 @@ export type commentProps = {
   time: string; //回复\评论日期
 };
 
-//作者作品
-export interface worksProps extends book {
+//作者作品 TODO:对接口时替换成book
+export interface worksProps {
+  id: number;
+  title: string;
+  description: string; //摘要
+  face: string; //封面
+  authorInfo: Partial<authorProps>; //作者信息
+
   word_count: number; //字数
   month_update_count: number; //本月更新字数
   is_finish: boolean; //连载状态
@@ -80,3 +118,5 @@ export interface bookRankProps {
     last_update_chapter_title: string; // 最后更新章节名称
   }[];
 }
+// 书库
+export type booksListProps = book;

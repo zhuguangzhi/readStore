@@ -24,7 +24,7 @@ export const ReadStep = ({ stepItems, currentStep }: ReadStepProps) => {
   );
 
   return (
-    <div className={'step'}>
+    <div className={'step setFormLess'}>
       <div className={'step_tab'}>
         {stepItems.map((step, index) => {
           return (

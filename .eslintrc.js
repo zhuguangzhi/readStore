@@ -45,5 +45,7 @@ module.exports = {
     'react/no-children-prop': 'off',
     'react/button-has-type': 'off',
     'react-hooks/rules-of-hooks': 'off',
+    'no-param-reassign': 'off',
+    'no-promise-executor-return': 'off',
   },
 };

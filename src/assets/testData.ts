@@ -2,6 +2,7 @@
 import {
   bookProps,
   bookRankProps,
+  booksThemeProps,
   commentProps,
   worksProps,
 } from '@/type/book';
@@ -423,3 +424,114 @@ export const testBookRankData: bookRankProps = {
     },
   ],
 };
+
+//主题分类
+export const testBooksThemeData: booksThemeProps[][] = [
+  [
+    {
+      id: 1,
+      name: '脑洞大开说',
+      cover: '',
+      subTheme: [
+        { id: 1, name: '奇思妙想' },
+        { id: 2, name: '搞笑吐槽' },
+      ],
+    },
+    {
+      id: 2,
+      name: '奇闻异事',
+      cover: '',
+      subTheme: [
+        { id: 1, name: '恐怖惊悚' },
+        { id: 2, name: '灵异鬼怪' },
+        { id: 3, name: '职业故事' },
+      ],
+    },
+    {
+      id: 3,
+      name: '神话仙侠',
+      cover: '',
+      subTheme: [
+        { id: 1, name: '武侠江湖' },
+        { id: 2, name: '异界修仙' },
+        { id: 3, name: '上古神话' },
+        { id: 4, name: '现代修真' },
+      ],
+    },
+    {
+      id: 4,
+      name: '历史故事',
+      cover: '',
+      subTheme: [
+        { id: 1, name: '人物传记' },
+        { id: 2, name: '史实揭秘' },
+        { id: 3, name: '历史传奇' },
+        { id: 4, name: '架空历史' },
+      ],
+    },
+    {
+      id: 5,
+      name: '同人小说',
+      cover: '',
+      subTheme: [
+        { id: 1, name: 'N次元' },
+        { id: 2, name: '原生幻想' },
+        { id: 3, name: '衍生同人' },
+      ],
+    },
+    {
+      id: 6,
+      name: '游戏小说',
+      cover: '',
+      subTheme: [
+        { id: 1, name: '游戏异界' },
+        { id: 2, name: '虚拟网游' },
+        { id: 3, name: '电子竞技' },
+      ],
+    },
+  ],
+  [
+    {
+      id: 7,
+      name: '竞技体育',
+      cover: '',
+      subTheme: [
+        { id: 1, name: '篮球运动' },
+        { id: 2, name: '体育赛事' },
+        { id: 3, name: '足球运动' },
+      ],
+    },
+    {
+      id: 8,
+      name: '末日科幻',
+      cover: '',
+      subTheme: [
+        { id: 1, name: '末世危机' },
+        { id: 2, name: '未来史诗' },
+        { id: 3, name: '星际文明' },
+        { id: 4, name: '进化变异' },
+      ],
+    },
+    {
+      id: 9,
+      name: '真实故事',
+      cover: '',
+      subTheme: [
+        { id: 1, name: '社会乡土' },
+        { id: 2, name: '爱情婚姻' },
+        { id: 3, name: '现实百态' },
+      ],
+    },
+    {
+      id: 10,
+      name: '都市小说',
+      cover: '',
+      subTheme: [
+        { id: 1, name: '都市生活' },
+        { id: 2, name: '都市异能' },
+        { id: 3, name: '青春校园' },
+        { id: 4, name: '娱乐明星' },
+      ],
+    },
+  ],
+];

@@ -9,6 +9,11 @@ const useHeaderRouter = {
       component: '@/pages/home/index',
     },
     {
+      path: '/books',
+      title: '书库',
+      component: '@/pages/books/index',
+    },
+    {
       path: '/bookRank',
       title: '榜单',
       component: '@/pages/bookRank/index',
