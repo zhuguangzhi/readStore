@@ -47,5 +47,6 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'off',
     'no-param-reassign': 'off',
     'no-promise-executor-return': 'off',
+    'no-unused-expressions': 'off',
   },
 };

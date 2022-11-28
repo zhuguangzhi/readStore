@@ -9,6 +9,7 @@ interface ResponseData<T> {
   status_code: number;
   message: string;
   data: T;
+  status?: number;
 }
 // 封装数据返回失败提示函数---------------------------------------------------------------------------
 function errorState(response: AxiosResponse) {
@@ -40,12 +41,11 @@ async function apiAxios<T>(
     (response: AxiosResponse<ResponseData<T>>) => {
       //TODO: 添加未登录状态拦截
 
-      // 请求成功
-      if (response.data.status_code === 200) {
-        /* eslint-disable  @typescript-eslint/no-explicit-any */
-        return response.data as any;
+      if (response.status === 200) {
+        // 请求成功
+        return response;
       }
-      // 请求成功，状态不为成功时
+      // 请求状态不为成功时
       message.error(response.data.message);
 
       return Promise.reject(new Error(response.data.message));
@@ -95,7 +95,7 @@ async function apiAxios<T>(
   const result: Promise<T> = new Promise((resolve, reject) => {
     return axios(httpDefault)
       .then((res) => {
-        return resolve(res.data);
+        return resolve(res.data.data);
       })
       .catch((response: AxiosResponse) => {
         errorState(response);

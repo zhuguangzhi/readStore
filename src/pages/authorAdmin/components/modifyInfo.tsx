@@ -110,8 +110,8 @@ export const ModifyInfo = ({
   const [btnText, setBtnText] = useState<string[]>([]);
 
   //弹窗关闭
-  const modalClose = () => {
-    if (currentStep === allTypeStep[type].length) setStep(1);
+  const modalClose = (step: number = 1) => {
+    if (currentStep === allTypeStep[type].length) setStep(step);
     onCancel();
   };
 
@@ -123,7 +123,7 @@ export const ModifyInfo = ({
 
   const onConfirm = () => {
     if (currentStep < allTypeStep[type].length) setStep(currentStep + 1);
-    else modalClose();
+    else modalClose(2);
   };
 
   return (
@@ -131,7 +131,7 @@ export const ModifyInfo = ({
       width={800}
       useTitle={true}
       title={isFinish ? `修改` : `绑定` + titleList[type]}
-      onCancel={modalClose}
+      onCancel={() => modalClose(currentStep > 1 ? 2 : 1)}
       {...props}
     >
       <>

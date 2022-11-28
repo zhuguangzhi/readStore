@@ -16,5 +16,12 @@ export default defineConfig({
   scripts: [
     '//at.alicdn.com/t/c/font_3753867_0dm8kdbxbwre.js', //阿里图标库
   ],
+  proxy: {
+    '/proxy': {
+      target: 'http://apipost.datangzww.com',
+      changeOrigin: true,
+      pathRewrite: { '^/proxy': '' },
+    },
+  },
   routes: routes,
 });

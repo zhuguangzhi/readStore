@@ -6,7 +6,6 @@ import './style/mobileVerify.less';
 //设置默认值 TODO：从store中读取
 const mobileDefault = '123****2312';
 type Fnc = () => void;
-const noop = () => {};
 export const MobileVerify = ({
   form,
   useMobileInput,
@@ -16,23 +15,22 @@ export const MobileVerify = ({
 }) => {
   //倒计时
   const [countdown, setCount] = useState<null | number>(null);
-  const tickRef = useRef<Fnc>(noop);
+  const tickRef = useRef<Fnc>(() => {});
+  let timerRef = useRef<null | NodeJS.Timer>(null);
   useEffect(() => {
     tickRef.current = () => {
-      if (countdown && countdown > 0) setCount(countdown - 1);
-      else setCount(null);
+      if (countdown && countdown > 1) setCount(countdown - 1);
+      else {
+        setCount(null);
+        clearInterval(timerRef.current as NodeJS.Timer);
+      }
     };
   });
   // 获取验证码
   const getCode = useCallback(() => {
-    if (countdown !== null) return;
-    setCount(10);
-    const timer = setInterval(() => {
-      if (countdown === 1) {
-        tickRef.current();
-        clearInterval(timer);
-        return false;
-      }
+    setCount(60);
+    timerRef.current = setInterval(() => {
+      console.log('timerRef.current', timerRef.current);
       tickRef.current();
     }, 1000);
   }, [countdown]);

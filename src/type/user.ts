@@ -20,5 +20,5 @@ export type authorProps = {
   bound_phone: 1 | 0; //是否绑定手机号
   user_status: number; //用户状态
   user_status_desc: string; //用户状态描述
-  tag: string; //作者标签
+  chart_description: string; //推荐语
 };

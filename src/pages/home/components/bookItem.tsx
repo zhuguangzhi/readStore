@@ -1,30 +1,38 @@
 import React from 'react';
-import { bookProps } from '@/type/book';
+import { bookInfoProps } from '@/type/book';
 import { IconFont } from '@/components/IconFont';
 import './style/bookItem.less';
 import { UseNode } from '@/components/UseNode';
+import { homeChartProps } from '@/type/home';
+import { imgBaseUrl } from '@/assets/config';
 
 export const BookItem = ({
   bookList,
   onClick,
 }: {
-  bookList: Partial<bookProps>[];
-  onClick?: (book: Partial<bookProps>) => void;
+  bookList: homeChartProps | null;
+  onClick?: (book: bookInfoProps) => void;
 }) => {
   return (
     <>
-      {bookList.map((book) => {
+      {bookList?.data.map((book) => {
         return (
           <div className={'book'} key={book.id} onClick={() => onClick?.(book)}>
             {/*左侧书皮*/}
-            <div className={'book_left'}>
-              <img className={'face'} src={book.face} alt="封面" />
-              <p className={'font_14 font_bold textOverflow'}>{book.title}</p>
-            </div>
+            <UseNode rIf={book.cover !== ''}>
+              <div className={'book_left'}>
+                <img
+                  className={'face'}
+                  src={imgBaseUrl + book.cover}
+                  alt="封面"
+                />
+                <p className={'font_14 font_bold textOverflow'}>{book.name}</p>
+              </div>
+            </UseNode>
             {/*    右侧内容*/}
             <div className={'book_right'}>
               {/*标题*/}
-              <p className={'font_18 font_bold cursor'}>{book.title}</p>
+              <p className={'font_18 font_bold cursor'}>{book.name}</p>
               {/*内容*/}
               <div className={'container'}>
                 {book.tags?.map((tags, index) => {
@@ -39,11 +47,11 @@ export const BookItem = ({
               {/*    底部选项*/}
               <div
                 className={`book_right_bottom ${
-                  !book.bookshelf ? 'justify_between' : ''
+                  book.in_user_case === 1 ? '' : 'justify_between'
                 }`}
               >
                 {/*是否加入书架*/}
-                <UseNode rIf={!book.bookshelf}>
+                <UseNode rIf={book.in_user_case !== 1}>
                   <div className={'book_right_bookshelf'}>
                     <IconFont width={'10px'} height={'10px'} icon={'shujia'} />
                     <span>加入书架</span>
@@ -54,13 +62,13 @@ export const BookItem = ({
                     <IconFont
                       width={'16px'}
                       height={'16px'}
-                      icon={book.support ? 'support' : 'xihuan'}
+                      icon={book.is_user_approval === 1 ? 'support' : 'xihuan'}
                     />
                     <span>喜欢</span>
                   </div>
                   <div className={'operation'} style={{ marginRight: '60px' }}>
                     <IconFont width={'16px'} height={'16px'} icon={'pinglun'} />
-                    <span>评论（{book.comment}）</span>
+                    <span>评论（{book.book_extension?.all_comments}）</span>
                   </div>
                   <div className={'operation'}>
                     <IconFont width={'16px'} height={'16px'} icon={'zhuanfa'} />

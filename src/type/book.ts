@@ -2,10 +2,12 @@
 import { authorProps } from '@/type/user';
 
 // 书的信息
-type book = {
+export type bookInfoProps = {
   id: number; //主键ID
   cover: string; //封面相对路径
   name: string; //名称
+  description: string; // 描述
+  tags: string[]; //书本标签
   parent_category_id: number; //二级分类ID
   category_id: number; //三级分类ID
   is_finish: 1 | 2; //是否完本( 1：是 2：否)
@@ -24,7 +26,22 @@ type book = {
   is_shelf_text: string; //是否上架描述
   channel_type_text: string; //频道描述
   cover_url: string; //封面URL地址 绝对路径
+  in_user_case: 1 | 2; //是否加入用户书架(1：是 2：否）
+  is_user_approval: 1 | 2; //用户是否已点赞(1：是 2：否）
+  chart_sort: number; //推荐序号
+  book_extension?: bookExtension; //书籍额外信息
 };
+// 书籍额外信息
+export type bookExtension = {
+  id: number;
+  book_id: number; //书籍ID
+  all_click: number; //总点击量
+  all_collection: number; //总收藏数
+  all_commend: number; //总推荐数
+  all_reward: number; //总打赏
+  all_comments: number; //总评论数
+};
+
 //用户阅读书本类型 TODO:对接口时替换成book
 export interface bookProps {
   id: number;
@@ -33,7 +50,7 @@ export interface bookProps {
   face: string; //封面
   content: string;
 
-  authorInfo: Partial<authorProps>; //作者信息  content: string; //内容
+  authorInfo: Partial<authorProps>; //作者信息  content: string //内容
   comment: number; //评论数
   vip: boolean; //是否是vip书籍
   support: boolean; //已赞
@@ -118,5 +135,3 @@ export interface bookRankProps {
     last_update_chapter_title: string; // 最后更新章节名称
   }[];
 }
-// 书库
-export type booksListProps = book;

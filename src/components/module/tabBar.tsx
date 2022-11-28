@@ -2,7 +2,7 @@ import React, { ReactElement, useState } from 'react';
 import './style/tabBar.less';
 import { UseNode } from '@/components/UseNode';
 
-type tabProps = {
+export type tabProps = {
   key: string;
   label: string;
 };
