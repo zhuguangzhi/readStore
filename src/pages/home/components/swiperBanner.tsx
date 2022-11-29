@@ -1,6 +1,6 @@
 import Slider, { Settings } from 'react-slick';
 import React, { useRef, useState } from 'react';
-import { imgBaseUrl, swiperDuration } from '@/assets/config';
+import { swiperDuration } from '@/assets/config';
 import { useMounted } from '@/hook';
 import { IconFont } from '@/components/IconFont';
 import { bookInfoProps } from '@/type/book';
@@ -102,7 +102,7 @@ export const SwiperBanner = ({ swiperBookInfo, className }: SliderProps) => {
               onMouseOut={() => {
                 renderTimer(index % (swiperOptions.slidesToScroll as number));
               }}
-              src={imgBaseUrl + book.cover}
+              src={book.cover_url}
               alt={book.name}
             />
           );

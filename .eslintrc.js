@@ -11,7 +11,7 @@ module.exports = {
     // ↓除导入语句外，禁止使用require语句
     '@typescript-eslint/no-var-requires': 'off',
     // ↓禁止使用空函数
-    '@typescript-eslint/no-empty-function': 'warn',
+    '@typescript-eslint/no-empty-function': 'off',
     // ↓禁止定义前使用
     'no-use-before-define': 'off',
     // ↓在定义变量之前不允许使用变量

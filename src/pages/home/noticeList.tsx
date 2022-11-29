@@ -11,7 +11,6 @@ import {
   useGetTopic,
   useGetVane,
 } from '@/utils/home';
-import { imgBaseUrl } from '@/assets/config';
 
 const NewsIcon = () => (
   <IconFont
@@ -80,7 +79,7 @@ export const NoticeList = () => {
                     <div className={'flex vane_book_details'}>
                       <img
                         className={'vane_book_image'}
-                        src={imgBaseUrl + vane.cover}
+                        src={vane.cover_url}
                         alt="封面"
                       />
                       <div style={{ flex: 1, width: '20px' }}>
@@ -131,7 +130,7 @@ export const NoticeList = () => {
             return (
               <p key={index} className={'news_item textOverflow'}>
                 <span className={'font_bold'}>【话题】</span>
-                <span>{topic.name}</span>
+                <span>{topic.title}</span>
               </p>
             );
           })}

@@ -30,7 +30,7 @@ export interface topicProps extends homeProps {
   data: {
     chart_sort: number; //推荐序号
     album_id: number; //书单ID
-    name: string; //名称
+    title: string; //名称
     cover: string; //封面路径
     cover_url: string; //封面URL地址
   }[];

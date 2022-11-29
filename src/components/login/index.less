@@ -1,0 +1,103 @@
+.loginIndex {
+  display: flex;
+  width: 100%;
+  height: 459px;
+  padding: 24px 0;
+  box-sizing: border-box;
+  &_scan {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 290px;
+    height: 100%;
+    padding: 0 63px 0 41px;
+    border-right: 2px solid #ededed;
+    box-sizing: border-box;
+    font-size: 14px;
+
+    &_code {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 162px;
+      height: 162px;
+      border: 1px solid #cccccc;
+      border-radius: 6px;
+      padding: 4px;
+      box-sizing: border-box;
+      margin: 27px 0 20px 0;
+    }
+
+    & p:last-child {
+      position: absolute;
+      bottom: 18px;
+      color: var(--themeColor);
+    }
+  }
+  &_box {
+    position: relative;
+    width: 430px;
+    padding: 0 33px 0 63px;
+    box-sizing: border-box;
+    &_tip {
+      margin-top: 21px;
+      font-size: 13px;
+      & span:last-child {
+        color: var(--themeColor);
+        cursor: pointer;
+        user-select: none;
+      }
+    }
+    &_clause {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 13px;
+      & span:last-child {
+        color: var(--themeColor);
+        cursor: pointer;
+        user-select: none;
+      }
+    }
+  }
+}
+
+.login {
+  margin-top: 47px;
+  &_slider {
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 219px;
+    height: 40px;
+    background: #f4f7fb;
+    border-radius: 6px;
+    padding: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 600;
+    color: #a0a2a3;
+    span {
+      display: inline-block;
+      width: 96px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      cursor: pointer;
+    }
+    i {
+      position: absolute;
+      left: 8.75px;
+      transform: translateX(0);
+      transition: 0.3s all;
+      width: 96px;
+      height: 32px;
+      background: #ffffff;
+      border-radius: 6px;
+    }
+  }
+}

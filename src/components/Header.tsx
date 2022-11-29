@@ -8,6 +8,7 @@ import { logoUrl } from '@/assets/config';
 import router, { useGetUrlPath } from '@/hook/url';
 
 import './style/header.less';
+import { LoginPopup } from '@/components/login';
 
 const SearchIcon = () => (
   <IconFont width={'13px'} height={'13px'} icon={'sousuo'} />
@@ -23,6 +24,7 @@ const Header = () => {
   ];
   const [state, setState] = useState({
     currentOptionKey: '' as string, //当前选中的option
+    openLogin: false, //登录弹窗
   });
   //调用该hook改变state
   const changeState = useSetState(state, setState);
@@ -72,23 +74,41 @@ const Header = () => {
         <div>
           <SearchInput />
         </div>
-        {/*    信息*/}
-        <IconFont
-          className={'cursor'}
-          width={'26px'}
-          height={'21px'}
-          icon={'xin'}
-          onClick={() => router.push('/personal/notice')}
-        />
-        <div className={'header_user'}>
-          <img
-            onClick={() => router.push('/personal/bookShelf')}
-            className={'cursor'}
-            src={require('../assets/test/personPhoto.png')}
-            alt=""
+
+        {/*    用户信息*/}
+        <div
+          className={'header_user cursor'}
+          onClick={() => changeState({ openLogin: true })}
+        >
+          <IconFont
+            icon={'user'}
+            width={'19px'}
+            height={'19px'}
+            marginRight={'4px'}
           />
+          <span className={'font_14 color_61'}>登录</span>
         </div>
+
+        {/*<div className={'header_user'}>*/}
+        {/*  <IconFont*/}
+        {/*      className={'cursor'}*/}
+        {/*      width={'26px'}*/}
+        {/*      height={'21px'}*/}
+        {/*      icon={'xin'}*/}
+        {/*      onClick={() => router.push('/personal/notice')}*/}
+        {/*  />*/}
+        {/*  <img*/}
+        {/*    onClick={() => router.push('/personal/bookShelf')}*/}
+        {/*    className={'cursor'}*/}
+        {/*    src={require('../assets/test/personPhoto.png')}*/}
+        {/*    alt=""*/}
+        {/*  />*/}
+        {/*</div>*/}
       </div>
+      <LoginPopup
+        open={state.openLogin}
+        onCancel={() => changeState({ openLogin: false })}
+      />
     </div>
   );
 };

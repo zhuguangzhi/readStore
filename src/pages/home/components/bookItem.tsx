@@ -4,7 +4,6 @@ import { IconFont } from '@/components/IconFont';
 import './style/bookItem.less';
 import { UseNode } from '@/components/UseNode';
 import { homeChartProps } from '@/type/home';
-import { imgBaseUrl } from '@/assets/config';
 
 export const BookItem = ({
   bookList,
@@ -21,11 +20,7 @@ export const BookItem = ({
             {/*左侧书皮*/}
             <UseNode rIf={book.cover !== ''}>
               <div className={'book_left'}>
-                <img
-                  className={'face'}
-                  src={imgBaseUrl + book.cover}
-                  alt="封面"
-                />
+                <img className={'face'} src={book.cover_url} alt="封面" />
                 <p className={'font_14 font_bold textOverflow'}>{book.name}</p>
               </div>
             </UseNode>

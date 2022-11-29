@@ -4,27 +4,45 @@ import { BookItem } from '@/pages/home/components/bookItem';
 import './style/bookList.less';
 import { useHomeChart } from '@/utils/home';
 import { homeChartProps } from '@/type/home';
+import { connect } from '@@/exports';
+import { Dispatch } from 'umi';
+import { useMounted } from '@/hook';
 
-export const BookList = () => {
+const BookList = ({ dispatch }: { dispatch: Dispatch }) => {
   const [bookList, setBookList] = useState<homeChartProps | null>(null);
+  const [, setTabIndex] = useState(0);
   const tabBarList = [
     { label: '推荐', key: 'recommend' },
     { label: 'VIP精选', key: 'vipPush' },
     { label: '新书', key: 'newBook' },
   ];
-  const { data: chartData } = useHomeChart();
+  //点赞
+  // const {mutate:setApproval} = useModifyApproval(currentTabIndex)
+  const { data: chartData } = useHomeChart((type) => loading(type));
 
+  //触发loading
+  const loading = (type: 'openLoading' | 'closeLoading') => {
+    dispatch({
+      type: 'global/' + type,
+      payload: {
+        loading: type === 'openLoading',
+      },
+    });
+  };
   // tabBarList 选择改变
   const tabChange = (tab: tabProps) => {
     if (chartData === undefined) return false;
     switch (tab.key) {
       case 'recommend':
+        setTabIndex(0);
         setBookList(chartData[0]);
         break;
       case 'vipPush':
+        setTabIndex(1);
         setBookList(chartData[1]);
         break;
       case 'newBook':
+        setTabIndex(2);
         setBookList(chartData[2]);
         break;
     }
@@ -33,6 +51,9 @@ export const BookList = () => {
     tabChange(tabBarList[0]);
   }, [chartData]);
 
+  useMounted(() => {
+    loading('openLoading');
+  });
   return (
     <div className={'book_list'}>
       <TabBar
@@ -45,3 +66,4 @@ export const BookList = () => {
     </div>
   );
 };
+export default connect()(BookList);

@@ -141,6 +141,7 @@ export const ModifyInfo = ({
           shape="round"
           type={'primary'}
           onClick={onConfirm}
+          style={{ marginBottom: '76px' }}
         >
           {btnText[currentStep - 1]}
         </Button>

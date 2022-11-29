@@ -5,6 +5,7 @@ import { routes } from './src/router';
 export default defineConfig({
   title: '读点小故事',
   antd: {},
+  dva: {},
   alias: {
     '@': resolve(__dirname, '/src'),
   },
@@ -14,7 +15,7 @@ export default defineConfig({
     type: 'hash',
   },
   scripts: [
-    '//at.alicdn.com/t/c/font_3753867_0dm8kdbxbwre.js', //阿里图标库
+    '//at.alicdn.com/t/c/font_3753867_fgf9hrmnm6s.js', //阿里图标库
   ],
   proxy: {
     '/proxy': {

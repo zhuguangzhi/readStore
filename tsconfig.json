@@ -2,5 +2,9 @@
   "extends": "./src/.umi/tsconfig.json",
   "compilerOptions": {
     "jsx": "react"
+  },
+  "path": {
+    "@/": ["src/"],
+    "@@/": ["src/.umi/"]
   }
 }

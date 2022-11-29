@@ -1,11 +1,11 @@
-import { Button, Form, FormInstance, Input } from 'antd';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Form, FormInstance, Input } from 'antd';
+import React from 'react';
 import '../../style/formCommon.less';
 import './style/mobileVerify.less';
+import { SendCode } from '@/components/module/SendCode';
 
 //设置默认值 TODO：从store中读取
 const mobileDefault = '123****2312';
-type Fnc = () => void;
 export const MobileVerify = ({
   form,
   useMobileInput,
@@ -13,27 +13,6 @@ export const MobileVerify = ({
   form: FormInstance;
   useMobileInput?: boolean;
 }) => {
-  //倒计时
-  const [countdown, setCount] = useState<null | number>(null);
-  const tickRef = useRef<Fnc>(() => {});
-  let timerRef = useRef<null | NodeJS.Timer>(null);
-  useEffect(() => {
-    tickRef.current = () => {
-      if (countdown && countdown > 1) setCount(countdown - 1);
-      else {
-        setCount(null);
-        clearInterval(timerRef.current as NodeJS.Timer);
-      }
-    };
-  });
-  // 获取验证码
-  const getCode = useCallback(() => {
-    setCount(60);
-    timerRef.current = setInterval(() => {
-      console.log('timerRef.current', timerRef.current);
-      tickRef.current();
-    }, 1000);
-  }, [countdown]);
   return (
     <Form labelCol={{ span: 8 }} form={form}>
       <Form.Item label={'手机号码'}>
@@ -54,13 +33,7 @@ export const MobileVerify = ({
           <Form.Item name={'code'} labelCol={{ span: 0 }}>
             <Input className={'mobile_code'} maxLength={6} />
           </Form.Item>
-          <Button
-            className={'mobile_btn'}
-            disabled={countdown !== null}
-            onClick={getCode}
-          >
-            {countdown !== null ? `${countdown} 秒` : '获取验证码'}
-          </Button>
+          <SendCode mobile={mobileDefault} className={'mobile_btn'} />
         </div>
       </Form.Item>
     </Form>

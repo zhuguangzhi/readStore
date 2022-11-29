@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './style/home.less';
-import { BookList } from '@/pages/home/bookList';
+import BookList from '@/pages/home/bookList';
 import { NoticeList } from '@/pages/home/noticeList';
 import { SwiperBanner } from '@/pages/home/components/swiperBanner';
 import { useGetSwiper } from '@/utils/home';

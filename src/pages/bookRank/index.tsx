@@ -5,16 +5,23 @@ import { testBookRankData } from '@/assets/testData';
 
 export default () => {
   const slideList = [
-    { key: 'read', label: '阅读榜', subTitle: '根据七天内阅读人数进行排行' },
-    { key: 'free', label: '免费榜', subTitle: '根据七天内阅读人数进行排行' },
+    { key: 'hot', label: '大热榜', subTitle: '根据七天内阅读人气进行排行' },
+    { key: 'free', label: '免费榜', subTitle: '根据七天内阅读人气进行排行' },
     {
-      key: 'recommend',
-      label: '推荐榜',
-      subTitle: '根据七天内推荐人数进行排行',
+      key: 'finish',
+      label: '完本榜',
+      subTitle: '根据七天内的点赞，收藏，人气进行综合排行',
     },
-    { key: 'comment', label: '评价榜', subTitle: '根据七天内评价人数进行排行' },
-    { key: 'finish', label: '完结榜', subTitle: '根据七天内阅读人数进行排行' },
-    { key: 'serial', label: '连载榜', subTitle: '根据七天内阅读人数进行排行' },
+    {
+      key: 'approval',
+      label: '高赞榜',
+      subTitle: '根据七天内点赞人气进行排行',
+    },
+    {
+      key: 'comment',
+      label: '热评榜',
+      subTitle: '根据七天内评论最多的进行排行',
+    },
   ];
   const [sideIndex, setSide] = useState(0);
 

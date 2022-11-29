@@ -5,6 +5,7 @@ import {
   newsProps,
   topicProps,
 } from '@/type/home';
+import { approvalProps } from '@/type/book';
 
 const apiUrl = 'http://localhost:8000/proxy/api';
 export const Home = {
@@ -15,4 +16,7 @@ export const Home = {
   getAuthorRecommend: () =>
     http.get<authorRecommend>(`${apiUrl}/chart/index/7`, {}), //作者推荐
   getTopicList: () => http.get<topicProps>(`${apiUrl}/chart/index/8`, {}), //热门话题
+};
+export const Book = {
+  approval: (p: approvalProps) => http.post(`${apiUrl}/bookApproval/store`, p), //点赞
 };

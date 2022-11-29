@@ -1,16 +1,21 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   authorRecommend,
   homeChartProps,
   newsProps,
   topicProps,
 } from '@/type/home';
-import { Home } from '@/common/api';
-
+import { Book, Home } from '@/common/api';
+import { approvalProps } from '@/type/book';
 // 获取书本推荐
-export const useHomeChart = (params?: {}) => {
-  return useQuery<homeChartProps[], Error>(['home', params], () =>
-    Home.getHomeBook(),
+export const useHomeChart = (
+  call: (type: 'openLoading' | 'closeLoading') => void,
+) => {
+  return useQuery<homeChartProps[], Error>(['home'], () =>
+    Home.getHomeBook().then((value) => {
+      call('closeLoading');
+      return value;
+    }),
   );
 };
 // 获取轮播
@@ -39,5 +44,37 @@ export const useGetTopic = () => {
     const res = Home.getTopicList();
     console.log('res', res);
     return res;
+  });
+};
+
+// 点赞、取消点赞
+export const useModifyApproval = (tabIndex: number) => {
+  const queryClient = useQueryClient();
+  const queryKey = ['approval'];
+  return useMutation((param: approvalProps) => Book.approval(param), {
+    //请求成功时则刷新，触发home
+    onSuccess: () => queryClient.invalidateQueries(['home']),
+    //    实现乐观更新
+    onMutate(target) {
+      let previousItems;
+      queryClient.setQueriesData(queryKey, (old?: homeChartProps[]) => {
+        //存储旧数据
+        let arr = (previousItems = old ? [...old] : []);
+        if (arr.length > 0) {
+          arr[tabIndex].data = arr[tabIndex].data.map((data) =>
+            data.id === target.book_id
+              ? { ...data, is_user_approval: target.is_approval }
+              : data,
+          );
+          return arr;
+        }
+        return old;
+      });
+      return { previousItems };
+    },
+    //错误回滚
+    onError(error, newItem, context) {
+      queryClient.setQueriesData(queryKey, context?.previousItems);
+    },
   });
 };

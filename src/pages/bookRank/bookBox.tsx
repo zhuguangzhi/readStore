@@ -2,14 +2,21 @@ import React from 'react';
 import { bookRankProps } from '@/type/book';
 import { isFinish, translateNumber } from '@/utils/format';
 import './style/bookBox.less';
+import { UseNode } from '@/components/UseNode';
 
 export const BookBox = ({ bookList }: { bookList: bookRankProps }) => {
   return (
     <div className={'bookBox'}>
-      {bookList.list.map((book) => {
+      {bookList.list.map((book, index) => {
         return (
           <div key={book.book_id} className={'bookBox_item'}>
-            <img className={'bookBox_item_img'} src={book.cover} alt="" />
+            {/*角标*/}
+            <div className={`bookBox_item_mark mark_${index + 1}`}>
+              <span>NO.{index + 1}</span>
+            </div>
+            <UseNode rIf={book.cover !== ''}>
+              <img className={'bookBox_item_img'} src={book.cover} alt="" />
+            </UseNode>
             <div className={'bookBox_item_right'}>
               <div className={'bookBox_item_right_box'}>
                 <p className={'font_16 color_33 textOverflow'}>

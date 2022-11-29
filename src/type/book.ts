@@ -135,3 +135,10 @@ export interface bookRankProps {
     last_update_chapter_title: string; // 最后更新章节名称
   }[];
 }
+
+//--------------------------------------------------
+//点赞
+export interface approvalProps {
+  book_id: number; //书本id
+  is_approval: 1 | 2; //书籍点赞( 1：点赞  2：取消）
+}
