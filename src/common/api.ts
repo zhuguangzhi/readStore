@@ -1,22 +1,46 @@
 import http from '@/common/http';
-import {
-  authorRecommend,
-  homeChartProps,
-  newsProps,
-  topicProps,
-} from '@/type/home';
 import { approvalProps } from '@/type/book';
+import {
+  accountLoginProps,
+  authorProps,
+  checkCodeProps,
+  loginResultProps,
+  phoneLoginProps,
+  sendCodeProps,
+  sendCodeResultProps,
+} from '@/type/user';
 
 const apiUrl = 'http://localhost:8000/proxy/api';
 export const Home = {
-  getHomeBook: () => http.get<homeChartProps[]>(`${apiUrl}/chart`, {}), //首页书本推荐
-  getSwiperBook: () => http.get<homeChartProps>(`${apiUrl}/chart/banner`, {}), //轮播书本
-  getNews: () => http.get<newsProps[]>(`${apiUrl}/chart/index/5`, {}), //新闻
-  getVane: () => http.get<homeChartProps>(`${apiUrl}/chart/index/6`, {}), //风向标
-  getAuthorRecommend: () =>
-    http.get<authorRecommend>(`${apiUrl}/chart/index/7`, {}), //作者推荐
-  getTopicList: () => http.get<topicProps>(`${apiUrl}/chart/index/8`, {}), //热门话题
+  //首页书本推荐
+  getHomeBook: <T>() => http.get<T>(`${apiUrl}/chart`, {}),
+  //轮播书本
+  getSwiperBook: <T>() => http.get<T>(`${apiUrl}/chart/banner`, {}),
+  //新闻
+  getNews: <T>() => http.get<T>(`${apiUrl}/chart/index/5`, {}),
+  //风向标
+  getVane: <T>() => http.get<T>(`${apiUrl}/chart/index/6`, {}),
+  //作者推荐
+  getAuthorRecommend: <T>() => http.get<T>(`${apiUrl}/chart/index/7`, {}),
+  //热门话题
+  getTopicList: <T>() => http.get<T>(`${apiUrl}/chart/index/8`, {}),
 };
 export const Book = {
-  approval: (p: approvalProps) => http.post(`${apiUrl}/bookApproval/store`, p), //点赞
+  //点赞
+  approval: (p: approvalProps) => http.post(`${apiUrl}/bookApproval/store`, p),
+};
+export const User = {
+  // 手机号登陆
+  phoneLogin: (p: phoneLoginProps) =>
+    http.post<loginResultProps>(`${apiUrl}/auth/phoneLogin`, p),
+  // 账号密码登陆
+  accountLogin: (p: accountLoginProps) =>
+    http.post<loginResultProps>(`${apiUrl}/auth/accountLogin`, p),
+  // 获取用户信息
+  getUserInfo: () => http.post<authorProps>(`${apiUrl}/users/info`, {}),
+  // 发送验证码
+  sendCode: (p: sendCodeProps) =>
+    http.post<sendCodeResultProps>(`${apiUrl}/captcha/send`, p),
+  // 校验验证码
+  checkCode: (p: checkCodeProps) => http.post(`${apiUrl}/captcha/verify`, p),
 };

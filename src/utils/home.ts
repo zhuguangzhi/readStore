@@ -7,44 +7,51 @@ import {
 } from '@/type/home';
 import { Book, Home } from '@/common/api';
 import { approvalProps } from '@/type/book';
+import { ResponseData } from '@/common/http';
 // 获取书本推荐
 export const useHomeChart = (
   call: (type: 'openLoading' | 'closeLoading') => void,
 ) => {
   return useQuery<homeChartProps[], Error>(['home'], () =>
-    Home.getHomeBook().then((value) => {
+    Home.getHomeBook<ResponseData<homeChartProps[]>>().then((value) => {
       call('closeLoading');
-      return value;
+      return value.data;
     }),
   );
 };
 // 获取轮播
 export const useGetSwiper = () => {
   return useQuery<homeChartProps, Error>(['swiper'], () =>
-    Home.getSwiperBook(),
+    Home.getSwiperBook<ResponseData<homeChartProps>>().then(
+      (value) => value.data,
+    ),
   );
 };
 // 获取公告
 export const useGetNews = () => {
-  return useQuery<newsProps[], Error>(['news'], () => Home.getNews());
+  return useQuery<newsProps[], Error>(['news'], () =>
+    Home.getNews<ResponseData<newsProps[]>>().then((value) => value.data),
+  );
 };
 // 获取风向标
 export const useGetVane = () => {
-  return useQuery<homeChartProps, Error>(['vane'], () => Home.getVane());
+  return useQuery<homeChartProps, Error>(['vane'], () =>
+    Home.getVane<ResponseData<homeChartProps>>().then((value) => value.data),
+  );
 };
 //作者推荐
 export const useAuthorRecommend = () => {
   return useQuery<authorRecommend, Error>(['authorRecommend'], () =>
-    Home.getAuthorRecommend(),
+    Home.getAuthorRecommend<ResponseData<authorRecommend>>().then(
+      (value) => value.data,
+    ),
   );
 };
 //热门话题
 export const useGetTopic = () => {
-  return useQuery<topicProps, Error>(['getTopic'], () => {
-    const res = Home.getTopicList();
-    console.log('res', res);
-    return res;
-  });
+  return useQuery<topicProps, Error>(['getTopic'], () =>
+    Home.getTopicList<ResponseData<topicProps>>().then((value) => value.data),
+  );
 };
 
 // 点赞、取消点赞

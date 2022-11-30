@@ -13,7 +13,7 @@ const formItemLayout = {
   },
 };
 export const worksInfo = () => {
-  const formValues = Form.useFormInstance();
+  const [formValues] = Form.useForm();
 
   const onSubmit = (values: Values) => {
     console.log('values', values);

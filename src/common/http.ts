@@ -5,7 +5,7 @@ import qs from 'qs';
 import { cleanObject } from '@/utils/publicFn';
 import { message } from 'antd';
 
-interface ResponseData<T> {
+export interface ResponseData<T> {
   status_code: number;
   message: string;
   data: T;
@@ -95,7 +95,7 @@ async function apiAxios<T>(
   const result: Promise<T> = new Promise((resolve, reject) => {
     return axios(httpDefault)
       .then((res) => {
-        return resolve(res.data.data);
+        return resolve(res.data);
       })
       .catch((response: AxiosResponse) => {
         errorState(response);

@@ -11,7 +11,12 @@ import './style/header.less';
 import { LoginPopup } from '@/components/login';
 
 const SearchIcon = () => (
-  <IconFont width={'13px'} height={'13px'} icon={'sousuo'} />
+  <IconFont
+    width={'13px'}
+    height={'13px'}
+    icon={'search'}
+    color={'var(--themeColor)'}
+  />
 );
 const Header = () => {
   const routerInfo = useGetUrlPath();
@@ -71,9 +76,7 @@ const Header = () => {
           );
         })}
         {/*搜索框*/}
-        <div>
-          <SearchInput />
-        </div>
+        <SearchInput />
 
         {/*    用户信息*/}
         <div

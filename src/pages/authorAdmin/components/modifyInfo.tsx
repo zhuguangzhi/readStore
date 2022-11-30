@@ -42,9 +42,9 @@ export const ModifyInfo = ({
   ...props
 }: ModifyInfoProps) => {
   // 步骤1 form实例
-  const stepOneForm = Form.useFormInstance();
+  const [stepOneForm] = Form.useForm();
   // 步骤2 form实例
-  const stepTwoForm = Form.useFormInstance();
+  const [stepTwoForm] = Form.useForm();
   // qq
   const qqItems: stepItemsProps[] = [
     { label: '手机号码验证', stepElement: <MobileVerify form={stepOneForm} /> },

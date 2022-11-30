@@ -24,7 +24,6 @@ export const SendCode = ({ className }: SendCodeProps) => {
   const getCode = useCallback(() => {
     setCount(60);
     timerRef.current = setInterval(() => {
-      console.log('timerRef.current', timerRef.current);
       tickRef.current();
     }, 1000);
   }, [countdown]);

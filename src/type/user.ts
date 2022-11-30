@@ -22,3 +22,26 @@ export type authorProps = {
   user_status_desc: string; //用户状态描述
   chart_description: string; //推荐语
 };
+
+// 账号密码登陆
+export type accountLoginProps = {
+  account: string | number; //手机号
+  password: string; // 密码
+};
+// 手机号登陆
+export type phoneLoginProps = {
+  mobile: string | number; //手机号
+  captcha_code: number; //验证码
+  captcha_key: string; //验证码Key值
+};
+// 登陆返回结果
+export type loginResultProps = { access_token: string };
+// 验证码返回结果
+export type sendCodeResultProps = { captcha_key: string };
+//发送验证码
+export type sendCodeProps = Omit<
+  phoneLoginProps,
+  'captcha_code' | 'captcha_key'
+>;
+//校验验证码
+export type checkCodeProps = Omit<phoneLoginProps, 'mobile'>;

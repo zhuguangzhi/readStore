@@ -17,18 +17,23 @@ const NewsIcon = () => (
     icon={'fuzhushuxian'}
     width={'17px'}
     height={'17px'}
-    color={'#FA6400'}
+    color={'var(--themeColor)'}
   />
 );
 const VaneIcon = () => (
-  <IconFont icon={'huo'} width={'17px'} height={'17px'} color={'#FA6400'} />
+  <IconFont
+    icon={'huo'}
+    width={'17px'}
+    height={'17px'}
+    color={'var(--themeColor)'}
+  />
 );
 const AuthorIcon = () => (
   <IconFont
     icon={'tubiaozhizuomoban'}
     width={'15px'}
     height={'15px'}
-    color={'#FA6400'}
+    color={'var(--themeColor)'}
   />
 );
 const TopicIcon = () => (

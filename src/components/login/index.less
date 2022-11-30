@@ -65,8 +65,10 @@
   }
 }
 
-.login {
+.login,
+.register {
   margin-top: 47px;
+  width: 430px;
   &_slider {
     position: relative;
     display: flex;
@@ -99,5 +101,59 @@
       background: #ffffff;
       border-radius: 6px;
     }
+  }
+  &_form {
+    margin-top: 8px;
+    &_input {
+      width: 319px;
+      height: 44px;
+      border: 1px solid #dfdfdf;
+      border-radius: 4px;
+    }
+    &_sendCode {
+      margin-top: -10px;
+      &_input {
+        flex: 1;
+        height: 44px;
+        width: 144px;
+        margin-right: 9px;
+      }
+      &_btn,
+      &_btn:hover {
+        width: 104px;
+        height: 43px;
+        background: var(--themeColor);
+        border-radius: 4px;
+        color: white;
+        border: none;
+      }
+    }
+    &_btn {
+      width: 318px;
+      height: 45px;
+      background: var(--themeColor) !important;
+      border-radius: 4px;
+      border: none;
+      box-shadow: 0 2px 0 var(--themeColor, 50%);
+      font-size: 16px;
+      font-weight: bolder;
+    }
+  }
+}
+
+.register {
+  width: 100%;
+  margin-top: 68px;
+  &_passwordInput {
+    margin-top: -10px;
+  }
+  &_backBtn {
+    width: 108px;
+    height: 47px;
+    background: #ffffff;
+    border-radius: 4px;
+  }
+  &_loginBtn {
+    width: 198px;
   }
 }

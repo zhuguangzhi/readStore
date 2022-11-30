@@ -1,7 +1,7 @@
 import { ReadModel } from '@/components/module/ReadModel';
 import React, { useState } from 'react';
 import { ModalProps } from 'antd';
-import { Login } from '@/components/login/login';
+import Login from '@/components/login/login';
 
 import './index.less';
 import { netName } from '@/assets/config';
@@ -35,7 +35,9 @@ export const LoginPopup = ({ ...props }: ModalProps) => {
           </div>
           {isLogin ? <Login /> : <Register />}
           <p className={'loginIndex_box_clause'}>
-            <span>点击 [{isLogin ? '登录' : '注册'}] 表示已阅读同意</span>{' '}
+            <span>
+              点击 [{isLogin ? '登陆' : '下一步/注册'}] 表示已阅读同意
+            </span>{' '}
             &nbsp;
             <span>服务条款</span>
           </p>
