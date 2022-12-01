@@ -23,3 +23,21 @@ export const stopProp = (
   e.stopPropagation();
   callback();
 };
+
+//  本地缓存
+export const setStorage = (key: string, value: unknown) => {
+  window.localStorage.setItem(key, JSON.stringify(value));
+};
+// 获取缓存
+export const getStorage = (key: string) => {
+  const res = window.localStorage.getItem(key) as string;
+  return JSON.parse(res) || null;
+};
+// 删除指定缓存
+export const removeStorage = (key: string) => {
+  window.localStorage.removeItem(key);
+};
+// 清空缓存
+export const clearStorage = () => {
+  window.localStorage.clear();
+};

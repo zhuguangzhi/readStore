@@ -9,6 +9,7 @@ import router, { useGetUrlPath } from '@/hook/url';
 
 import './style/header.less';
 import { LoginPopup } from '@/components/login';
+import { useAuth } from '@/hook/useAuth';
 
 const SearchIcon = () => (
   <IconFont
@@ -20,6 +21,7 @@ const SearchIcon = () => (
 );
 const Header = () => {
   const routerInfo = useGetUrlPath();
+  const { userInfo } = useAuth();
   //路由选项跳转
   const optionList = [
     { title: '首页', key: 'home' },
@@ -37,6 +39,9 @@ const Header = () => {
   useEffect(() => {
     changeState({ currentOptionKey: routerInfo[1] });
   }, [routerInfo[1]]);
+  useEffect(() => {
+    console.log('userInfo', userInfo);
+  }, [userInfo]);
 
   // 搜索框事件
   const onSearch = (e: inputEvent) => {
@@ -52,6 +57,44 @@ const Header = () => {
         suffix={<SearchIcon />}
         onChange={onSearch}
       />
+    );
+  };
+
+  // 用户信息
+  const UserInfoChildren = () => {
+    return (
+      <div className={'header_user'}>
+        <IconFont
+          className={'cursor'}
+          width={'26px'}
+          height={'21px'}
+          icon={'xin'}
+          onClick={() => router.push('/personal/notice')}
+        />
+        <img
+          onClick={() => router.push('/personal/bookShelf')}
+          className={'cursor'}
+          src={require('../assets/test/personPhoto.png')}
+          alt=""
+        />
+      </div>
+    );
+  };
+  // 登陆
+  const LoginBoxChildren = () => {
+    return (
+      <div
+        className={'header_user cursor'}
+        onClick={() => changeState({ openLogin: true })}
+      >
+        <IconFont
+          icon={'user'}
+          width={'19px'}
+          height={'19px'}
+          marginRight={'4px'}
+        />
+        <span className={'font_14 color_61'}>登录</span>
+      </div>
     );
   };
 
@@ -79,34 +122,7 @@ const Header = () => {
         <SearchInput />
 
         {/*    用户信息*/}
-        <div
-          className={'header_user cursor'}
-          onClick={() => changeState({ openLogin: true })}
-        >
-          <IconFont
-            icon={'user'}
-            width={'19px'}
-            height={'19px'}
-            marginRight={'4px'}
-          />
-          <span className={'font_14 color_61'}>登录</span>
-        </div>
-
-        {/*<div className={'header_user'}>*/}
-        {/*  <IconFont*/}
-        {/*      className={'cursor'}*/}
-        {/*      width={'26px'}*/}
-        {/*      height={'21px'}*/}
-        {/*      icon={'xin'}*/}
-        {/*      onClick={() => router.push('/personal/notice')}*/}
-        {/*  />*/}
-        {/*  <img*/}
-        {/*    onClick={() => router.push('/personal/bookShelf')}*/}
-        {/*    className={'cursor'}*/}
-        {/*    src={require('../assets/test/personPhoto.png')}*/}
-        {/*    alt=""*/}
-        {/*  />*/}
-        {/*</div>*/}
+        {userInfo ? <UserInfoChildren /> : <LoginBoxChildren />}
       </div>
       <LoginPopup
         open={state.openLogin}

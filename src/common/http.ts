@@ -2,21 +2,17 @@
 
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import qs from 'qs';
-import { cleanObject } from '@/utils/publicFn';
+import { cleanObject } from '@/common/publicFn';
 import { message } from 'antd';
+import { getToken } from '@/hook/useAuth';
 
 export interface ResponseData<T> {
   status_code: number;
   message: string;
   data: T;
-  status?: number;
-}
-// 封装数据返回失败提示函数---------------------------------------------------------------------------
-function errorState(response: AxiosResponse) {
-  // 如果http状态码正常，则直接返回数据
-  if (response.status >= 400) {
-    message.error(response.data.message);
-  }
+  error_code?: string; // 错误码
+  error_msg?: string; // 错误信息
+  error_user_msg?: string; // 错误信息
 }
 
 async function apiAxios<T>(
@@ -39,19 +35,17 @@ async function apiAxios<T>(
   // 添加响应拦截器
   axios.interceptors.response.use(
     (response: AxiosResponse<ResponseData<T>>) => {
-      //TODO: 添加未登录状态拦截
-
-      if (response.status === 200) {
+      if (response.status !== 200) return Promise.reject();
+      if (response.data.status_code === 200) {
         // 请求成功
         return response;
       }
       // 请求状态不为成功时
-      message.error(response.data.message);
-
-      return Promise.reject(new Error(response.data.message));
+      message.error(response.data.error_user_msg);
+      return response;
     },
     (error: AxiosError) => {
-      message.error(error.message);
+      message.error('请求异常');
 
       return Promise.reject(error);
     },
@@ -61,11 +55,13 @@ async function apiAxios<T>(
   if (!header) {
     header = {};
   }
-  // TODO: 使用dva配置token
-  const token = '';
+
+  // 从store中获取token
+  const token = getToken();
+
   header = {
     ...header,
-    token: token ? `Bearer ${token}` : '',
+    Authorization: token ? `Bearer ${token}` : '',
     'Content-Type': header['Content-Type']
       ? header['Content-Type']
       : 'application/json;charset=utf-8',
@@ -92,14 +88,13 @@ async function apiAxios<T>(
   httpDefault.headers = {
     ...header,
   };
-  const result: Promise<T> = new Promise((resolve, reject) => {
+  const result: Promise<T> = new Promise((resolve) => {
     return axios(httpDefault)
       .then((res) => {
         return resolve(res.data);
       })
-      .catch((response: AxiosResponse) => {
-        errorState(response);
-        return reject(response);
+      .catch(() => {
+        return null;
       });
   });
   return await result;

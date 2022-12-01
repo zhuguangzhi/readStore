@@ -16,7 +16,7 @@ export const numberToSerial = (num: number) => {
 export const contractTranslate = (val: contractType) => {
   const list: { [key in contractType]: string } = {
     minimum: '保底签约',
-    hierarchy: '分层签约',
+    hierarchy: '分成签约',
     buyout: '买断签约',
   };
   return list[val];

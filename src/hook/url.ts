@@ -2,7 +2,7 @@ import { URLSearchParamsInit, useSearchParams } from 'react-router-dom';
 import { useMemo } from 'react';
 import { history, useLocation } from '@umijs/max';
 import qs from 'qs';
-import { cleanObject } from '@/utils/publicFn';
+import { cleanObject } from '@/common/publicFn';
 
 //获取路哟指定的参数
 export const useSearchParam = <T extends string>(keys: T[]) => {

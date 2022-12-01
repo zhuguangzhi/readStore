@@ -85,7 +85,7 @@ export const TableData = ({ bookName, type, income }: TableDataType) => {
       </table>
     );
   };
-  //分层
+  //分成
   const HierarchyComponent = () => {
     return (
       <table className={'tableData otherTable'}>

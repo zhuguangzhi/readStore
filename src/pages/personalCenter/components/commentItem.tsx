@@ -3,7 +3,7 @@ import React from 'react';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { UseNode } from '@/components/UseNode';
 import { IconFont } from '@/components/IconFont';
-import { stopProp } from '@/utils/publicFn';
+import { stopProp } from '@/common/publicFn';
 import './style/commentItem.less';
 import '../style/bookShelf.less';
 import { Checkbox } from 'antd';

@@ -228,7 +228,7 @@ export default () => {
               >
                 <Select.Option value="minimum">保底签约</Select.Option>
                 <Select.Option value="buyout">买断签约</Select.Option>
-                <Select.Option value="hierarchy">分层签约</Select.Option>
+                <Select.Option value="hierarchy">分成签约</Select.Option>
               </Select>
             </Form.Item>
             <Form.Item name="status" label="状态">
