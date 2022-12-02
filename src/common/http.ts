@@ -20,6 +20,7 @@ async function apiAxios<T>(
   url: string,
   params: unknown,
   header?: { [key: string]: unknown },
+  useToken: boolean = true,
 ) {
   // 添加请求拦截器
   axios.interceptors.request.use(
@@ -61,7 +62,7 @@ async function apiAxios<T>(
 
   header = {
     ...header,
-    Authorization: token ? `Bearer ${token}` : '',
+    Authorization: token && useToken ? `Bearer ${token}` : '',
     'Content-Type': header['Content-Type']
       ? header['Content-Type']
       : 'application/json;charset=utf-8',
@@ -105,6 +106,7 @@ export default {
   get: <T>(
     url: string,
     params: { [key: string]: unknown },
+    useToken?: boolean,
     header?: { [key: string]: unknown },
   ) =>
     apiAxios<T>(
@@ -112,19 +114,34 @@ export default {
       url + '?' + qs.stringify(cleanObject(params)),
       {},
       header,
+      useToken,
     ),
-  post: <T>(url: string, params: object, header?: { [key: string]: unknown }) =>
-    apiAxios<T>('POST', url, params, header),
-  put: <T>(url: string, params: object, header?: { [key: string]: unknown }) =>
-    apiAxios<T>('PUT', url, params, header),
+
+  post: <T>(
+    url: string,
+    params: object,
+    useToken?: boolean,
+    header?: { [key: string]: unknown },
+  ) => apiAxios<T>('POST', url, params, header, useToken),
+
+  put: <T>(
+    url: string,
+    params: object,
+    useToken?: boolean,
+    header?: { [key: string]: unknown },
+  ) => apiAxios<T>('PUT', url, params, header, useToken),
+
   delete: <T>(
     url: string,
     params: object,
+    useToken?: boolean,
     header?: { [key: string]: unknown },
-  ) => apiAxios<T>('DELETE', url, params, header),
+  ) => apiAxios<T>('DELETE', url, params, header, useToken),
+
   patch: <T>(
     url: string,
     params: object,
+    useToken?: boolean,
     header?: { [key: string]: unknown },
-  ) => apiAxios<T>('PATCH', url, params, header),
+  ) => apiAxios<T>('PATCH', url, params, header, useToken),
 };

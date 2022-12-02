@@ -16,7 +16,7 @@ import { ErrorCheck, User } from '@/common/api';
 import { ResponseData } from '@/common/http';
 
 const Login = () => {
-  const { setToken, setUserInfo } = useAuth();
+  const { setToken, setUserInfo, setLoginPopup } = useAuth();
   const { run, isLoading } =
     useAsync<ResponseData<loginResultProps | authorProps>>();
   // 是否验证码登录
@@ -45,15 +45,22 @@ const Login = () => {
     )) as ResponseData<authorProps>;
     if (!ErrorCheck(userInfo)) return false;
     setUserInfo(userInfo.data);
+    //   关闭弹窗
+    setLoginPopup(false);
   };
 
   const PhoneInput = () => {
+    const [mobile, setMobile] = useState<string>('');
+    const inputOnchange = (val: React.ChangeEvent<HTMLInputElement>) => {
+      setMobile(val.target.value);
+    };
     return (
       <>
         <Form.Item name={'mobile'}>
           <Input
             className={'login_form_input'}
             placeholder={'请输入手机号码'}
+            onChange={inputOnchange}
           />
         </Form.Item>
         <div className={'flex login_form_sendCode'}>
@@ -63,10 +70,7 @@ const Login = () => {
               placeholder={'请输入验证码'}
             />
           </Form.Item>
-          <SendCode
-            className={'login_form_sendCode_btn'}
-            mobile={formValue.getFieldValue('mobile')}
-          />
+          <SendCode className={'login_form_sendCode_btn'} mobile={mobile} />
         </div>
       </>
     );
@@ -111,7 +115,12 @@ const Login = () => {
         </span>
       </div>
       {/*    输入框*/}
-      <Form form={formValue} className={'login_form'} onFinish={onLogin}>
+      <Form
+        form={formValue}
+        className={'login_form'}
+        onFinish={onLogin}
+        key={'Form_mobile'}
+      >
         {isCode ? <PhoneInput /> : <AccountInput />}
         <Form.Item>
           <Button

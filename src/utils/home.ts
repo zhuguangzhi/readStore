@@ -1,30 +1,28 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
   authorRecommend,
   homeChartProps,
   newsProps,
   topicProps,
 } from '@/type/home';
-import { Book, Home } from '@/common/api';
+import { Book, ErrorCheck, Home } from '@/common/api';
 import { approvalProps } from '@/type/book';
 import { ResponseData } from '@/common/http';
 // 获取书本推荐
 export const useHomeChart = (
   call: (type: 'openLoading' | 'closeLoading') => void,
 ) => {
-  return useQuery<homeChartProps[], Error>(['home'], () =>
-    Home.getHomeBook<ResponseData<homeChartProps[]>>().then((value) => {
+  return useQuery<homeChartProps[], Error>(['home'], () => {
+    return Home.getHomeBook<ResponseData<homeChartProps[]>>().then((value) => {
       call('closeLoading');
       return value.data;
-    }),
-  );
+    });
+  });
 };
 // 获取轮播
 export const useGetSwiper = () => {
   return useQuery<homeChartProps, Error>(['swiper'], () =>
-    Home.getSwiperBook<ResponseData<homeChartProps>>().then(
-      (value) => value.data,
-    ),
+    Home.getSwiperBook<ResponseData<homeChartProps>>().then((val) => val.data),
   );
 };
 // 获取公告
@@ -54,34 +52,46 @@ export const useGetTopic = () => {
   );
 };
 
-// 点赞、取消点赞
+// 点赞、取消点赞 TODO: 乐观更新没有生效
 export const useModifyApproval = (tabIndex: number) => {
   const queryClient = useQueryClient();
-  const queryKey = ['approval'];
-  return useMutation((param: approvalProps) => Book.approval(param), {
-    //请求成功时则刷新，触发home
-    onSuccess: () => queryClient.invalidateQueries(['home']),
-    //    实现乐观更新
-    onMutate(target) {
-      let previousItems;
-      queryClient.setQueriesData(queryKey, (old?: homeChartProps[]) => {
-        //存储旧数据
-        let arr = (previousItems = old ? [...old] : []);
-        if (arr.length > 0) {
-          arr[tabIndex].data = arr[tabIndex].data.map((data) =>
-            data.id === target.book_id
-              ? { ...data, is_user_approval: target.is_approval }
-              : data,
-          );
-          return arr;
-        }
-        return old;
-      });
-      return { previousItems };
+  const queryKey = 'home';
+  return useMutation(
+    'approval',
+    (param: approvalProps) => Book.approval<ResponseData<{}>>(param),
+    {
+      //请求成功时则刷新，触发home
+      onSuccess: (val) => {
+        queryClient.invalidateQueries(queryKey);
+        ErrorCheck(val);
+      },
+      //    实现乐观更新
+      onMutate: function (target) {
+        let previousItems;
+        // @ts-ignore
+        queryClient.setQueryData(queryKey, (old: homeChartProps[]) => {
+          // //存储旧数据
+          previousItems = old ? [...(old as homeChartProps[])] : [];
+          let arr = old ? [...(old as homeChartProps[])] : [];
+          if (arr.length > 0) {
+            console.log('111111111111');
+            arr[tabIndex].data = arr[tabIndex].data.map((data) =>
+              data.id === target.book_id
+                ? { ...data, is_user_approval: target.is_approval }
+                : data,
+            );
+
+            return arr;
+          }
+          console.log('22222222');
+          return old;
+        });
+        return { previousItems };
+      },
+      //错误回滚
+      onError(error, newItem, context) {
+        queryClient.setQueriesData(queryKey, context?.previousItems);
+      },
     },
-    //错误回滚
-    onError(error, newItem, context) {
-      queryClient.setQueriesData(queryKey, context?.previousItems);
-    },
-  });
+  );
 };

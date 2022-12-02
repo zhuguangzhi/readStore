@@ -4,6 +4,7 @@ import { authorProps } from '@/type/user';
 export type userState = {
   userInfo: authorProps | null; //用户信息
   token: string | null; //token
+  loginPopup: boolean; //是否打开登陆弹窗
 };
 type userModelPopup = {
   namespace: 'userModel';
@@ -11,6 +12,7 @@ type userModelPopup = {
   effects: {
     setUserInfo: Effect;
     setToken: Effect;
+    setLoginPopup: Effect;
   };
   reducers: {
     save: Reducer<userModelPopup>;
@@ -21,15 +23,24 @@ export default {
   state: {
     userInfo: null,
     token: null,
+    loginPopup: false,
   },
   effects: {
     //打开loading
     *setUserInfo({ payload }, { put }) {
-      console.log('token执行', payload);
       yield put({
         type: 'save',
         payload: {
           userInfo: payload,
+        },
+      });
+    },
+    //设置登陆弹窗
+    *setLoginPopup({ payload }, { put }) {
+      yield put({
+        type: 'save',
+        payload: {
+          loginPopup: payload,
         },
       });
     },

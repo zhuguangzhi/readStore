@@ -13,7 +13,9 @@ const Index = () => {
     <div className={'home'}>
       {/*banner*/}
       <SwiperBanner
-        swiperBookInfo={swiperData?.data || null}
+        swiperBookInfo={
+          swiperData && swiperData.data.length > 0 ? swiperData.data : null
+        }
         className={'home_carousel'}
       />
       {/*  container*/}

@@ -1,64 +1,67 @@
-import { Outlet } from 'umi';
-import React, { useEffect, useState } from 'react';
+import { Outlet, useSelector } from 'umi';
+import React, { useState } from 'react';
 
 import './style/base.less';
 import './style/common.less';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { message, Spin } from 'antd';
-import { ConnectState } from '@/models/modelConnect';
-import { connect } from '@umijs/max';
-import { globalState } from '@/models/global';
 import { useMounted } from '@/hook';
 import { getToken, useAuth } from '@/hook/useAuth';
 import { useAsync } from '@/hook/useAsync';
 import { ResponseData } from '@/common/http';
 import { authorProps, loginResultProps } from '@/type/user';
 import { ErrorCheck, User } from '@/common/api';
+import { ConnectState } from '@/models/modelConnect';
+import { globalState } from '@/models/global';
+import EventBus from '@/common/EventBus';
 
-const Index = ({ global }: { global: globalState }) => {
+import { Bus_ClearUserInfo } from '@/constants';
+
+const Index = () => {
   // 全局配置message
   message.config({
     maxCount: 1,
   });
-  const queryClient = new QueryClient();
-  // 全局loading
-  const [loading, setLoading] = useState(global.loading);
+  const { loading } = useSelector(
+    (state: ConnectState) => state.global,
+  ) as globalState;
   const { run } = useAsync<ResponseData<loginResultProps | authorProps>>();
   const { setUserInfo, setToken } = useAuth();
+  const [token] = useState(getToken());
 
-  useEffect(() => {
-    setLoading(global.loading);
-  }, [global?.loading]);
-  useMounted(() => {
+  const getUserInfo = async () => {
     //    获取token 实现自动登录
-    const token = getToken();
     if (!token) return () => {};
-    (async () => {
-      // 刷新Token
-      const newToken = (await run(
-        User.refreshToken(),
-      )) as ResponseData<loginResultProps>;
-      if (!ErrorCheck(newToken)) return false;
-      // 设置新token
-      setToken(newToken.data.access_token);
-      // 获取用户信息
-      const userInfo = (await run(
-        User.getUserInfo(),
-      )) as ResponseData<authorProps>;
-      if (!ErrorCheck(userInfo)) return false;
-      setUserInfo(userInfo.data);
-    })();
+    const newToken = (await run(
+      User.refreshToken(),
+    )) as ResponseData<loginResultProps>;
+    if (!ErrorCheck(newToken)) return false;
+    // 设置新token
+    setToken(newToken.data.access_token);
+    // 获取用户信息
+    const userInfo = (await run(
+      User.getUserInfo(),
+    )) as ResponseData<authorProps>;
+    if (!ErrorCheck(userInfo)) return false;
+    setUserInfo(userInfo.data);
+  };
+  const clearUserInfo = () => {
+    setToken(null);
+    setUserInfo(null);
+  };
+
+  useMounted(() => {
+    getUserInfo();
+    //   注册销毁用户信息事件
+    EventBus.on(Bus_ClearUserInfo, clearUserInfo);
   });
   return (
-    <QueryClientProvider client={queryClient}>
-      <Spin spinning={loading} tip="数据加载中..." size={'large'} delay={200}>
-        <div className={'webContainer'}>
-          <Outlet />
-        </div>
-      </Spin>
-    </QueryClientProvider>
+    <Spin spinning={loading} tip="数据加载中..." size={'large'} delay={200}>
+      <div className={'webContainer'}>
+        <Outlet />
+      </div>
+    </Spin>
   );
 };
-export default connect(({ global }: ConnectState) => ({ global }))(Index);
+export default Index;

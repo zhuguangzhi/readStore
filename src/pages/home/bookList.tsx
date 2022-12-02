@@ -2,23 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { TabBar, tabProps } from '@/components/module/tabBar';
 import { BookItem } from '@/pages/home/components/bookItem';
 import './style/bookList.less';
-import { useHomeChart } from '@/utils/home';
+import { useHomeChart, useModifyApproval } from '@/utils/home';
 import { homeChartProps } from '@/type/home';
-import { connect } from '@@/exports';
-import { Dispatch } from 'umi';
 import { useMounted } from '@/hook';
+import { useDispatch } from 'umi';
+import { useAuth } from '@/hook/useAuth';
 
-const BookList = ({ dispatch }: { dispatch: Dispatch }) => {
+const BookList = () => {
+  const dispatch = useDispatch();
   const [bookList, setBookList] = useState<homeChartProps | null>(null);
-  const [, setTabIndex] = useState(0);
+  const [currentTabIndex, setTabIndex] = useState(0);
+  const { userInfo } = useAuth();
   const tabBarList = [
     { label: '推荐', key: 'recommend' },
     { label: 'VIP精选', key: 'vipPush' },
     { label: '新书', key: 'newBook' },
   ];
   //点赞
-  // const {mutate:setApproval} = useModifyApproval(currentTabIndex)
-  const { data: chartData } = useHomeChart((type) => loading(type));
+  const { mutate: setApproval } = useModifyApproval(currentTabIndex);
+  const { data: chartData } = useHomeChart((type) => loading(type), userInfo);
 
   //触发loading
   const loading = (type: 'openLoading' | 'closeLoading') => {
@@ -62,8 +64,8 @@ const BookList = ({ dispatch }: { dispatch: Dispatch }) => {
         defaultSelect={'recommend'}
         selectChange={tabChange}
       />
-      <BookItem bookList={bookList} />
+      <BookItem bookList={bookList} onApprove={(param) => setApproval(param)} />
     </div>
   );
 };
-export default connect()(BookList);
+export default BookList;

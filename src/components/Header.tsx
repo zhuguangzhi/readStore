@@ -21,7 +21,7 @@ const SearchIcon = () => (
 );
 const Header = () => {
   const routerInfo = useGetUrlPath();
-  const { userInfo } = useAuth();
+  const { userInfo, setLoginPopup } = useAuth();
   //路由选项跳转
   const optionList = [
     { title: '首页', key: 'home' },
@@ -31,7 +31,6 @@ const Header = () => {
   ];
   const [state, setState] = useState({
     currentOptionKey: '' as string, //当前选中的option
-    openLogin: false, //登录弹窗
   });
   //调用该hook改变state
   const changeState = useSetState(state, setState);
@@ -83,10 +82,7 @@ const Header = () => {
   // 登陆
   const LoginBoxChildren = () => {
     return (
-      <div
-        className={'header_user cursor'}
-        onClick={() => changeState({ openLogin: true })}
-      >
+      <div className={'header_user cursor'} onClick={() => setLoginPopup(true)}>
         <IconFont
           icon={'user'}
           width={'19px'}
@@ -124,10 +120,7 @@ const Header = () => {
         {/*    用户信息*/}
         {userInfo ? <UserInfoChildren /> : <LoginBoxChildren />}
       </div>
-      <LoginPopup
-        open={state.openLogin}
-        onCancel={() => changeState({ openLogin: false })}
-      />
+      <LoginPopup />
     </div>
   );
 };

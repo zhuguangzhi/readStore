@@ -1,12 +1,16 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Button } from 'antd';
+import { Button, ButtonProps } from 'antd';
+import { useAsync } from '@/hook/useAsync';
+import { ErrorCheck, User } from '@/common/api';
+import { ResponseData } from '@/common/http';
 
-type SendCodeProps = {
+interface SendCodeProps extends ButtonProps {
   mobile: string | number;
   className?: string;
-};
+}
 type Fnc = () => void;
-export const SendCode = ({ className }: SendCodeProps) => {
+export const SendCode = ({ className, mobile, ...props }: SendCodeProps) => {
+  const { run, isLoading } = useAsync<ResponseData<{}>>();
   //倒计时
   const [countdown, setCount] = useState<null | number>(null);
   const tickRef = useRef<Fnc>(() => {});
@@ -21,17 +25,24 @@ export const SendCode = ({ className }: SendCodeProps) => {
     };
   });
   // 获取验证码
-  const getCode = useCallback(() => {
-    setCount(60);
-    timerRef.current = setInterval(() => {
-      tickRef.current();
-    }, 1000);
-  }, [countdown]);
+  const getCode = useCallback(
+    async (num: string | number) => {
+      const sendCodeRes = await run(User.sendCode({ mobile: num }));
+      if (!ErrorCheck(sendCodeRes)) return false;
+      setCount(60);
+      timerRef.current = setInterval(() => {
+        tickRef.current();
+      }, 1000);
+    },
+    [countdown],
+  );
   return (
     <Button
       className={className}
       disabled={countdown !== null}
-      onClick={getCode}
+      onClick={() => getCode(mobile)}
+      loading={isLoading}
+      {...props}
     >
       {countdown !== null ? `${countdown} 秒` : '获取验证码'}
     </Button>

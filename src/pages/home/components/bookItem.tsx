@@ -1,17 +1,23 @@
 import React from 'react';
-import { bookInfoProps } from '@/type/book';
+import { approvalProps, bookInfoProps } from '@/type/book';
 import { IconFont } from '@/components/IconFont';
 import './style/bookItem.less';
 import { UseNode } from '@/components/UseNode';
 import { homeChartProps } from '@/type/home';
 
-export const BookItem = ({
-  bookList,
-  onClick,
-}: {
+type BookItemProps = {
   bookList: homeChartProps | null;
   onClick?: (book: bookInfoProps) => void;
-}) => {
+  onApprove?: (param: approvalProps) => void;
+};
+export const BookItem = ({ bookList, onClick, onApprove }: BookItemProps) => {
+  const setApprove = (book: bookInfoProps) => {
+    const param: approvalProps = {
+      book_id: book.id,
+      is_approval: book.is_user_approval === 1 ? 2 : 1,
+    };
+    onApprove?.(param);
+  };
   return (
     <>
       {bookList?.data.map((book) => {
@@ -53,7 +59,7 @@ export const BookItem = ({
                   </div>
                 </UseNode>
                 <div className={'book_right_options'}>
-                  <div className={'operation'}>
+                  <div className={'operation'} onClick={() => setApprove(book)}>
                     <IconFont
                       width={'16px'}
                       height={'16px'}

@@ -6,13 +6,21 @@ import Login from '@/components/login/login';
 import './index.less';
 import { netName } from '@/assets/config';
 import { Register } from '@/components/login/register';
+import { useAuth } from '@/hook/useAuth';
 
 export const LoginPopup = ({ ...props }: ModalProps) => {
+  const { loginPopup, setLoginPopup } = useAuth();
   // true 登录 false 注册
   const [isLogin, setIsLogin] = useState(true);
   //438
   return (
-    <ReadModel useTitle={false} {...props} width={730}>
+    <ReadModel
+      useTitle={false}
+      open={loginPopup}
+      onCancel={() => setLoginPopup(false)}
+      {...props}
+      width={730}
+    >
       <div className={'loginIndex'}>
         {/*    扫码*/}
         <div className={'loginIndex_scan'}>
