@@ -38,9 +38,6 @@ const Header = () => {
   useEffect(() => {
     changeState({ currentOptionKey: routerInfo[1] });
   }, [routerInfo[1]]);
-  useEffect(() => {
-    console.log('userInfo', userInfo);
-  }, [userInfo]);
 
   // 搜索框事件
   const onSearch = (e: inputEvent) => {

@@ -4,15 +4,13 @@ import { BookItem } from '@/pages/home/components/bookItem';
 import './style/bookList.less';
 import { useHomeChart, useModifyApproval } from '@/utils/home';
 import { homeChartProps } from '@/type/home';
-import { useMounted } from '@/hook';
-import { useDispatch } from 'umi';
 import { useAuth } from '@/hook/useAuth';
+import { useMounted } from '@/hook';
 
 const BookList = () => {
-  const dispatch = useDispatch();
   const [bookList, setBookList] = useState<homeChartProps | null>(null);
   const [currentTabIndex, setTabIndex] = useState(0);
-  const { userInfo } = useAuth();
+  const { userInfo, setLoadingModel } = useAuth();
   const tabBarList = [
     { label: '推荐', key: 'recommend' },
     { label: 'VIP精选', key: 'vipPush' },
@@ -20,17 +18,11 @@ const BookList = () => {
   ];
   //点赞
   const { mutate: setApproval } = useModifyApproval(currentTabIndex);
-  const { data: chartData } = useHomeChart((type) => loading(type), userInfo);
+  const { data: chartData } = useHomeChart(
+    () => setLoadingModel(false),
+    userInfo,
+  );
 
-  //触发loading
-  const loading = (type: 'openLoading' | 'closeLoading') => {
-    dispatch({
-      type: 'global/' + type,
-      payload: {
-        loading: type === 'openLoading',
-      },
-    });
-  };
   // tabBarList 选择改变
   const tabChange = (tab: tabProps) => {
     if (chartData === undefined) return false;
@@ -49,13 +41,12 @@ const BookList = () => {
         break;
     }
   };
+  useMounted(() => {
+    setLoadingModel(true);
+  });
   useEffect(() => {
     tabChange(tabBarList[0]);
   }, [chartData]);
-
-  useMounted(() => {
-    loading('openLoading');
-  });
   return (
     <div className={'book_list'}>
       <TabBar

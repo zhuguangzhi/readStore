@@ -1,7 +1,7 @@
 // 连载状态
 import { contractType } from '@/type';
 
-export const isFinish = (val: 'Y' | 'N') => (val === 'Y' ? '完结' : '连载中');
+export const isFinish = (val: 1 | 2) => (val === 'Y' ? '完结' : '连载中');
 //字数转换万
 export const translateNumber = (number: number) => {
   if (number < 10000) return `${number}字`;

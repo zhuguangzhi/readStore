@@ -8,13 +8,14 @@ import {
 import { Book, ErrorCheck, Home } from '@/common/api';
 import { approvalProps } from '@/type/book';
 import { ResponseData } from '@/common/http';
+import { authorProps } from '@/type/user';
+
 // 获取书本推荐
-export const useHomeChart = (
-  call: (type: 'openLoading' | 'closeLoading') => void,
-) => {
-  return useQuery<homeChartProps[], Error>(['home'], () => {
+export const useHomeChart = (call: Function, userInfo: authorProps | null) => {
+  return useQuery<homeChartProps[], Error>(['home', userInfo], () => {
     return Home.getHomeBook<ResponseData<homeChartProps[]>>().then((value) => {
-      call('closeLoading');
+      ErrorCheck(value);
+      call();
       return value.data;
     });
   });
@@ -22,27 +23,37 @@ export const useHomeChart = (
 // 获取轮播
 export const useGetSwiper = () => {
   return useQuery<homeChartProps, Error>(['swiper'], () =>
-    Home.getSwiperBook<ResponseData<homeChartProps>>().then((val) => val.data),
+    Home.getSwiperBook<ResponseData<homeChartProps>>().then((val) => {
+      ErrorCheck(val);
+      return val.data;
+    }),
   );
 };
 // 获取公告
 export const useGetNews = () => {
   return useQuery<newsProps[], Error>(['news'], () =>
-    Home.getNews<ResponseData<newsProps[]>>().then((value) => value.data),
+    Home.getNews<ResponseData<newsProps[]>>().then((value) => {
+      ErrorCheck(value);
+      return value.data;
+    }),
   );
 };
 // 获取风向标
 export const useGetVane = () => {
   return useQuery<homeChartProps, Error>(['vane'], () =>
-    Home.getVane<ResponseData<homeChartProps>>().then((value) => value.data),
+    Home.getVane<ResponseData<homeChartProps>>().then((value) => {
+      ErrorCheck(value);
+      return value.data;
+    }),
   );
 };
 //作者推荐
 export const useAuthorRecommend = () => {
   return useQuery<authorRecommend, Error>(['authorRecommend'], () =>
-    Home.getAuthorRecommend<ResponseData<authorRecommend>>().then(
-      (value) => value.data,
-    ),
+    Home.getAuthorRecommend<ResponseData<authorRecommend>>().then((value) => {
+      ErrorCheck(value);
+      return value.data;
+    }),
   );
 };
 //热门话题
@@ -55,7 +66,7 @@ export const useGetTopic = () => {
 // 点赞、取消点赞 TODO: 乐观更新没有生效
 export const useModifyApproval = (tabIndex: number) => {
   const queryClient = useQueryClient();
-  const queryKey = 'home';
+  const queryKey = ['home'];
   return useMutation(
     'approval',
     (param: approvalProps) => Book.approval<ResponseData<{}>>(param),
@@ -69,12 +80,11 @@ export const useModifyApproval = (tabIndex: number) => {
       onMutate: function (target) {
         let previousItems;
         // @ts-ignore
-        queryClient.setQueryData(queryKey, (old: homeChartProps[]) => {
+        queryClient.setQueriesData(queryKey, (old: homeChartProps[]) => {
           // //存储旧数据
           previousItems = old ? [...(old as homeChartProps[])] : [];
           let arr = old ? [...(old as homeChartProps[])] : [];
           if (arr.length > 0) {
-            console.log('111111111111');
             arr[tabIndex].data = arr[tabIndex].data.map((data) =>
               data.id === target.book_id
                 ? { ...data, is_user_approval: target.is_approval }
@@ -83,7 +93,6 @@ export const useModifyApproval = (tabIndex: number) => {
 
             return arr;
           }
-          console.log('22222222');
           return old;
         });
         return { previousItems };

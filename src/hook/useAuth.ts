@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { ConnectState } from '@/models/modelConnect';
 import { userState } from '@/models/user';
 import { getStorage, removeStorage, setStorage } from '@/common/publicFn';
-import { Bus_ClearUserInfo, TOKEN } from '@/constants';
+import { Bus_ClearUserInfo, TOKEN, UserInfo } from '@/constants';
 import { authorProps } from '@/type/user';
 import EventBus from '@/common/EventBus';
 
@@ -25,6 +25,7 @@ export const useAuth = () => {
         type: 'userModel/setUserInfo',
         payload: p,
       });
+      setStorage(UserInfo, p);
     },
     [dispatch],
   );
@@ -33,6 +34,15 @@ export const useAuth = () => {
       dispatch({
         type: 'userModel/setLoginPopup',
         payload: p,
+      });
+    },
+    [dispatch],
+  );
+
+  const setLoadingModel = useCallback(
+    (loading: boolean) => {
+      dispatch({
+        type: `global/${loading ? 'openLoading' : 'closeLoading'}`,
       });
     },
     [dispatch],
@@ -47,6 +57,7 @@ export const useAuth = () => {
     setToken,
     setUserInfo,
     setLoginPopup,
+    setLoadingModel,
   };
 };
 
@@ -54,5 +65,6 @@ export const getToken = () => getStorage(TOKEN);
 // 清除token
 export const clearToken = () => {
   removeStorage(TOKEN);
+  removeStorage(UserInfo);
   EventBus.emit(Bus_ClearUserInfo);
 };

@@ -8,8 +8,10 @@ export type bookInfoProps = {
   name: string; //名称
   description: string; // 描述
   tags: string[]; //书本标签
-  parent_category_id: number; //二级分类ID
-  category_id: number; //三级分类ID
+  category_name: string; // 二级分类名称
+  parent_category_id: number; //三级分类ID
+  category_id: number; //二级分类ID
+  parent_category_name: string; //三级分类名称
   is_finish: 1 | 2; //是否完本( 1：是 2：否)
   channel_type: 1 | 2; //频道类型( 1：男生 2：女生）
   is_vip: 1 | 2; //是否收费(1：是 2：否)
@@ -18,6 +20,7 @@ export type bookInfoProps = {
   create_time: string; //创建时间
   update_time: string; //更新时间
   last_update_chapter_time: string; //最后更新时间
+  last_update_chapter_title: string; //最后更新章节名称
   chapter_id: number; //最后更新章节ID
   word_count: number; //总字数
   is_finish_text: string; //是否完结描述
@@ -142,3 +145,25 @@ export interface approvalProps {
   book_id: number; //书本id
   is_approval: 1 | 2; //书籍点赞( 1：点赞  2：取消）
 }
+// 排行参数
+export interface rankParamProps {
+  rank_type: number; //榜单类型 1：阅读榜    2：免费榜     3：推荐榜     4：评论榜     5：完结榜     6：连载榜
+  page: number; //页数
+  page_size: number; //条数
+}
+// 排行书本信息
+interface rankBook extends bookInfoProps {
+  author: {
+    id: number; //id
+    pen_name: string; //笔名
+  };
+}
+export interface rankBookInfoProps {
+  data: rankBook[];
+  page_info?: {
+    page: number;
+    page_size: number;
+    total: number;
+  };
+}
+//- ---end

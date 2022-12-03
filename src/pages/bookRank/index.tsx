@@ -1,30 +1,44 @@
 import React, { useState } from 'react';
 import './style/index.less';
 import { BookBox } from '@/pages/bookRank/bookBox';
-import { testBookRankData } from '@/assets/testData';
+import { useGetBookRank } from '@/utils/rank';
+import { useAuth } from '@/hook/useAuth';
+import { useMounted } from '@/hook';
 
 export default () => {
   const slideList = [
-    { key: 'hot', label: '大热榜', subTitle: '根据七天内阅读人气进行排行' },
-    { key: 'free', label: '免费榜', subTitle: '根据七天内阅读人气进行排行' },
+    { key: 1, label: '大热榜', subTitle: '根据七天内阅读人气进行排行' },
+    { key: 2, label: '免费榜', subTitle: '根据七天内阅读人气进行排行' },
     {
-      key: 'finish',
+      key: 3,
       label: '完本榜',
       subTitle: '根据七天内的点赞，收藏，人气进行综合排行',
     },
     {
-      key: 'approval',
+      key: 4,
       label: '高赞榜',
       subTitle: '根据七天内点赞人气进行排行',
     },
     {
-      key: 'comment',
+      key: 5,
       label: '热评榜',
       subTitle: '根据七天内评论最多的进行排行',
     },
   ];
+  const { userInfo, setLoadingModel } = useAuth();
   const [sideIndex, setSide] = useState(0);
-
+  const { data: rankBookData, isLoading } = useGetBookRank(
+    () => setLoadingModel(false),
+    {
+      rank_type: slideList[sideIndex].key,
+      page: 1,
+      page_size: 9999,
+    },
+    userInfo,
+  );
+  useMounted(() => {
+    setLoadingModel(isLoading);
+  });
   return (
     <div className={'bookRank'}>
       {/*侧边栏*/}
@@ -54,7 +68,7 @@ export default () => {
           </span>
         </div>
         {/*  书籍  */}
-        <BookBox bookList={testBookRankData} />
+        <BookBox bookList={rankBookData?.data} />
       </div>
     </div>
   );

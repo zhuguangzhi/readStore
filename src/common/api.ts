@@ -1,5 +1,5 @@
 import http, { ResponseData } from '@/common/http';
-import { approvalProps } from '@/type/book';
+import { approvalProps, rankBookInfoProps, rankParamProps } from '@/type/book';
 import {
   accountLoginProps,
   authorProps,
@@ -29,7 +29,7 @@ export const ErrorCheck = <T>(val: ResponseData<T> | null) => {
 const apiUrl = 'http://localhost:8000/proxy/api';
 export const Home = {
   //首页书本推荐
-  getHomeBook: <T>() => http.get<T>(`${apiUrl}/chart`, {}, false),
+  getHomeBook: <T>() => http.get<T>(`${apiUrl}/chart`, {}),
   //轮播书本
   getSwiperBook: <T>() => http.get<T>(`${apiUrl}/chart/banner`, {}, false),
   //新闻
@@ -46,6 +46,9 @@ export const Book = {
   //点赞
   approval: <T>(p: approvalProps) =>
     http.post<T>(`${apiUrl}/bookApproval/store`, p),
+  //排行榜
+  rank: (p: rankParamProps) =>
+    http.post<ResponseData<rankBookInfoProps>>(`${apiUrl}/rank`, p),
 };
 export const User = {
   // 刷新token
