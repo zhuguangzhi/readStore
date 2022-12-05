@@ -6,6 +6,8 @@ import { useHomeChart, useModifyApproval } from '@/utils/home';
 import { homeChartProps } from '@/type/home';
 import { useAuth } from '@/hook/useAuth';
 import { useMounted } from '@/hook';
+import router from '@/hook/url';
+import { BookId } from '@/constants/url';
 
 const BookList = () => {
   const [bookList, setBookList] = useState<homeChartProps | null>(null);
@@ -17,11 +19,16 @@ const BookList = () => {
     { label: '新书', key: 'newBook' },
   ];
   //点赞
-  const { mutate: setApproval } = useModifyApproval(currentTabIndex);
+  const { mutate: setApproval } = useModifyApproval('home', currentTabIndex);
   const { data: chartData } = useHomeChart(
     () => setLoadingModel(false),
     userInfo,
   );
+
+  // 阅读
+  const readBook = (bookId: number) => {
+    router.push('/read', { [BookId]: bookId });
+  };
 
   // tabBarList 选择改变
   const tabChange = (tab: tabProps) => {
@@ -55,7 +62,12 @@ const BookList = () => {
         defaultSelect={'recommend'}
         selectChange={tabChange}
       />
-      <BookItem bookList={bookList} onApprove={(param) => setApproval(param)} />
+      <BookItem
+        bookList={bookList}
+        onApprove={(param) => setApproval(param)}
+        tabIndex={currentTabIndex}
+        onClick={(book) => readBook(book.id)}
+      />
     </div>
   );
 };

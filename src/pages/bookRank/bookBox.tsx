@@ -3,17 +3,24 @@ import { rankBookInfoProps } from '@/type/book';
 import { isFinish, translateNumber } from '@/utils/format';
 import './style/bookBox.less';
 import { UseNode } from '@/components/UseNode';
+import { useAddBookCase } from '@/utils/rank';
 
 export const BookBox = ({
   bookList,
 }: {
   bookList: rankBookInfoProps | undefined;
 }) => {
+  const { mutate: addBookCase } = useAddBookCase('rank');
   return (
     <div className={'bookBox'}>
       {bookList?.data.map((book, index) => {
         return (
-          <div key={book.id} className={'bookBox_item'}>
+          <div
+            key={book.id}
+            className={`bookBox_item ${
+              book.cover_url !== '' ? 'imageItem' : ''
+            }`}
+          >
             {/*角标*/}
             <div className={`bookBox_item_mark mark_${index + 1}`}>
               <span>NO.{index + 1}</span>
@@ -33,14 +40,21 @@ export const BookBox = ({
                 </p>
                 <p className={'textOverflow_2'}>{book.description}</p>
                 <p style={{ marginTop: '29px' }} className={'textOverflow'}>
-                  最后更新：{book.last_update_chapter_title}
+                  最后更新：{book.last_update_chapter_time}
                 </p>
               </div>
               <div style={{ width: '124px' }}>
                 <button className={'bookBox_item_right_btn readBtn'}>
                   立即阅读
                 </button>
-                <button className={'bookBox_item_right_btn'}>加入书架</button>
+                <UseNode rIf={book.in_user_case === 2}>
+                  <button
+                    className={'bookBox_item_right_btn'}
+                    onClick={() => addBookCase({ book_id: book.id })}
+                  >
+                    加入书架
+                  </button>
+                </UseNode>
               </div>
             </div>
           </div>

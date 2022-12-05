@@ -55,11 +55,6 @@ const Index = () => {
     //   注册销毁用户信息事件
     EventBus.on(Bus_ClearUserInfo, clearUserInfo);
     getUserInfo();
-
-    //  http请求中拿token
-    // EventBus.on(Bus_GetToken, ()=>{
-    //   return token
-    // });
   });
   return (
     <Spin spinning={loading} tip="数据加载中..." size={'large'} delay={200}>

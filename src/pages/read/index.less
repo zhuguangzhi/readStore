@@ -1,0 +1,70 @@
+.readBook {
+  margin-top: 5px;
+  width: 100%;
+  padding: 18px 39px;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 5px;
+  overflow-x: hidden;
+
+  &_guid {
+    margin-bottom: 59px;
+  }
+  &_bookInfo {
+    margin: 21px 0 38px 0;
+    span {
+      display: inline-block;
+      margin-right: 28px;
+      font-size: 14px;
+    }
+  }
+  &_author {
+    display: flex;
+    align-items: center;
+    padding-bottom: 17px;
+    width: 100%;
+    border-bottom: 1px solid #d7d7d7;
+    height: 52px;
+    box-sizing: initial;
+    &_image {
+      width: 52px;
+      height: 100%;
+      border-radius: 5px;
+      margin-right: 15px;
+    }
+    &_right {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-size: 16px;
+      &_btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        width: 62px;
+        height: 21px;
+        background: #e07732;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+    }
+  }
+  &_container {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 58px;
+    p {
+      line-height: 1.8;
+      text-indent: 2em;
+      padding: 8px 0;
+    }
+  }
+}
+.readOperationBox {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  margin-left: -39px;
+}

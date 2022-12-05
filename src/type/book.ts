@@ -8,10 +8,10 @@ export type bookInfoProps = {
   name: string; //名称
   description: string; // 描述
   tags: string[]; //书本标签
-  category_name: string; // 二级分类名称
-  parent_category_id: number; //三级分类ID
-  category_id: number; //二级分类ID
-  parent_category_name: string; //三级分类名称
+  category_name: string; // 三级分类名称
+  category_id: number; //三级分类ID
+  parent_category_id: number; //二级分类ID
+  parent_category_name: string; //二级分类名称
   is_finish: 1 | 2; //是否完本( 1：是 2：否)
   channel_type: 1 | 2; //频道类型( 1：男生 2：女生）
   is_vip: 1 | 2; //是否收费(1：是 2：否)
@@ -20,7 +20,6 @@ export type bookInfoProps = {
   create_time: string; //创建时间
   update_time: string; //更新时间
   last_update_chapter_time: string; //最后更新时间
-  last_update_chapter_title: string; //最后更新章节名称
   chapter_id: number; //最后更新章节ID
   word_count: number; //总字数
   is_finish_text: string; //是否完结描述
@@ -32,6 +31,7 @@ export type bookInfoProps = {
   in_user_case: 1 | 2; //是否加入用户书架(1：是 2：否）
   is_user_approval: 1 | 2; //用户是否已点赞(1：是 2：否）
   chart_sort: number; //推荐序号
+  is_attention: 2 | 1; //当前用户是否关注作者( 1：是  2：否 ）
   book_extension?: bookExtension; //书籍额外信息
 };
 // 书籍额外信息
@@ -43,6 +43,7 @@ export type bookExtension = {
   all_commend: number; //总推荐数
   all_reward: number; //总打赏
   all_comments: number; //总评论数
+  all_read: number; //总阅读数
 };
 
 //用户阅读书本类型 TODO:对接口时替换成book
@@ -156,6 +157,7 @@ interface rankBook extends bookInfoProps {
   author: {
     id: number; //id
     pen_name: string; //笔名
+    user_image_url: string; //作者头像
   };
 }
 export interface rankBookInfoProps {
@@ -167,3 +169,13 @@ export interface rankBookInfoProps {
   };
 }
 //- ---end
+// 阅读
+export interface readBookProps {
+  id: number; //主键ID
+  book_id: number; //书籍ID
+  book_title: string; //书籍名称
+  cname: string; //章节标题
+  content: string; //内容
+}
+// 书本详情
+export type readBookInfoProps = rankBook;

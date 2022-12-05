@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './style/index.less';
 import { BookBox } from '@/pages/bookRank/bookBox';
 import { useGetBookRank } from '@/utils/rank';
 import { useAuth } from '@/hook/useAuth';
-import { useMounted } from '@/hook';
 
 export default () => {
   const slideList = [
@@ -36,9 +35,9 @@ export default () => {
     },
     userInfo,
   );
-  useMounted(() => {
-    setLoadingModel(isLoading);
-  });
+  useEffect(() => {
+    if (isLoading) setLoadingModel(isLoading);
+  }, [sideIndex]);
   return (
     <div className={'bookRank'}>
       {/*侧边栏*/}
@@ -68,7 +67,7 @@ export default () => {
           </span>
         </div>
         {/*  书籍  */}
-        <BookBox bookList={rankBookData?.data} />
+        <BookBox bookList={rankBookData} />
       </div>
     </div>
   );

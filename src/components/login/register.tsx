@@ -44,9 +44,6 @@ export const Register = () => {
   const StepTwo = () => {
     return (
       <>
-        <Form.Item name={'username'}>
-          <Input className={'login_form_input'} placeholder={'请输入用户名'} />
-        </Form.Item>
         <Form.Item name={'password'}>
           <Input
             className={'login_form_input register_passwordInput'}

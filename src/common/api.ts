@@ -1,5 +1,11 @@
 import http, { ResponseData } from '@/common/http';
-import { approvalProps, rankBookInfoProps, rankParamProps } from '@/type/book';
+import {
+  approvalProps,
+  rankBookInfoProps,
+  rankParamProps,
+  readBookInfoProps,
+  readBookProps,
+} from '@/type/book';
 import {
   accountLoginProps,
   authorProps,
@@ -49,6 +55,17 @@ export const Book = {
   //排行榜
   rank: (p: rankParamProps) =>
     http.post<ResponseData<rankBookInfoProps>>(`${apiUrl}/rank`, p),
+  //  加入书架
+  addBookCase: (p: { book_id: number }) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/bookcase/store`, p),
+  //  获取书本内容
+  getBookContainer: (p: { book_id: number; chapter_id?: number }) => {
+    p['chapter_id'] = p.chapter_id ? p.chapter_id : 0;
+    return http.post<ResponseData<readBookProps>>(`${apiUrl}/chapter/read`, p);
+  },
+  //  获取书本详情
+  getBookInfo: (p: { id: number }) =>
+    http.post<ResponseData<readBookInfoProps>>(`${apiUrl}/book/detail`, p),
 };
 export const User = {
   // 刷新token

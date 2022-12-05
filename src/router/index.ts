@@ -40,6 +40,11 @@ const useHeaderRouter = {
         },
       ],
     },
+    {
+      path: '/read',
+      title: '阅读',
+      component: '@/pages/read/index',
+    },
   ],
 };
 

@@ -4,13 +4,21 @@ import { IconFont } from '@/components/IconFont';
 import './style/bookItem.less';
 import { UseNode } from '@/components/UseNode';
 import { homeChartProps } from '@/type/home';
+import { useAddBookCase } from '@/utils/rank';
+import { stopProp } from '@/common/publicFn';
 
 type BookItemProps = {
+  tabIndex: number;
   bookList: homeChartProps | null;
   onClick?: (book: bookInfoProps) => void;
   onApprove?: (param: approvalProps) => void;
 };
-export const BookItem = ({ bookList, onClick, onApprove }: BookItemProps) => {
+export const BookItem = ({
+  bookList,
+  onClick,
+  onApprove,
+  tabIndex,
+}: BookItemProps) => {
   const setApprove = (book: bookInfoProps) => {
     const param: approvalProps = {
       book_id: book.id,
@@ -18,6 +26,8 @@ export const BookItem = ({ bookList, onClick, onApprove }: BookItemProps) => {
     };
     onApprove?.(param);
   };
+  // 加入书架
+  const { mutate: addBookCase } = useAddBookCase('home', tabIndex);
   return (
     <>
       {bookList?.data.map((book) => {
@@ -50,10 +60,14 @@ export const BookItem = ({ bookList, onClick, onApprove }: BookItemProps) => {
                 className={`book_right_bottom ${
                   book.in_user_case === 1 ? '' : 'justify_between'
                 }`}
+                onClick={(e) => stopProp(e, () => {})}
               >
                 {/*是否加入书架*/}
                 <UseNode rIf={book.in_user_case !== 1}>
-                  <div className={'book_right_bookshelf'}>
+                  <div
+                    className={'book_right_bookshelf'}
+                    onClick={() => addBookCase({ book_id: book.id })}
+                  >
                     <IconFont width={'10px'} height={'10px'} icon={'shujia'} />
                     <span>加入书架</span>
                   </div>

@@ -1,18 +1,19 @@
 .bookBox {
-  padding-right: 43px;
   &_item {
     position: relative;
     display: flex;
     width: 100%;
     height: 165px;
-    padding: 18px 0 12px 0;
+    padding: 12px 43px 12px 26px;
     font-size: 14px;
     color: #999999;
     box-sizing: initial;
+    background-color: #fcfcfc;
+    margin-bottom: 21px;
     &_mark {
       position: absolute;
       left: 0;
-      top: 18px;
+      top: 0;
       width: 27px;
       height: 27px;
       background: linear-gradient(
@@ -55,6 +56,7 @@
         transparent 100%
       );
     }
+
     &_img {
       width: 124px;
       height: 100%;
@@ -95,6 +97,12 @@
         color: #e78343;
         margin-bottom: 16px;
       }
+    }
+  }
+  .imageItem {
+    padding-left: 0;
+    .bookBox_item_mark {
+      top: 12px !important;
     }
   }
 }

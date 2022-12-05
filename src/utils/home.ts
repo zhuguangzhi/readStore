@@ -9,6 +9,7 @@ import { Book, ErrorCheck, Home } from '@/common/api';
 import { approvalProps } from '@/type/book';
 import { ResponseData } from '@/common/http';
 import { authorProps } from '@/type/user';
+import { setApprovalMutate } from '@/utils/mutate/setApproval';
 
 // 获取书本推荐
 export const useHomeChart = (call: Function, userInfo: authorProps | null) => {
@@ -64,7 +65,10 @@ export const useGetTopic = () => {
 };
 
 // 点赞、取消点赞 TODO: 乐观更新没有生效
-export const useModifyApproval = (tabIndex: number) => {
+export const useModifyApproval = (
+  type: 'home' | 'readBookInfo',
+  tabIndex?: number,
+) => {
   const queryClient = useQueryClient();
   const queryKey = ['home'];
   return useMutation(
@@ -78,23 +82,8 @@ export const useModifyApproval = (tabIndex: number) => {
       },
       //    实现乐观更新
       onMutate: function (target) {
-        let previousItems;
-        // @ts-ignore
-        queryClient.setQueriesData(queryKey, (old: homeChartProps[]) => {
-          // //存储旧数据
-          previousItems = old ? [...(old as homeChartProps[])] : [];
-          let arr = old ? [...(old as homeChartProps[])] : [];
-          if (arr.length > 0) {
-            arr[tabIndex].data = arr[tabIndex].data.map((data) =>
-              data.id === target.book_id
-                ? { ...data, is_user_approval: target.is_approval }
-                : data,
-            );
-
-            return arr;
-          }
-          return old;
-        });
+        let previousItems = queryClient.getQueryData(type);
+        setApprovalMutate[type](target, queryClient, tabIndex);
         return { previousItems };
       },
       //错误回滚
