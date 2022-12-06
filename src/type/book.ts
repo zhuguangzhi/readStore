@@ -80,26 +80,6 @@ export type booksThemeProps = {
   subTheme?: booksThemeProps[];
 };
 
-//评论 TODO：提供接口类型reply_time改为time 未提供id
-export type commentProps = {
-  id: number;
-  target_type: number; // 1评论、2回复
-  book_id: number; //评论书籍id
-  book_title: string; //评论书籍标题
-  description: string; //评论书籍简介
-  cover: string; //书籍封面
-  is_look?: number; //...
-  target_id?: number; //我的评论id
-  content?: string; //我的评论内容
-
-  reply_id?: number; //回复评论id
-  reply_user_id?: number; //回复用户id
-  reply_content?: string; //回复内容
-  reply_user_image?: string; //回复用户头像
-  reply_user_name?: string; //回复用户昵称
-  time: string; //回复\评论日期
-};
-
 //作者作品 TODO:对接口时替换成book
 export interface worksProps {
   id: number;
@@ -119,28 +99,14 @@ export interface worksProps {
   create_time?: string; //创建时间
 }
 
-//榜单
-export interface bookRankProps {
-  id: number; //榜单id <number>
-  name: string; //榜单名称 <string>
-  list: {
-    book_id: number; //书籍id <integer>
-    book_title: string; //书籍标题 <string>
-    cover: string; //封面 大图 <string>
-    pen_name: string; //作者 <string>
-    is_finish: 'Y' | 'N'; //连载状态 Y：完结 N：连载 <string>
-    description: string; //书籍简介 <string>
-    word_count: number; //总字数 <integer>
-    category_title: null | string; //分类 <string>
-    all_click: number; //点击量 <integer>
-    billing_type: 1 | 2; //1:按章节付费 2：整本付费 <integer>
-    billing_chapter: number; //按章节价格 单位 夜听币 <string>
-    bookshelf: 0 | 1; //1加入书架
-    last_update_chapter_title: string; // 最后更新章节名称
-  }[];
-}
-
 //--------------------------------------------------
+// 分页
+type pageProps = {
+  page: number;
+  page_size: number;
+  total: number;
+};
+
 //点赞
 export interface approvalProps {
   book_id: number; //书本id
@@ -162,11 +128,7 @@ interface rankBook extends bookInfoProps {
 }
 export interface rankBookInfoProps {
   data: rankBook[];
-  page_info?: {
-    page: number;
-    page_size: number;
-    total: number;
-  };
+  page_info?: pageProps;
 }
 //- ---end
 // 阅读
@@ -179,3 +141,63 @@ export interface readBookProps {
 }
 // 书本详情
 export type readBookInfoProps = rankBook;
+// 评论
+export type commentProps = {
+  id: number; //主键ID
+  user_id: number; //用户ID
+  book_id: number; //书籍ID
+  content: string; //评论内容
+  reply: number; //回复数
+  report: number; //举报数
+  star: number; //评论分数
+  approval_count: number; //点赞数
+  create_time: string; //创建时间
+  user_nickname: string; //用户昵称
+  user_image_url: string; //用户头像地址
+  is_user_approval: 1 | 2; //用户是否已点赞(1：是 2：否）
+  data: replyStoreProps[]; // 回复
+};
+// 回复
+export interface replyStoreProps {
+  id: number; //主键ID
+  user_id: number; //用户ID
+  to_user_id: number; //回复用户ID
+  target_id: number; //回复的目标ID
+  target_type: 1 | 2; //回复目标类型( 1：评论  2：回复
+  comment_id: number; //评论ID
+  content: string; //内容
+  reply: number; //回复数
+  report: number; //举报次数
+  approval_count: number; //点赞数
+  create_time: string; //创建时间
+  is_user_approval: 1 | 2; //用户是否已点赞(1：是 2：否）
+  user_nickname: string; //用户昵称
+  user_image_url: string; //用户头像地址
+  to_user_nickname: string; //回复用户昵称
+  to_user_image_url: string; //回复用户头像地址
+}
+// 阅读评论
+export type readComponentProps = {
+  page_info: pageProps;
+  data: commentProps[];
+};
+// 评论请求参数
+export interface commentRequestProps extends Omit<pageProps, 'total'> {
+  book_id: number; //书籍Id
+  comment_sort_type: 1 | 2; //评论排序类型(  1：默认  2：最新时间）
+}
+// 回复的回复参数
+export interface replyStoreRequestProps {
+  comment_id: number; //评论ID
+  book_id: number; //书籍ID
+  target_id: number; //要回复的评论ID
+  to_user_id: number; //要回复的用户ID
+  content: string; //内容
+}
+// 评论的回复参数
+export type replyRequestProps = Omit<
+  replyStoreRequestProps,
+  'target_id' | 'to_user_id'
+>;
+// 评论的参数
+export type commentStoreRequestProps = Omit<replyRequestProps, 'comment_id'>;

@@ -8,18 +8,22 @@ type ReadOperationTabProps = {
   isApproval: 1 | 2;
   commentChange: Function;
   onApproval: Function;
+  onInput: Function;
 };
 
 export const ReadOperationTab = ({
   isApproval,
   onApproval,
+  onInput,
 }: ReadOperationTabProps) => {
   const ReportBtn = () => {
     return <div className={'readOperation_reportBtn'}>举报</div>;
   };
   return (
     <div className={'readOperation'}>
-      <div className={'readOperation_input'}>发表评论</div>
+      <div className={'readOperation_input'} onClick={() => onInput()}>
+        发表评论
+      </div>
       <p onClick={() => onApproval()}>
         <IconFont
           icon={isApproval === 2 ? 'xihuan' : 'support'}

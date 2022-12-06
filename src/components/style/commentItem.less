@@ -1,0 +1,77 @@
+.commentItem {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  margin: 17px 0;
+  &_userImage {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    margin-right: 16px;
+  }
+  &_box {
+    flex: 1;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #979797;
+    &_name {
+      width: 100%;
+      height: 21px;
+      line-height: 21px;
+    }
+    &_content {
+      width: 100%;
+      height: 19px;
+      color: #333333;
+      line-height: 19px;
+      letter-spacing: 2px;
+      padding: 9px 0;
+      box-sizing: initial;
+    }
+    &_infoBox {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      span:nth-of-type(2) {
+        margin: 0 16px 0 31px;
+      }
+      span:first-child {
+        cursor: default;
+        font-size: 14px;
+      }
+      span {
+        display: flex;
+        align-items: center;
+        color: #999999;
+        font-size: 12px;
+        cursor: pointer;
+      }
+    }
+    &_infoBox:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+.reply {
+  margin: 0;
+  &_box {
+    border: none;
+  }
+  &_infoBox {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  &_sendInput {
+    padding: 0 12px;
+    box-sizing: border-box;
+    height: 40px;
+    input,
+    .ant-btn-primary {
+      height: 40px !important;
+    }
+    .ant-btn-primary {
+      width: 60px;
+    }
+  }
+}

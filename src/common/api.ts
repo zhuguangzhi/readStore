@@ -1,10 +1,15 @@
 import http, { ResponseData } from '@/common/http';
 import {
   approvalProps,
+  commentRequestProps,
+  commentStoreRequestProps,
   rankBookInfoProps,
   rankParamProps,
   readBookInfoProps,
   readBookProps,
+  readComponentProps,
+  replyRequestProps,
+  replyStoreRequestProps,
 } from '@/type/book';
 import {
   accountLoginProps,
@@ -66,6 +71,20 @@ export const Book = {
   //  获取书本详情
   getBookInfo: (p: { id: number }) =>
     http.post<ResponseData<readBookInfoProps>>(`${apiUrl}/book/detail`, p),
+};
+export const Comment = {
+  //  获取评论
+  getComment: (p: commentRequestProps) =>
+    http.post<ResponseData<readComponentProps>>(`${apiUrl}/comment/list`, p),
+  //  回复的回复
+  replyStore: (p: replyStoreRequestProps) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/comment/reply/replyStore`, p),
+  //  评论的回复
+  reply: (p: replyRequestProps) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/comment/reply/store`, p),
+  //  发表评论
+  commentStore: (p: commentStoreRequestProps) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/comment/store`, p),
 };
 export const User = {
   // 刷新token

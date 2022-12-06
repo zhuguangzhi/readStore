@@ -1,0 +1,75 @@
+.comment {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  &_header {
+    width: 100%;
+    height: 24px;
+    margin-bottom: 17px;
+    display: flex;
+    justify-content: space-between;
+    &_slider {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      width: 90px;
+      height: 25px;
+      background: #efefef;
+      border-radius: 3px;
+      color: #7f7e7e;
+      padding: 4px 8px;
+      box-sizing: border-box;
+      i {
+        position: absolute;
+        transform: translateX(0);
+        transition: 0.3s all;
+        left: 4px;
+        width: 33px;
+        height: 21px;
+        background: #ffffff;
+        border-radius: 3px;
+      }
+      span {
+        display: inline-block;
+        z-index: 2;
+        font-size: 12px;
+        cursor: pointer;
+      }
+    }
+  }
+  &_sendInput {
+    width: 100%;
+    height: 50px;
+    box-sizing: initial;
+    .ant-form-item-control-input {
+      width: 100%;
+      max-width: 100%;
+      input {
+        height: 50px;
+        border-radius: 7px;
+        border: 1px solid #999999;
+      }
+    }
+
+    .ant-btn-primary {
+      width: 130px;
+      height: 50px;
+      background: var(--themeColor);
+      border-radius: 7px;
+      border: none;
+    }
+  }
+  &_pullLoadBox {
+    width: 100%;
+    height: calc(100% - 67px);
+    padding-bottom: 17px;
+    box-sizing: border-box;
+  }
+}
+.comment_sendInput_reserve {
+  flex-direction: column-reverse;
+  justify-content: space-between;
+  padding-bottom: 17px;
+}
