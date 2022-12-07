@@ -181,6 +181,17 @@ export type readComponentProps = {
   page_info: pageProps;
   data: commentProps[];
 };
+// 评论的回复请求参
+export type commentReplyRequestProps = {
+  comment_id: number;
+  page: number;
+  page_size: number;
+};
+// 评论回复的列表
+export type commentReply = {
+  page_info: pageProps;
+  data: replyStoreProps[];
+};
 // 评论请求参数
 export interface commentRequestProps extends Omit<pageProps, 'total'> {
   book_id: number; //书籍Id
@@ -201,3 +212,10 @@ export type replyRequestProps = Omit<
 >;
 // 评论的参数
 export type commentStoreRequestProps = Omit<replyRequestProps, 'comment_id'>;
+// 评论和回复点赞
+export type commentApprovalProps = {
+  comment_id: number; //评论ID
+  comment_user_id: number; //评论所属用户ID
+  is_approval: 1 | 2; //书籍点赞( 1：点赞  2：取消）
+  comment_type: 1 | 2; //评论类型( 1：评论  2：回复）
+};

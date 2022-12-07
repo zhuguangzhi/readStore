@@ -13,6 +13,7 @@ export const useSetState = <T>(state: T, setState: (arg: T) => void) => {
 export const useMounted = (call: () => void) => {
   useEffect(call, []);
 };
+
 // //节流
 // export const useDebounce = <T>(value: T, delay?: number) => {
 //   // const [debounceValue, setDebounceValue] = useState(value);

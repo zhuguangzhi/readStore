@@ -1,6 +1,9 @@
 import http, { ResponseData } from '@/common/http';
 import {
   approvalProps,
+  commentApprovalProps,
+  commentReply,
+  commentReplyRequestProps,
   commentRequestProps,
   commentStoreRequestProps,
   rankBookInfoProps,
@@ -76,6 +79,9 @@ export const Comment = {
   //  获取评论
   getComment: (p: commentRequestProps) =>
     http.post<ResponseData<readComponentProps>>(`${apiUrl}/comment/list`, p),
+  // 获取评论的回复
+  getCommentReply: (p: commentReplyRequestProps) =>
+    http.post<ResponseData<commentReply>>(`${apiUrl}/comment/reply/list`, p),
   //  回复的回复
   replyStore: (p: replyStoreRequestProps) =>
     http.post<ResponseData<{}>>(`${apiUrl}/comment/reply/replyStore`, p),
@@ -85,6 +91,9 @@ export const Comment = {
   //  发表评论
   commentStore: (p: commentStoreRequestProps) =>
     http.post<ResponseData<{}>>(`${apiUrl}/comment/store`, p),
+  //  评论点赞
+  commentApproval: (p: commentApprovalProps) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/comment/approval`, p),
 };
 export const User = {
   // 刷新token

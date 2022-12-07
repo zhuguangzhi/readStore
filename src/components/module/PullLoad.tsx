@@ -26,7 +26,10 @@ export const PullLoad = ({
     const pullHeight = pullRef.current?.clientHeight as number;
     const scrollTop = pullRef.current?.scrollTop as number;
     const scrollHeight = pullRef.current?.scrollHeight as number;
-    if (pullHeight + scrollTop + props.bottomHeight >= scrollHeight) {
+    if (
+      pullHeight + scrollTop + props.bottomHeight >= scrollHeight &&
+      props.page * props.pageSize < props.total
+    ) {
       props.onBottom?.();
     }
   };

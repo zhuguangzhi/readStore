@@ -1,4 +1,5 @@
 import {
+  commentApprovalProps,
   commentProps,
   replyRequestProps,
   replyStoreProps,
@@ -9,7 +10,12 @@ import { IconFont } from '@/components/IconFont';
 import './style/commentItem.less';
 import { UseNode } from '@/components/UseNode';
 import { Button, Form, Input, Pagination } from 'antd';
-import { useReply, useReplyStore } from '@/utils/read';
+import {
+  useCommentApproval,
+  useGetCommentReply,
+  useReply,
+  useReplyStore,
+} from '@/utils/read';
 import { useAuth } from '@/hook/useAuth';
 import { Values } from 'async-validator';
 
@@ -26,19 +32,29 @@ export const CommentItem = ({
   bookId,
 }: CommentItemProps) => {
   const { setLoadingModel } = useAuth();
-  const formValue = Form.useFormInstance();
+  const [formValue] = Form.useForm();
   // 展示的回复
   const [replyList, setReplyList] = useState<replyStoreProps[]>([]);
   // 是否展开更多回复
   const [showMore, setShowMore] = useState(false);
+  // 回复页数
+  const [replyPage, setReplyPage] = useState(1);
   // 是否打开评论的回复
   const [replyParam, setReplyParam] = useState({
     type: 'reply' as 'replyStore' | 'reply',
     reply: null as replyStoreProps | commentProps | null,
     open: false,
   });
-  // 回复页数
-  const [replyPage] = useState(1);
+  // 获取评论的回复
+  const { mutate: getReplyData, isLoading: commentReplyLoading } =
+    useGetCommentReply(setReplyList);
+  // 发表回复的回复
+  const { mutate: replyStore, isLoading: replyStoreLogin } = useReplyStore();
+  // 发表评论的回复
+  const { mutate: reply, isLoading: replyLogin } = useReply();
+  // 评论或回复点赞
+  const { mutate: commentApproval } = useCommentApproval();
+
   // 设置回复
   const onCommentReply = useCallback(
     (reply: replyStoreProps | commentProps, type: 'replyStore' | 'reply') => {
@@ -51,17 +67,13 @@ export const CommentItem = ({
     },
     [],
   );
-  // 发表回复的回复
-  const { mutate: replyStore, isLoading: replyStoreLogin } = useReplyStore();
-  // 发表评论的回复
-  const { mutate: reply, isLoading: replyLogin } = useReply();
-
   const onSendReply = (value: Values) => {
     let param = {
       comment_id: data.id,
       book_id: bookId,
       content: value.commentContainer,
     } as replyStoreRequestProps | replyRequestProps;
+    formValue.resetFields();
     if (replyParam.type === 'replyStore') {
       param = {
         ...param,
@@ -69,9 +81,28 @@ export const CommentItem = ({
         target_id: (replyParam.reply as replyStoreProps).id,
       } as replyStoreRequestProps;
       replyStore(param as replyStoreRequestProps);
+      return;
     }
     reply(param as replyRequestProps);
-    formValue.setFieldValue('commentContainer', '');
+  };
+  // 点赞
+  const onApproval = (type: 1 | 2, value: commentProps | replyStoreProps) => {
+    const param: commentApprovalProps = {
+      is_approval: value.is_user_approval === 1 ? 2 : 1,
+      comment_type: type,
+      comment_id: value.id,
+      comment_user_id: value.user_id,
+    };
+    commentApproval(param);
+    if (type === 2) {
+      setReplyList((val) => {
+        return val.map((data) => {
+          if (data.id === param.comment_id)
+            data.is_user_approval = param.is_approval;
+          return data;
+        });
+      });
+    }
   };
 
   // 回复的回复组件
@@ -94,10 +125,10 @@ export const CommentItem = ({
             ：<span>{reply.content}</span>
           </div>
           <div className={'commentItem_box_infoBox'}>
-            <span className={'font_14 color_99'}>{data.create_time}</span>
-            <span>
+            <span className={'font_14 color_99'}>{reply.create_time}</span>
+            <span onClick={() => onApproval(2, reply)}>
               <IconFont
-                icon={data.is_user_approval === 1 ? 'support' : 'xihuan'}
+                icon={reply.is_user_approval === 1 ? 'support' : 'xihuan'}
                 marginRight={'3px'}
                 width={'14px'}
                 height={'14px'}
@@ -119,13 +150,25 @@ export const CommentItem = ({
     );
   };
 
+  const getMoreReply = (page: number) => {
+    setReplyPage(page);
+    getReplyData({
+      page: replyPage,
+      page_size: 5,
+      comment_id: data.id,
+    });
+  };
+
   useEffect(() => {
-    setLoadingModel(replyStoreLogin || replyLogin);
-  }, [replyStoreLogin, replyLogin]);
+    setLoadingModel(replyStoreLogin || replyLogin || commentReplyLoading);
+  }, [replyStoreLogin, replyLogin, commentReplyLoading]);
   // 设置展示评论
   useEffect(() => {
-    const arr = [...data.data];
-    const replyLength = data.data.length;
+    // let arr = replyData?.data?[...replyData.data]:
+    //     replyList.length===0?[...data.data]:[];
+    let arr = [...data.data];
+    const replyLength = arr.length;
+    if (replyLength === 0) return;
     if (replyLength < 3 || showMore) setReplyList(arr);
     else if (replyLength === 4) setReplyList(arr.splice(0, 2));
     else setReplyList(arr.splice(0, 3));
@@ -142,7 +185,7 @@ export const CommentItem = ({
         <p className={'font_14 commentItem_box_content'}>{data.content}</p>
         <div className={'commentItem_box_infoBox'}>
           <span className={'font_14 color_99'}>{data.create_time}</span>
-          <span>
+          <span onClick={() => onApproval(1, data)}>
             <IconFont
               icon={data.is_user_approval === 1 ? 'support' : 'xihuan'}
               marginRight={'3px'}
@@ -171,6 +214,7 @@ export const CommentItem = ({
                 <span>共{data.reply}条回复，</span>
                 <span
                   className={'cursor'}
+                  style={{ display: 'inline-block', marginBottom: '12px' }}
                   onClick={() => {
                     setReplyList([...data.data]);
                     setShowMore(true);
@@ -181,11 +225,13 @@ export const CommentItem = ({
               </p>
             ) : (
               <Pagination
+                style={{ marginBottom: '12px' }}
                 hideOnSinglePage={true}
                 defaultCurrent={replyPage}
                 total={data.reply}
-                pageSize={10}
+                pageSize={5}
                 simple={true}
+                onChange={getMoreReply}
               />
             )}
           </div>
@@ -196,7 +242,7 @@ export const CommentItem = ({
             form={formValue}
             layout={'inline'}
             className={'comment_sendInput reply_sendInput'}
-            onFinish={onSendReply}
+            onFinish={(val) => onSendReply(val)}
           >
             <Form.Item name={'commentContainer'} style={{ flex: 1 }}>
               <Input

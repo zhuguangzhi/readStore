@@ -57,11 +57,16 @@ const Index = () => {
     getUserInfo();
   });
   return (
-    <Spin spinning={loading} tip="数据加载中..." size={'large'} delay={200}>
-      <div className={'webContainer'}>
-        <Outlet />
-      </div>
-    </Spin>
+    <div className={'webContainer'}>
+      <Spin
+        spinning={loading}
+        tip="数据加载中..."
+        size={'large'}
+        delay={200}
+        className={'spinLoading'}
+      />
+      <Outlet />
+    </div>
   );
 };
 export default Index;
