@@ -11,6 +11,7 @@ import {
   useGetTopic,
   useGetVane,
 } from '@/utils/home';
+import { BookId } from '@/constants/url';
 
 const NewsIcon = () => (
   <IconFont
@@ -73,6 +74,7 @@ export const NoticeList = () => {
                 key={index}
                 className={'flex vane_item'}
                 onMouseOver={() => setVaneIndex(index)}
+                onClick={() => router.push('/read', { [BookId]: vane.id })}
               >
                 {/*    排名*/}
                 <span className={'font_18 vane_rank'}>{index + 1}</span>

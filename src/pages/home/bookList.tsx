@@ -8,16 +8,23 @@ import { useAuth } from '@/hook/useAuth';
 import { useMounted } from '@/hook';
 import router from '@/hook/url';
 import { BookId } from '@/constants/url';
+import { useDispatch, useSelector } from 'umi';
+import { globalState } from '@/models/global';
+import { ConnectState } from '@/models/modelConnect';
 
+export const tabBarList = [
+  { label: '推荐', key: 'recommend' },
+  { label: 'VIP精选', key: 'vipPush' },
+  { label: '新书', key: 'newBook' },
+];
 const BookList = () => {
+  const disPatch = useDispatch();
+  const globalState = useSelector(
+    (state: ConnectState) => state.global,
+  ) as globalState;
   const [bookList, setBookList] = useState<homeChartProps | null>(null);
   const [currentTabIndex, setTabIndex] = useState(0);
   const { userInfo, setLoadingModel } = useAuth();
-  const tabBarList = [
-    { label: '推荐', key: 'recommend' },
-    { label: 'VIP精选', key: 'vipPush' },
-    { label: '新书', key: 'newBook' },
-  ];
   //点赞
   const { mutate: setApproval } = useModifyApproval('home', currentTabIndex);
   const { data: chartData } = useHomeChart(
@@ -26,7 +33,14 @@ const BookList = () => {
   );
 
   // 阅读
-  const readBook = (bookId: number) => {
+  const readBook = (bookId: number, index: number) => {
+    disPatch({
+      type: 'global/setHomeTab',
+      payload: {
+        scroll: document.documentElement.scrollTop,
+        tab: tabBarList[index],
+      },
+    });
     router.push('/read', { [BookId]: bookId });
   };
 
@@ -49,24 +63,29 @@ const BookList = () => {
     }
   };
   useMounted(() => {
+    document.body.scrollTop = globalState.homeTab.scroll;
     setLoadingModel(true);
   });
   useEffect(() => {
-    tabChange(tabBarList[0]);
+    tabChange(globalState.homeTab.tab);
   }, [chartData]);
   return (
     <div className={'book_list'}>
       <TabBar
         className={'tab_bar'}
         tabs={tabBarList}
-        defaultSelect={'recommend'}
+        defaultSelect={tabBarList[currentTabIndex].key}
         selectChange={tabChange}
       />
       <BookItem
         bookList={bookList}
         onApprove={(param) => setApproval(param)}
         tabIndex={currentTabIndex}
-        onClick={(book) => readBook(book.id)}
+        onClick={(book) => readBook(book.id, currentTabIndex)}
+        onComment={(book) => {
+          readBook(book.id, currentTabIndex);
+          disPatch({ type: 'global/setCommentBox', payload: true });
+        }}
       />
     </div>
   );

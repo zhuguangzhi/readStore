@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import './style/tabBar.less';
 import { UseNode } from '@/components/UseNode';
 
@@ -25,6 +25,9 @@ export const TabBar = ({
   ...props
 }: TabBarProps) => {
   const [select, setSelect] = useState(defaultSelect);
+  useEffect(() => {
+    setSelect(defaultSelect);
+  }, [defaultSelect]);
   const onClick = (tab: tabProps) => {
     setSelect(tab.key);
     selectChange?.(tab);

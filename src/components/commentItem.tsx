@@ -23,7 +23,7 @@ type CommentItemProps = {
   bookId: number;
   data: commentProps;
   commentReplyId: number | null;
-  setReplyId: Function;
+  setReplyId: (num: number | null) => void;
 };
 export const CommentItem = ({
   data,
@@ -247,6 +247,7 @@ export const CommentItem = ({
             <Form.Item name={'commentContainer'} style={{ flex: 1 }}>
               <Input
                 autoComplete={'off'}
+                maxLength={800}
                 placeholder={'回复：' + replyParam.reply?.user_nickname}
               />
             </Form.Item>

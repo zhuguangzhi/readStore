@@ -12,10 +12,12 @@ type BookItemProps = {
   bookList: homeChartProps | null;
   onClick?: (book: bookInfoProps) => void;
   onApprove?: (param: approvalProps) => void;
+  onComment?: (param: bookInfoProps) => void;
 };
 export const BookItem = ({
   bookList,
   onClick,
+  onComment,
   onApprove,
   tabIndex,
 }: BookItemProps) => {
@@ -81,7 +83,11 @@ export const BookItem = ({
                     />
                     <span>喜欢</span>
                   </div>
-                  <div className={'operation'} style={{ marginRight: '60px' }}>
+                  <div
+                    className={'operation'}
+                    style={{ marginRight: '60px' }}
+                    onClick={() => onComment?.(book)}
+                  >
                     <IconFont width={'16px'} height={'16px'} icon={'pinglun'} />
                     <span>评论（{book.book_extension?.all_comments}）</span>
                   </div>

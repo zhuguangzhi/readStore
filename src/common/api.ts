@@ -1,6 +1,8 @@
 import http, { ResponseData } from '@/common/http';
 import {
   approvalProps,
+  bookCategoryProps,
+  bookLibraryRequestProps,
   commentApprovalProps,
   commentReply,
   commentReplyRequestProps,
@@ -24,6 +26,7 @@ import {
   sendCodeResultProps,
 } from '@/type/user';
 import { clearToken } from '@/hook/useAuth';
+import { cleanObject } from '@/common/publicFn';
 
 export const ErrorCheck = <T>(val: ResponseData<T> | null) => {
   if (val?.status_code === 200) return true;
@@ -74,6 +77,18 @@ export const Book = {
   //  获取书本详情
   getBookInfo: (p: { id: number }) =>
     http.post<ResponseData<readBookInfoProps>>(`${apiUrl}/book/detail`, p),
+  //  获取主题分类
+  getBookCategory: (p: { channel_type?: 0 | 1 | 2; pid?: number }) =>
+    http.post<ResponseData<bookCategoryProps[]>>(
+      `${apiUrl}/book/category`,
+      cleanObject(p),
+    ),
+  //  获取书库
+  getBookLibrary: (p: bookLibraryRequestProps) =>
+    http.post<ResponseData<rankBookInfoProps>>(
+      `${apiUrl}/book/library`,
+      cleanObject(p),
+    ),
 };
 export const Comment = {
   //  获取评论

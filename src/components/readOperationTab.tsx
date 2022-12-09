@@ -15,6 +15,7 @@ export const ReadOperationTab = ({
   isApproval,
   onApproval,
   onInput,
+  ...props
 }: ReadOperationTabProps) => {
   const ReportBtn = () => {
     return <div className={'readOperation_reportBtn'}>举报</div>;
@@ -32,7 +33,7 @@ export const ReadOperationTab = ({
         />
         <span>点赞</span>
       </p>
-      <p>
+      <p onClick={() => props.commentChange()}>
         <IconFont icon={'comment2'} width={'26px'} height={'26px'} />
         <span>评论</span>
       </p>

@@ -1,5 +1,5 @@
 // 修改state
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // 改变state
 export const useSetState = <T>(state: T, setState: (arg: T) => void) => {
@@ -15,11 +15,11 @@ export const useMounted = (call: () => void) => {
 };
 
 // //节流
-// export const useDebounce = <T>(value: T, delay?: number) => {
-//   // const [debounceValue, setDebounceValue] = useState(value);
-//   // useEffect(() => {
-//   //   const timeout = setTimeout(() => setDebounceValue(value), delay);
-//   //   return () => clearTimeout(timeout);
-//   // }, [value, delay]);
-//   // return debounceValue;
-// };
+export const useDebounce = <T>(value: T, delay?: number) => {
+  const [debounceValue, setDebounceValue] = useState(value);
+  useEffect(() => {
+    const timeout = setTimeout(() => setDebounceValue(value), delay);
+    return () => clearTimeout(timeout);
+  }, [value, delay]);
+  return debounceValue;
+};

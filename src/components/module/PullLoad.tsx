@@ -13,6 +13,7 @@ type PullLoadProps = {
   onScroll?: (event: React.UIEvent<HTMLDivElement>) => void; //滚动中
   onBottom?: Function; //触底
   children: React.ReactElement;
+  usePullLoad?: boolean;
 };
 export const PullLoad = ({
   width = '100%',
@@ -34,7 +35,9 @@ export const PullLoad = ({
     }
   };
 
-  return (
+  return props.usePullLoad === false ? (
+    <>{children}</>
+  ) : (
     <div
       ref={pullRef}
       onScroll={pullScroll}

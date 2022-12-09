@@ -44,6 +44,7 @@ export type bookExtension = {
   all_reward: number; //总打赏
   all_comments: number; //总评论数
   all_read: number; //总阅读数
+  all_approval: number; //总点赞数
 };
 
 //用户阅读书本类型 TODO:对接口时替换成book
@@ -53,7 +54,6 @@ export interface bookProps {
   description: string; //摘要
   face: string; //封面
   content: string;
-
   authorInfo: Partial<authorProps>; //作者信息  content: string //内容
   comment: number; //评论数
   vip: boolean; //是否是vip书籍
@@ -119,7 +119,7 @@ export interface rankParamProps {
   page_size: number; //条数
 }
 // 排行书本信息
-interface rankBook extends bookInfoProps {
+export interface rankBook extends bookInfoProps {
   author: {
     id: number; //id
     pen_name: string; //笔名
@@ -218,4 +218,27 @@ export type commentApprovalProps = {
   comment_user_id: number; //评论所属用户ID
   is_approval: 1 | 2; //书籍点赞( 1：点赞  2：取消）
   comment_type: 1 | 2; //评论类型( 1：评论  2：回复）
+};
+
+// 书籍分类
+export type bookCategoryProps = {
+  id: number; //主键ID
+  pid: number; //父ID
+  name: string; //书籍标题
+  cover: string; //书籍封面
+  cover_url: string; //图片URL地址
+  child?: bookCategoryProps[]; //子集
+};
+//书库请求参
+export type bookLibraryRequestProps = {
+  channel_type?: 1 | 2; //频道类型( 1：男频  2：女频 ）
+  parent_category_ids?: string; //一级分类( 多选情况下英文逗号分隔 ）
+  category_ids?: string; //二级分类( 多选情况下英文逗号分隔 ）
+  search_status?: number; //搜索状态( 0：全部  1：已完结  2：连载中）
+  search_sort?: number; //搜索状态( 3：最热  4：最新 ）
+  search_word_count?: number; //搜索字数( 0：全部  1：30万以下  2：30-50万  3：50-100万  4：100-200万  5：200万以上  ）
+  pen_name?: string; //作者名
+  book_title?: string; //书籍名
+  page?: number; //页数
+  page_size?: number; //条数
 };

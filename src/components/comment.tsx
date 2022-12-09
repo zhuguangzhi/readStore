@@ -7,6 +7,7 @@ import { CommentItem } from '@/components/commentItem';
 import { Values } from 'async-validator';
 import { useCommentStore } from '@/utils/read';
 import { useAuth } from '@/hook/useAuth';
+import { DefaultNoData } from '@/components/defaultNoData';
 
 type CommentProps = {
   commentData: readComponentProps | undefined;
@@ -50,24 +51,6 @@ export const Comment = ({
     commentStore(param);
   };
 
-  const ReplyComponent = () => {
-    return (
-      <>
-        {commentData?.data.map((comment) => {
-          return (
-            <CommentItem
-              key={comment.id}
-              bookId={bookId}
-              commentReplyId={commentReplyId}
-              setReplyId={setReplyId}
-              data={comment}
-            />
-          );
-        })}
-      </>
-    );
-  };
-
   useEffect(() => {
     setLoadingModel(commentLoading);
   }, [commentLoading]);
@@ -77,7 +60,7 @@ export const Comment = ({
       <div className={'comment_header'}>
         <p className={'font_18 font_bold'} style={{ color: '#000000' }}>
           <span>评论</span>
-          <span>（{commentData?.page_info.total}）</span>
+          <span>（{commentData?.page_info.total || 0}）</span>
         </p>
         <div className={'comment_header_slider'}>
           <i
@@ -110,6 +93,7 @@ export const Comment = ({
             <Form.Item name={'commentContainer'} style={{ flex: 1 }}>
               <Input
                 autoComplete={'off'}
+                maxLength={800}
                 placeholder={'请给作者一些评价，让作者更有动力～'}
               />
             </Form.Item>
@@ -119,18 +103,35 @@ export const Comment = ({
           </Form>
         </div>
         <div className={'comment_pullLoadBox'}>
-          {props.usePullLoad === false ? (
-            <ReplyComponent />
-          ) : (
+          {commentData && commentData?.data.length !== 0 ? (
             <PullLoad
               page={props.commentPage}
               total={total}
               pageSize={page_size}
+              usePullLoad={props.usePullLoad}
               bottomHeight={560}
               onBottom={() => props.getMoreComment()}
             >
-              <ReplyComponent />
+              <>
+                {commentData?.data.map((comment) => {
+                  return (
+                    <CommentItem
+                      key={comment.id}
+                      bookId={bookId}
+                      commentReplyId={commentReplyId}
+                      setReplyId={setReplyId}
+                      data={comment}
+                    />
+                  );
+                })}
+              </>
             </PullLoad>
+          ) : (
+            <DefaultNoData
+              className={'comment_noData'}
+              type={'noData'}
+              text={'快来抢沙发吧~'}
+            />
           )}
         </div>
       </div>

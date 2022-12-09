@@ -3,8 +3,15 @@ import './style/index.less';
 import { BookBox } from '@/pages/bookRank/bookBox';
 import { useGetBookRank } from '@/utils/rank';
 import { useAuth } from '@/hook/useAuth';
+import { useDispatch, useSelector } from 'umi';
+import { ConnectState } from '@/models/modelConnect';
+import { globalState } from '@/models/global';
 
 export default () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(
+    (state: ConnectState) => state.global,
+  ) as globalState;
   const slideList = [
     { key: 1, label: '大热榜', subTitle: '根据七天内阅读人气进行排行' },
     { key: 2, label: '免费榜', subTitle: '根据七天内阅读人气进行排行' },
@@ -25,7 +32,7 @@ export default () => {
     },
   ];
   const { userInfo, setLoadingModel } = useAuth();
-  const [sideIndex, setSide] = useState(0);
+  const [sideIndex, setSide] = useState(globalState.bookRankIndex);
   const { data: rankBookData, isLoading } = useGetBookRank(
     () => setLoadingModel(false),
     {
@@ -48,7 +55,10 @@ export default () => {
             <p
               className={index === sideIndex ? 'sideSelect' : ''}
               key={item.key}
-              onClick={() => setSide(index)}
+              onClick={() => {
+                setSide(index);
+                dispatch({ type: 'global/setNookRankIndex', payload: index });
+              }}
             >
               {item.label}
             </p>

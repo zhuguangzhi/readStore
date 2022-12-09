@@ -41,3 +41,25 @@ export const removeStorage = (key: string) => {
 export const clearStorage = () => {
   window.localStorage.clear();
 };
+// 转指定行数的2为数组
+export const targetColumnArray = <T>(value: T[], columnNum: number) => {
+  const arr = [...value];
+  let columnArray: T[][] = Array.from({
+    length: Math.ceil(arr.length / columnNum),
+  }).map(() => []);
+  arr.forEach((book, index) => {
+    //通过向下取整方式获取当前列索引
+    let currentColumnIndex = Math.floor(index / 6);
+    columnArray[currentColumnIndex].push(book);
+  });
+  return columnArray;
+};
+// 滚动到底部
+export const scrollToBottom = (distance: number = 0, call?: Function) => {
+  const bodyHeight = document.body.clientHeight;
+  const scrollTop = document.documentElement.scrollTop;
+  const scrollHeight = document.body.scrollHeight;
+  if (scrollHeight - (bodyHeight + scrollTop) <= distance) {
+    call?.();
+  }
+};

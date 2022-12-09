@@ -4,6 +4,8 @@ import { isFinish, translateNumber } from '@/utils/format';
 import './style/bookBox.less';
 import { UseNode } from '@/components/UseNode';
 import { useAddBookCase } from '@/utils/rank';
+import router from '@/hook/url';
+import { BookId } from '@/constants/url';
 
 export const BookBox = ({
   bookList,
@@ -44,7 +46,10 @@ export const BookBox = ({
                 </p>
               </div>
               <div style={{ width: '124px' }}>
-                <button className={'bookBox_item_right_btn readBtn'}>
+                <button
+                  className={'bookBox_item_right_btn readBtn'}
+                  onClick={() => router.push('/read', { [BookId]: book.id })}
+                >
                   立即阅读
                 </button>
                 <UseNode rIf={book.in_user_case === 2}>

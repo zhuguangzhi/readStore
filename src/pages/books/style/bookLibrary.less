@@ -1,0 +1,38 @@
+.bookLibrary {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-content: space-between;
+  &_item {
+    width: 96%;
+    padding: 0 2%;
+    box-sizing: border-box;
+    height: 176px;
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 34px;
+    cursor: pointer;
+    &_img {
+      width: 121px;
+      height: 176px;
+      border-radius: 10px 25px 20px 10px;
+      margin-right: 27px;
+    }
+    &_container {
+      flex: 1;
+      width: 100%;
+      padding: 6px 0;
+      box-sizing: border-box;
+      font-size: 14px;
+      color: #424242;
+      &_infoBox {
+        margin: 8px 0 4px 0;
+        width: 100%;
+        span {
+          display: inline-block;
+          margin-right: 12px;
+        }
+      }
+    }
+  }
+}
