@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IconFont } from '@/components/IconFont';
 import { Popover } from 'antd';
 import './style/readOperation.less';
+import { ReadModel } from '@/components/module/ReadModel';
+import { Report } from '@/components/report';
 
 type ReadOperationTabProps = {
   bookId: number | undefined;
@@ -17,8 +19,17 @@ export const ReadOperationTab = ({
   onInput,
   ...props
 }: ReadOperationTabProps) => {
+  const [openReport, setOpenReport] = useState(false);
+
   const ReportBtn = () => {
-    return <div className={'readOperation_reportBtn'}>举报</div>;
+    return (
+      <div
+        className={'readOperation_reportBtn'}
+        onClick={() => setOpenReport(true)}
+      >
+        举报
+      </div>
+    );
   };
   return (
     <div className={'readOperation'}>
@@ -46,6 +57,14 @@ export const ReadOperationTab = ({
           <IconFont icon={'more'} width={'32px'} height={'32px'} />
         </p>
       </Popover>
+      <ReadModel
+        useTitle={false}
+        open={openReport}
+        width={'560px'}
+        onCancel={() => setOpenReport(false)}
+      >
+        <Report />
+      </ReadModel>
     </div>
   );
 };
