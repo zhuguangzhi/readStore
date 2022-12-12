@@ -8,6 +8,7 @@ import {
   commentReplyRequestProps,
   commentRequestProps,
   commentStoreRequestProps,
+  pageRequestProps,
   rankBookInfoProps,
   rankParamProps,
   readBookInfoProps,
@@ -22,11 +23,13 @@ import {
   checkCodeProps,
   loginResultProps,
   phoneLoginProps,
+  registerProps,
   sendCodeProps,
   sendCodeResultProps,
 } from '@/type/user';
 import { clearToken } from '@/hook/useAuth';
 import { cleanObject } from '@/common/publicFn';
+import { delCommentProps, myCommentProps } from '@/type/personalCenter';
 
 export const ErrorCheck = <T>(val: ResponseData<T> | null) => {
   if (val?.status_code === 200) return true;
@@ -142,5 +145,20 @@ export const User = {
       false,
     ),
   // 校验验证码
-  checkCode: (p: checkCodeProps) => http.post(`${apiUrl}/captcha/verify`, p),
+  checkCode: (p: checkCodeProps) =>
+    http.post<ResponseData<sendCodeResultProps>>(`${apiUrl}/captcha/verify`, p),
+  // 注册
+  register: (p: registerProps) =>
+    http.post<ResponseData<loginResultProps>>(`${apiUrl}/auth/register`, p),
+};
+export const PersonalCenter = {
+  getAllComment: (p: pageRequestProps) =>
+    http.post<ResponseData<myCommentProps>>(`${apiUrl}/users/commentAReply`, p),
+  getMyComment: (p: pageRequestProps) =>
+    http.post<ResponseData<myCommentProps>>(`${apiUrl}/users/comments`, p),
+  getMyReply: (p: pageRequestProps) =>
+    http.post<ResponseData<myCommentProps>>(`${apiUrl}/users/receiveReply`, p),
+  // 删除评论
+  delComment: (p: delCommentProps) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/users/delComment`, p),
 };

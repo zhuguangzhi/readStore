@@ -31,7 +31,7 @@ export const setStorage = (key: string, value: unknown) => {
 // 获取缓存
 export const getStorage = (key: string) => {
   const res = window.localStorage.getItem(key) as string;
-  return JSON.parse(res) || null;
+  return res ? JSON.parse(res) : null;
 };
 // 删除指定缓存
 export const removeStorage = (key: string) => {

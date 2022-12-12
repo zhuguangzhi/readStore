@@ -8,7 +8,6 @@ type popupProps = {
 };
 
 export class DelPopup<T extends popupProps> {
-  ids: number[] = [];
   state: T;
   setState: (arg: popupProps) => void;
 
@@ -21,14 +20,13 @@ export class DelPopup<T extends popupProps> {
     let arr = [...this.state.ids];
     if (value.target.checked) arr.push(id);
     else arr.splice(arr.indexOf(id), 1);
-    this.ids = arr;
     this.setState({ ...this.state, ids: arr });
   };
 
   //删除按钮点击
   onDelChange = (title?: string, id?: number) => {
     this.setState({
-      ids: id ? [id] : this.ids,
+      ids: id ? [id] : [...this.state.ids],
       title: title || '',
       open: true,
     });

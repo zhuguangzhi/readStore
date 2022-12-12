@@ -13,7 +13,7 @@ import { setApprovalMutate } from '@/utils/mutate/setApproval';
 
 // 获取书本推荐
 export const useHomeChart = (call: Function, userInfo: authorProps | null) => {
-  return useQuery<homeChartProps[], Error>(['home', userInfo], () => {
+  return useQuery<homeChartProps[], Error>(['home', userInfo?.id], () => {
     return Home.getHomeBook<ResponseData<homeChartProps[]>>().then((value) => {
       ErrorCheck(value);
       call();

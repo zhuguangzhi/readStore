@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { authorProps } from '@/type/user';
 import { IconFont } from '@/components/IconFont';
 
 import './style/index.less';
@@ -7,16 +6,13 @@ import { netName } from '@/assets/config';
 import { useSetState } from '@/hook';
 import { Outlet } from 'react-router';
 import router, { useGetUrlPath } from '@/hook/url';
+import { useAuth } from '@/hook/useAuth';
 
 export const PersonalCenter = () => {
   //获取当前路由信息
   const routeInfo = useGetUrlPath();
+  const { userInfo } = useAuth();
   const [state, setState] = useState({
-    userInfo: {
-      name: '读点小故事',
-      id: 1234567890,
-      mobile: 18720427542,
-    } as authorProps, //用户信息
     sideMenuList: [
       { key: 'bookShelf', label: '我的书架', icon: 'bookShelf' },
       { key: 'comment', label: '我的评论', icon: 'message' },
@@ -55,9 +51,9 @@ export const PersonalCenter = () => {
             src={require('../../assets/test/personPhoto.png')}
             alt=""
           />
-          <p className={'user_info_name'}>{state.userInfo.name}</p>
-          <p>ID：{state.userInfo.id}</p>
-          <p>手机：{state.userInfo.mobile}</p>
+          <p className={'user_info_name'}>{userInfo?.nickname}</p>
+          <p>ID：{userInfo?.id}</p>
+          <p>手机：{userInfo?.mobile}</p>
         </div>
         {/*    菜单项*/}
         <div className={'menu'}>

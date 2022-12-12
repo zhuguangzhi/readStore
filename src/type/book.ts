@@ -101,11 +101,13 @@ export interface worksProps {
 
 //--------------------------------------------------
 // 分页
-type pageProps = {
+export type pageProps = {
   page: number;
   page_size: number;
   total: number;
 };
+// 分页参数
+export type pageRequestProps = Omit<pageProps, 'total'>;
 
 //点赞
 export interface approvalProps {
@@ -113,10 +115,8 @@ export interface approvalProps {
   is_approval: 1 | 2; //书籍点赞( 1：点赞  2：取消）
 }
 // 排行参数
-export interface rankParamProps {
+export interface rankParamProps extends pageRequestProps {
   rank_type: number; //榜单类型 1：阅读榜    2：免费榜     3：推荐榜     4：评论榜     5：完结榜     6：连载榜
-  page: number; //页数
-  page_size: number; //条数
 }
 // 排行书本信息
 export interface rankBook extends bookInfoProps {
@@ -182,11 +182,9 @@ export type readComponentProps = {
   data: commentProps[];
 };
 // 评论的回复请求参
-export type commentReplyRequestProps = {
+export interface commentReplyRequestProps extends pageRequestProps {
   comment_id: number;
-  page: number;
-  page_size: number;
-};
+}
 // 评论回复的列表
 export type commentReply = {
   page_info: pageProps;

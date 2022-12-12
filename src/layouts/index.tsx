@@ -14,6 +14,10 @@ import EventBus from '@/common/EventBus';
 
 import { Bus_ClearUserInfo, UserInfo } from '@/constants';
 import { getStorage } from '@/common/publicFn';
+import { useAsync } from '@/hook/useAsync';
+import { ResponseData } from '@/common/http';
+import { authorProps, loginResultProps } from '@/type/user';
+import { ErrorCheck, User } from '@/common/api';
 
 const Index = () => {
   // 全局配置message
@@ -23,7 +27,7 @@ const Index = () => {
   const { loading } = useSelector(
     (state: ConnectState) => state.global,
   ) as globalState;
-  // const { run } = useAsync<ResponseData<loginResultProps | authorProps>>();
+  const { run } = useAsync<ResponseData<loginResultProps | authorProps>>();
   const { setUserInfo, setToken } = useAuth();
 
   const getUserInfo = async () => {
@@ -39,12 +43,13 @@ const Index = () => {
     // if (!ErrorCheck(newToken)) return false;
     // // 设置新token
     // await setToken(newToken.data.access_token);
-    // // 获取用户信息 网络获取
-    // const userInfoRes = (await run(
-    //     User.getUserInfo(),
-    // )) as ResponseData<authorProps>;
-    // if (!ErrorCheck(userInfoRes)) return false;
-    // setUserInfo(userInfoRes.data);
+
+    // 获取用户信息 网络获取
+    const userInfoRes = (await run(
+      User.getUserInfo(),
+    )) as ResponseData<authorProps>;
+    if (!ErrorCheck(userInfoRes)) return false;
+    setUserInfo(userInfoRes.data);
   };
   const clearUserInfo = () => {
     setToken(null);

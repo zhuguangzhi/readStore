@@ -1,10 +1,10 @@
-.commentItem {
+.personalComment {
   font-size: 14px;
   color: #0d0d0d;
   padding: 19px 42px 19px 50px;
   box-sizing: border-box;
   width: 100%;
-  border-bottom: var(--border);
+  //border-bottom: var(--border);
 
   &_header {
     display: flex;
@@ -37,6 +37,29 @@
     }
     &_time {
       color: #747474;
+    }
+  }
+  &_sendInput {
+    width: 100%;
+    height: 38px;
+    box-sizing: initial;
+    margin-top: 12px;
+    .ant-form-item-control-input {
+      width: 100%;
+      max-width: 100%;
+      input {
+        height: 38px;
+        border-radius: 7px;
+        border: 1px solid #999999;
+      }
+    }
+
+    .ant-btn-primary {
+      width: 80px;
+      height: 38px;
+      background: var(--themeColor);
+      border-radius: 7px;
+      border: none;
     }
   }
 }

@@ -61,6 +61,7 @@ const Login = () => {
             className={'login_form_input'}
             placeholder={'请输入手机号码'}
             onChange={inputOnchange}
+            autoComplete={'off'}
           />
         </Form.Item>
         <div className={'flex login_form_sendCode'}>
@@ -68,6 +69,7 @@ const Login = () => {
             <Input
               className={'login_form_sendCode_input'}
               placeholder={'请输入验证码'}
+              autoComplete={'off'}
             />
           </Form.Item>
           <SendCode className={'login_form_sendCode_btn'} mobile={mobile} />
@@ -82,6 +84,7 @@ const Login = () => {
           <Input
             className={'login_form_input'}
             placeholder={'请输入手机号码'}
+            autoComplete={'off'}
           />
         </Form.Item>
         <Form.Item name={'password'}>

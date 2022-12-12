@@ -20,7 +20,7 @@
   }
   &_side,
   &_container {
-    min-height: calc(100vh - var(--headerHeight) - 106px - 32px);
+    height: calc(100vh - var(--headerHeight) - 111px - 32px);
     width: 218px;
     padding: 37px 31px;
     box-shadow: 0 0 21px 0 rgba(176, 175, 175, 0.26);
@@ -103,6 +103,9 @@
     margin-right: 21px;
     z-index: 1;
   }
+  &_container > div {
+    height: 100%;
+  }
 }
 .personal::before {
   content: '';
@@ -113,4 +116,10 @@
   bottom: 0;
   background-color: white;
   z-index: -2; // -2是为了让header头的border显示出来 header的是-1
+}
+
+.personal .containerBox {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
 }

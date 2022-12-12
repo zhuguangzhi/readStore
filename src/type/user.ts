@@ -37,11 +37,18 @@ export type phoneLoginProps = {
 // 登陆返回结果
 export type loginResultProps = { access_token: string };
 // 验证码返回结果
-export type sendCodeResultProps = { captcha_key: string };
+export type sendCodeResultProps = { verify_key: string };
 //发送验证码
 export type sendCodeProps = Omit<
   phoneLoginProps,
   'captcha_code' | 'captcha_key'
 >;
 //校验验证码
-export type checkCodeProps = Omit<phoneLoginProps, 'mobile'>;
+export type checkCodeProps = phoneLoginProps;
+// 注册
+export type registerProps = {
+  mobile: string;
+  verify_key: string; //手机验证码成功KEY值
+  nickname?: string;
+  password: string;
+};
