@@ -103,18 +103,28 @@ export default () => {
       const bodyHeight = bodyRef.current.clientHeight;
       const scrollTop = document.documentElement.scrollTop;
       const scrollHeight = bodyRef.current.scrollHeight;
-      const readContainerHeight = readContainerRef.current?.clientHeight || 0;
-
-      if (scrollTop + bodyHeight <= readContainerHeight) setOperationTab(true);
-      else setOperationTab(false);
       if (scrollHeight - (bodyHeight + scrollTop) < 500) {
         uploadGetMore();
       }
+      if (!readContainerRef.current) return;
+      const readContainerHeight = readContainerRef.current.clientHeight || 0;
+      // 设置底部信息框
+      if (scrollTop + bodyHeight <= readContainerHeight) setOperationTab(true);
+      else setOperationTab(false);
+      // 内容实际滚动距离
+      const realScroll =
+        document.documentElement.scrollTop + document.body.clientHeight - 390;
+      let progress = Math.ceil(
+        (realScroll / readContainerRef.current.clientHeight) * 100,
+      );
+      progress = progress > 100 ? 100 : progress;
+      console.log('progress', progress);
     };
   }, [commentLoading]);
   useMounted(() => {
     document.documentElement.scrollTop = 0;
     document.documentElement.style.scrollBehavior = 'smooth';
+    // 路由跳转拦截
     return () => {
       document.documentElement.style.scrollBehavior = 'initial';
     };
@@ -162,10 +172,7 @@ export default () => {
         </div>
         {/*    内容*/}
         <div className={'readBook_container'} ref={readContainerRef}>
-          <ReadContainer
-            container={bookContainer?.content || ''}
-            containerRef={readContainerRef.current}
-          />
+          <ReadContainer container={bookContainer?.content || ''} />
         </div>
         <UseNode rIf={useOperationTab}>
           <div className={'readOperationBox'}>

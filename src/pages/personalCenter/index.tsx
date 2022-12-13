@@ -15,6 +15,7 @@ export const PersonalCenter = () => {
   const [state, setState] = useState({
     sideMenuList: [
       { key: 'bookShelf', label: '我的书架', icon: 'bookShelf' },
+      { key: 'topicShelf', label: '话题书架', icon: 'topic' },
       { key: 'comment', label: '我的评论', icon: 'message' },
       { key: 'notice', label: '系统通知', icon: 'tongzhi' },
     ], //菜单项

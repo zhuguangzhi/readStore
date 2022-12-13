@@ -45,10 +45,12 @@ export const BookItem = ({
             {/*    右侧内容*/}
             <div className={'book_right'}>
               {/*标题*/}
-              <p className={'font_18 font_bold cursor'}>{book.name}</p>
+              <p className={'font_18 font_bold cursor'}>
+                {book.topic.title ? `来自话题：${book.topic.title}` : book.name}
+              </p>
               {/*内容*/}
               <div className={'container'}>
-                {book.tags?.map((tags, index) => {
+                {book.tag?.map((tags, index) => {
                   return (
                     <span className={'container_tags'} key={index}>
                       【{tags}】
@@ -70,8 +72,12 @@ export const BookItem = ({
                     className={'book_right_bookshelf'}
                     onClick={() => addBookCase({ book_id: book.id })}
                   >
-                    <IconFont width={'10px'} height={'10px'} icon={'shujia'} />
-                    <span>加入书架</span>
+                    <IconFont
+                      width={'10px'}
+                      height={'10px'}
+                      icon={book.is_vip ? 'shujia' : 'topic'}
+                    />
+                    <span>{book.is_vip ? '加入书架' : '加入话题'}</span>
                   </div>
                 </UseNode>
                 <div className={'book_right_options'}>

@@ -25,3 +25,17 @@ export type delCommentProps = {
   comment_id?: string;
   reply_id?: string;
 };
+// 我的书架
+export type myBookProps = {
+  id: number; //主键ID
+  book_id: number; //书籍ID
+  book_title: string; //书籍名称
+  cover_url: string; //封面URL地址
+  read_progress: string; //阅读进度
+  topic_id: number; //话题ID
+  topic_title: string; //话题标题
+};
+export type myBookListProps = {
+  data: myBookProps[];
+  page_info: pageProps;
+};

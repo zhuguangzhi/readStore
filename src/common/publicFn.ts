@@ -41,7 +41,7 @@ export const removeStorage = (key: string) => {
 export const clearStorage = () => {
   window.localStorage.clear();
 };
-// 转指定行数的2为数组
+// 转为指定行数的数组
 export const targetColumnArray = <T>(value: T[], columnNum: number) => {
   const arr = [...value];
   let columnArray: T[][] = Array.from({
@@ -49,7 +49,7 @@ export const targetColumnArray = <T>(value: T[], columnNum: number) => {
   }).map(() => []);
   arr.forEach((book, index) => {
     //通过向下取整方式获取当前列索引
-    let currentColumnIndex = Math.floor(index / 6);
+    let currentColumnIndex = Math.floor(index / columnNum);
     columnArray[currentColumnIndex].push(book);
   });
   return columnArray;
@@ -62,4 +62,14 @@ export const scrollToBottom = (distance: number = 0, call?: Function) => {
   if (scrollHeight - (bodyHeight + scrollTop) <= distance) {
     call?.();
   }
+};
+// 根据id去重
+export const setArrayForId = (arr: { id: number }[]) => {
+  let map = new Map();
+  for (let item of arr) {
+    if (!map.has(item.id)) {
+      map.set(item.id, item);
+    }
+  }
+  return [...map.values()];
 };

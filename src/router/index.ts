@@ -9,6 +9,11 @@ const useHeaderRouter = {
       component: '@/pages/home/index',
     },
     {
+      path: '/home/news',
+      title: '公告',
+      component: '@/pages/home/newsInfo',
+    },
+    {
       path: '/books',
       title: '书库',
       component: '@/pages/books/index',
@@ -27,6 +32,11 @@ const useHeaderRouter = {
           path: 'bookShelf',
           title: '我的书架',
           component: '@/pages/personalCenter/bookShelf',
+        },
+        {
+          path: 'topicShelf',
+          title: '话题书架',
+          component: '@/pages/personalCenter/topicShelf',
         },
         {
           path: 'comment',

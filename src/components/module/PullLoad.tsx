@@ -2,6 +2,7 @@
 
 import React, { useRef } from 'react';
 import './style/PullLoad.less';
+import { UseNode } from '@/components/UseNode';
 
 type PullLoadProps = {
   width?: string; //宽度
@@ -14,10 +15,14 @@ type PullLoadProps = {
   onBottom?: Function; //触底
   children: React.ReactElement;
   usePullLoad?: boolean;
+  noText?: number; // total小于noText时不显示文本
+  showText?: boolean; //是否展示文本
 };
 export const PullLoad = ({
   width = '100%',
   height = '100%',
+  noText = 3,
+  showText = true,
   children,
   ...props
 }: PullLoadProps) => {
@@ -45,11 +50,13 @@ export const PullLoad = ({
       className={'pullLoad'}
     >
       <div className={'pullLoad_child'}>{children}</div>
-      <span className={'pullLoad_msgTip'}>
-        {props.page * props.pageSize >= props.total
-          ? '没有更多啦~'
-          : '数据加载中...'}
-      </span>
+      <UseNode rIf={props.total > noText && showText}>
+        <span className={'pullLoad_msgTip'}>
+          {props.page * props.pageSize >= props.total
+            ? '没有更多啦~'
+            : '数据加载中...'}
+        </span>
+      </UseNode>
     </div>
   );
 };

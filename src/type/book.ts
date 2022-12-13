@@ -7,7 +7,7 @@ export type bookInfoProps = {
   cover: string; //封面相对路径
   name: string; //名称
   description: string; // 描述
-  tags: string[]; //书本标签
+  tag: string[]; //书本标签
   category_name: string; // 三级分类名称
   category_id: number; //三级分类ID
   parent_category_id: number; //二级分类ID
@@ -33,6 +33,7 @@ export type bookInfoProps = {
   chart_sort: number; //推荐序号
   is_attention: 2 | 1; //当前用户是否关注作者( 1：是  2：否 ）
   book_extension?: bookExtension; //书籍额外信息
+  topic: topicProps; //话题信息
 };
 // 书籍额外信息
 export type bookExtension = {
@@ -46,6 +47,12 @@ export type bookExtension = {
   all_read: number; //总阅读数
   all_approval: number; //总点赞数
 };
+// 话题信息
+export type topicProps = {
+  id: number; //主键ID
+  title: string; //话题标题
+};
+// __________________________________
 
 //用户阅读书本类型 TODO:对接口时替换成book
 export interface bookProps {
@@ -58,19 +65,10 @@ export interface bookProps {
   comment: number; //评论数
   vip: boolean; //是否是vip书籍
   support: boolean; //已赞
-  source: sourceProps | null; //来源 比如话题 无就null
   tags?: string[]; //标签列表
   bookshelf: boolean; //是否加入书架
   progress?: number; //阅读进度
 }
-
-//来源信息
-export type sourceProps = {
-  id: number;
-  type: 'Topic'; //"Topic":话题
-  title: string; //标题
-  desc: string; //标题描述
-};
 
 //书库主题分类
 export type booksThemeProps = {

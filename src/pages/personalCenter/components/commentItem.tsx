@@ -7,6 +7,9 @@ import './style/commentItem.less';
 import '../style/bookShelf.less';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { myCommentDataProps } from '@/type/personalCenter';
+import { useReply } from '@/utils/read';
+import { Values } from 'async-validator';
+import { replyRequestProps } from '@/type/book';
 
 type CommentItemProps = {
   comment: myCommentDataProps;
@@ -29,9 +32,19 @@ export const CommentItem = ({
   ...props
 }: CommentItemProps) => {
   const [replyPopup, setReplyPopup] = useState(false);
+  const { mutate: replyComment, isLoading } = useReply();
+  const [formValue] = Form.useForm();
   const onReply = () => {
     setReplyPopup((val) => !val);
     props.setCommentReplyId(replyPopup ? null : comment.id);
+  };
+  const onSendReply = (val: Values) => {
+    const param: replyRequestProps = {
+      comment_id: comment.comment_id,
+      content: val.commentContainer,
+      book_id: comment.book_id,
+    };
+    replyComment(param);
   };
 
   return (
@@ -110,14 +123,15 @@ export const CommentItem = ({
       {/*     评论框*/}
       <UseNode rIf={replyPopup && props.commentReplyId === comment.id}>
         <Form
+          form={formValue}
           layout={'inline'}
           className={'personalComment_sendInput'}
-          // onFinish={(val) => onSendReply(val)}
+          onFinish={onSendReply}
         >
           <Form.Item name={'commentContainer'} style={{ flex: 1 }}>
             <Input autoComplete={'off'} maxLength={800} />
           </Form.Item>
-          <Button htmlType={'submit'} type={'primary'}>
+          <Button htmlType={'submit'} type={'primary'} loading={isLoading}>
             发送
           </Button>
         </Form>

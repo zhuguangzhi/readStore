@@ -29,7 +29,12 @@ import {
 } from '@/type/user';
 import { clearToken } from '@/hook/useAuth';
 import { cleanObject } from '@/common/publicFn';
-import { delCommentProps, myCommentProps } from '@/type/personalCenter';
+import {
+  delCommentProps,
+  myBookListProps,
+  myCommentProps,
+} from '@/type/personalCenter';
+import { newsProps } from '@/type/home';
 
 export const ErrorCheck = <T>(val: ResponseData<T> | null) => {
   if (val?.status_code === 200) return true;
@@ -61,6 +66,9 @@ export const Home = {
     http.get<T>(`${apiUrl}/chart/index/7`, {}, false),
   //热门话题
   getTopicList: <T>() => http.get<T>(`${apiUrl}/chart/index/8`, {}, false),
+  //  公告详情
+  getNewsInfo: (id: number) =>
+    http.post<ResponseData<newsProps>>(`${apiUrl}/article/detail/${id}`, {}),
 };
 export const Book = {
   //点赞
@@ -161,4 +169,13 @@ export const PersonalCenter = {
   // 删除评论
   delComment: (p: delCommentProps) =>
     http.post<ResponseData<{}>>(`${apiUrl}/users/delComment`, p),
+  //  获取我的书架
+  getMyBookList: (p: pageRequestProps) =>
+    http.post<ResponseData<myBookListProps>>(`${apiUrl}/bookcase/list`, p),
+  //  获取历史记录
+  getReadHistory: (p: pageRequestProps) =>
+    http.post<ResponseData<myBookListProps>>(`${apiUrl}/userRead/list`, p),
+  //  从我的书架移除
+  delMyBooks: (p: { book_id: string }) =>
+    http.post<ResponseData<myBookListProps>>(`${apiUrl}/bookcase/destroy`, p),
 };

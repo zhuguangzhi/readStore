@@ -93,3 +93,13 @@ export const useModifyApproval = (
     },
   );
 };
+
+// 公告详情
+export const useGetNewsInfo = (id: number) => {
+  return useQuery<newsProps, Error>(['news', id], () =>
+    Home.getNewsInfo(id).then((value) => {
+      ErrorCheck(value);
+      return value.data;
+    }),
+  );
+};

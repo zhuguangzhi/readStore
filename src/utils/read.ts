@@ -103,7 +103,7 @@ export const useCommentStore = () => {
     },
   );
 };
-// 评论或回复点赞
+// 评论或回复de点赞
 export const useCommentApproval = () => {
   const queryClient = useQueryClient();
   let queryKey = [] as string[];

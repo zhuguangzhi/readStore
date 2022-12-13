@@ -20,6 +20,7 @@ export type newsProps = {
   category_id: number; //分类ID
   title: string; //标题
   content?: string; //内容
+  create_time: string;
 };
 // 作者推荐
 export interface authorRecommend extends homeProps {

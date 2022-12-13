@@ -10,6 +10,7 @@ import { CommentItem } from './components/commentItem';
 import { PullLoad } from '@/components/module/PullLoad';
 import { myCommentDataProps } from '@/type/personalCenter';
 import { DefaultNoData } from '@/components/defaultNoData';
+import { setArrayForId } from '@/common/publicFn';
 
 const tabBars = [
   { key: 'all', label: '全部评论' },
@@ -58,7 +59,7 @@ const MyComment = () => {
   // 删除评论
   const confirmDelete = () => {
     deleteComment({ comment_id: popupOption.ids.join(',') });
-    // setCommentList([])
+    setCommentList([]);
     setPopupOption((val) => ({ ...val, open: false }));
   };
 
@@ -66,13 +67,15 @@ const MyComment = () => {
     setLoadingModel(commentLoading);
   }, [commentLoading]);
   useEffect(() => {
-    console.log('commentData', commentData);
     if (!commentData || commentData.data.toString() === commentList.toString())
       return;
     if (commentData.data.length === 0 && commentList.length === 0)
       setNullData(true);
     else setNullData(false);
-    const arr = [...commentList, ...commentData.data];
+    let arr = [...commentList, ...commentData.data];
+    //根据id去重
+    arr = setArrayForId(arr);
+    arr.sort((a, b) => Date.parse(b.create_time) - Date.parse(a.create_time));
     setCommentList(arr);
   }, [commentData]);
 
@@ -98,7 +101,7 @@ const MyComment = () => {
         ) : (
           <PullLoad
             page={commentPage}
-            total={commentData?.page_info.total || 0}
+            total={commentData?.page_info?.total || 0}
             pageSize={10}
             bottomHeight={100}
             onBottom={uploadGetMore}
