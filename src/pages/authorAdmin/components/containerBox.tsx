@@ -13,8 +13,8 @@ export const ContainerBox = ({
   children,
 }: containerBoxProps) => {
   return (
-    <div className={'containerBox'}>
-      <div className={'justify_between containerBox_title'}>
+    <div className={'containerInfoBox'}>
+      <div className={'justify_between containerInfoBox_title'}>
         <span className={'font_16'}>{title}</span>
         {topRightChild}
       </div>

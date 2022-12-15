@@ -1,4 +1,4 @@
-.containerBox {
+.containerInfoBox {
   position: relative;
   width: 400px;
   height: 319px;
@@ -27,8 +27,8 @@
     background-color: #e5e5e5;
   }
 }
-.containerBox::after,
-.containerBox::before {
+.containerInfoBox::after,
+.containerInfoBox::before {
   content: '';
   position: absolute;
   left: 10px;
@@ -43,7 +43,7 @@
   transform: translateZ(-1px) // Z轴方向位移-1px
 ;
 }
-.containerBox::after {
+.containerInfoBox::after {
   left: 20px;
   top: -20px;
   width: 360px;

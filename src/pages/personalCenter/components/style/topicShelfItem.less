@@ -1,0 +1,50 @@
+.topicShelfItem {
+  width: 100%;
+  padding: 0 20px;
+  margin-top: 20px;
+  &_box {
+    position: relative;
+    width: 100%;
+    background: #f7f7f7;
+    border-radius: 13px;
+    box-sizing: border-box;
+    padding: 22px 34px;
+    margin-bottom: 20px;
+    &_title {
+      height: 16px;
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 16px;
+    }
+    &_container {
+      margin-top: 10px;
+      width: 100%;
+      line-height: 30px;
+      font-size: 14px;
+      &_tag {
+        display: inline-block;
+        white-space: nowrap;
+        color: #f77a2a;
+      }
+    }
+    &_check {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+    }
+  }
+}
+// ant checkbox样式
+.ant-checkbox-checked .ant-checkbox-inner,
+.ant-checkbox-checked .ant-checkbox-inner:hover {
+  background-color: var(--themeColor) !important;
+  border-color: var(--themeColor) !important;
+}
+.ant-checkbox-checked::after {
+  border-color: var(--themeColor) !important;
+}
+.ant-checkbox-wrapper:hover .ant-checkbox-inner,
+.ant-checkbox:hover .ant-checkbox-inner,
+.ant-checkbox-input:focus + .ant-checkbox-inner {
+  border-color: var(--themeColor) !important;
+}

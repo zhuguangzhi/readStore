@@ -4,7 +4,6 @@ import { IconFont } from '@/components/IconFont';
 import './style/bookShelf.less';
 import { PersonalHeader } from '@/pages/personalCenter/components/personalHeader';
 import { ShelfFloor } from '@/pages/personalCenter/components/shelfFloor';
-//测试数据
 import ReadPopup from '@/components/module/ReadPopup';
 import { DelPopup } from '@/pages/personalCenter/utils';
 import { PullLoad } from '@/components/module/PullLoad';
@@ -32,7 +31,7 @@ export default () => {
   const [bookList, setBookList] = useState<(myBookProps | null)[][]>([]);
   const { setLoadingModel } = useAuth();
   // 移出书架
-  const { mutate: deleteBooks } = useDelMyBook();
+  const { mutate: deleteBooks } = useDelMyBook('myBooks');
   //需要删除的id list 删除 确认弹窗
   const [popupOption, setPopupOption] = useState({
     ids: [] as number[],

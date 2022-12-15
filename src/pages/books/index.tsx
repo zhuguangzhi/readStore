@@ -120,7 +120,10 @@ export default () => {
 
   // 触发滚动
   useEffect(() => {
-    document.body.onscroll = () => {
+    const webContainerRef = document.querySelector(
+      '.webContainer',
+    ) as HTMLElement;
+    webContainerRef.onscroll = () => {
       scrollToBottom(300, () => {
         const total = bookShelf?.page_info?.total || 0;
         if (libraryPage * 10 >= total) return;

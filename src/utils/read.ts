@@ -37,7 +37,7 @@ export const useGetBookInfo = (p: { id: number }) => {
 };
 // 获取评论内容
 export const useGetCommentData = (p: commentRequestProps) => {
-  return useQuery<readComponentProps, Error>(['readComment', p], () =>
+  return useQuery<readComponentProps, Error>(['readComment', p.page], () =>
     Comment.getComment(p).then((value) => {
       ErrorCheck(value);
       return value.data;

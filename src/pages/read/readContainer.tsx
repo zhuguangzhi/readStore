@@ -31,7 +31,7 @@ export const ReadContainer = ({
       readBox.current?.children[
         (bookInfo?.read_line || 1) - 1
       ]?.getBoundingClientRect().top || 0;
-    document.documentElement.scrollTo({
+    document.querySelector('.webContainer')?.scrollTo({
       top: y + scrollTop,
       behavior: 'smooth',
     });

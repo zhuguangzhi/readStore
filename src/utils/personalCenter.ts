@@ -1,11 +1,12 @@
 import { pageRequestProps } from '@/type/book';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { ErrorCheck, PersonalCenter } from '@/common/api';
+import { ErrorCheck, PersonalCenter, Topic } from '@/common/api';
 import {
   delCommentProps,
   myBookListProps,
   myCommentProps,
 } from '@/type/personalCenter';
+import { topCaseProps } from '@/type/topic';
 
 interface getMyCommentProps extends pageRequestProps {
   type: 'all' | 'myComment' | 'reply';
@@ -82,9 +83,9 @@ export const useGetMyBooks = (p: useGetMyBooksProps<pageRequestProps>) => {
 };
 
 // 移出我的书架
-export const useDelMyBook = () => {
+export const useDelMyBook = (type: 'topicCase' | 'myBooks') => {
   const queryClient = useQueryClient();
-  const queryKey = ['myBooks'];
+  const queryKey = [type];
   return useMutation(
     ['delMyBook'],
     (p: { book_id: string }) => PersonalCenter.delMyBooks(p),
@@ -113,5 +114,14 @@ export const useDelMyBook = () => {
         queryClient.setQueriesData(queryKey, context?.previousItems);
       },
     },
+  );
+};
+// 获取话题书架
+export const useGetTopicCase = (p: pageRequestProps) => {
+  return useQuery<topCaseProps, Error>(['topicCase'], () =>
+    Topic.getTopicCase(p).then((val) => {
+      ErrorCheck(val);
+      return val.data;
+    }),
   );
 };

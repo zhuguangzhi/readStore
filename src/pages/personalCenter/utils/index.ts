@@ -41,3 +41,12 @@ export class DelPopup<T extends popupProps> {
     });
   };
 }
+
+export type itemCheckProps<T> = {
+  data: T;
+  onSelect?: (sel: T) => void;
+  onDelete?: (del: T) => void;
+  onCheck?: (value: CheckboxChangeEvent) => void;
+  checked?: boolean; //选中check
+  isEdit: boolean; //编辑模式
+};

@@ -56,9 +56,12 @@ export const targetColumnArray = <T>(value: T[], columnNum: number) => {
 };
 // 滚动到底部
 export const scrollToBottom = (distance: number = 0, call?: Function) => {
-  const bodyHeight = document.body.clientHeight;
-  const scrollTop = document.documentElement.scrollTop;
-  const scrollHeight = document.body.scrollHeight;
+  const webContainerRef = document.querySelector(
+    '.webContainer',
+  ) as HTMLElement;
+  const bodyHeight = webContainerRef.clientHeight;
+  const scrollTop = webContainerRef.scrollTop;
+  const scrollHeight = webContainerRef.scrollHeight;
   if (scrollHeight - (bodyHeight + scrollTop) <= distance) {
     call?.();
   }

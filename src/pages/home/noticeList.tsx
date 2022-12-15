@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NoticeBox } from '@/pages/home/components/noticeBox';
 import { IconFont } from '@/components/IconFont';
 import { UseNode } from '@/components/UseNode';
@@ -41,21 +41,31 @@ const TopicIcon = () => (
   <IconFont icon={'remen'} width={'17px'} height={'17px'} />
 );
 export const NoticeList = () => {
+  const noticeRef = useRef<HTMLDivElement>(null);
+  const [noticeHeight, setNoticeHeight] = useState(0);
   //新闻公告列表
-  const { data: newList } = useGetNews();
+  const { data: newList, isLoading: newLoad } = useGetNews();
   //风向标列表
-  const { data: vaneList } = useGetVane();
+  const { data: vaneList, isLoading: vaneLoad } = useGetVane();
   //作者推荐
-  const { data: authorRecommend } = useAuthorRecommend();
+  const { data: authorRecommend, isLoading: authorLoad } = useAuthorRecommend();
   //话题
-  const { data: topicList } = useGetTopic();
+  const { data: topicList, isLoading: topicLoad } = useGetTopic();
   //当前风向标所指索引
   const [currenVaneIndex, setVaneIndex] = useState(0);
 
+  useEffect(() => {
+    if (newLoad || vaneLoad || authorLoad || topicLoad) return;
+    const height =
+      document.body.clientHeight - (noticeRef.current?.clientHeight || 0) - 12;
+    setNoticeHeight(height);
+  }, [newLoad, vaneLoad, authorLoad, topicLoad]);
+
   return (
     <div
-      style={{ marginLeft: '17px', top: '0', height: '100%' }}
+      style={{ marginLeft: '17px', top: `${noticeHeight}px`, height: '100%' }}
       className={'position_sticky'}
+      ref={noticeRef}
     >
       <NoticeBox title={'新闻公告'} Icon={<NewsIcon />} useMore={false}>
         <div className={'news'}>

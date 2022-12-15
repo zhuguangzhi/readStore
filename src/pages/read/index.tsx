@@ -22,11 +22,14 @@ import { ReadContainer } from '@/pages/read/readContainer';
 import { useDispatch, useSelector } from 'umi';
 import { ConnectState } from '@/models/modelConnect';
 import { globalState } from '@/models/global';
+import { setArrayForId } from '@/common/publicFn';
 
 export default () => {
+  const webContainerRef = document.querySelector(
+    '.webContainer',
+  ) as HTMLElement;
   const [{ [BookId]: bookId }] = useSearchParam([BookId]);
   const [scrollTopData, setScrollTop] = useState(0);
-  const bodyRef = useRef<HTMLElement>(document.body);
   const globalState = useSelector(
     (state: ConnectState) => state.global,
   ) as globalState;
@@ -79,18 +82,19 @@ export default () => {
 
   //上拉新增
   useEffect(() => {
+    // 排序改变直接赋值
     if (oldSlotType.current !== commentSlotType) {
       setCommentList(commentData);
       oldSlotType.current = commentSlotType;
       return;
     }
-    if (commentData && commentData.data.length > 0) {
-      let list = commentList
-        ? { ...commentList }
-        : { page_info: commentData.page_info, data: [] };
-      list.data = [...list.data, ...commentData.data];
-      setCommentList(list);
-    }
+    if (!commentData || commentData.data.length === 0) return;
+    let list = commentList
+      ? { ...commentList }
+      : { page_info: commentData.page_info, data: [] };
+    list.data = setArrayForId([...list.data, ...commentData.data]);
+    list.page_info = commentData.page_info;
+    setCommentList(list);
   }, [commentData]);
   // 设置喜欢
   const onApprovalChange = () => {
@@ -101,22 +105,24 @@ export default () => {
   };
 
   useEffect(() => {
-    bodyRef.current.onscroll = () => {
-      const bodyHeight = bodyRef.current.clientHeight;
-      const scrollTop = document.documentElement.scrollTop;
-      const scrollHeight = bodyRef.current.scrollHeight;
+    if (!webContainerRef) return;
+    webContainerRef.onscroll = () => {
+      const webContainerHeight = webContainerRef.clientHeight;
+      const scrollTop = webContainerRef.scrollTop;
+      const scrollHeight = webContainerRef.scrollHeight;
       setScrollTop(scrollTop);
-      if (scrollHeight - (bodyHeight + scrollTop) < 500) {
+      if (scrollHeight - (webContainerHeight + scrollTop) < 500) {
         uploadGetMore();
       }
       const readContainerHeight = readContainerRef.current?.clientHeight || 0;
       // 设置底部信息框
-      if (scrollTop + bodyHeight <= readContainerHeight) setOperationTab(true);
+      if (scrollTop + webContainerHeight <= readContainerHeight)
+        setOperationTab(true);
       else setOperationTab(false);
     };
   }, [commentLoading]);
   useMounted(() => {
-    document.documentElement.scrollTop = 0;
+    // document.documentElement.scrollTop = 0;
     // document.documentElement.style.scrollBehavior = 'smooth';
     // 路由跳转拦截
     // return () => {
@@ -180,7 +186,7 @@ export default () => {
               bookId={bookInfo?.id}
               isApproval={bookInfo?.is_user_approval || 2}
               commentChange={() => {
-                document.documentElement.scrollTo({
+                webContainerRef.scrollTo({
                   top: readContainerRef.current?.clientHeight || 0,
                   behavior: 'smooth',
                 });

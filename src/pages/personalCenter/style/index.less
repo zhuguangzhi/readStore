@@ -109,13 +109,13 @@
 }
 .personal::before {
   content: '';
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   top: var(--headerHeight);
   bottom: 0;
   background-color: white;
-  z-index: -2; // -2是为了让header头的border显示出来 header的是-1
+  z-index: -1; // -2是为了让header头的border显示出来 header的是-1
 }
 
 .personal .containerBox {

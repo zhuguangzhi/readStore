@@ -113,7 +113,7 @@ const MyComment = () => {
                     key={comment.id}
                     commentReplyId={replyCommentId}
                     setCommentReplyId={setReplyCommentId}
-                    comment={comment}
+                    data={comment}
                     isEdit={edit}
                     checked={popupOption.ids.includes(comment.id)}
                     onCheck={(e) => delPopup.onChangeCheckBox(e, comment.id)}

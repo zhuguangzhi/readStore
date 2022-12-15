@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { UseNode } from '@/components/UseNode';
 import { IconFont } from '@/components/IconFont';
 import { stopProp } from '@/common/publicFn';
@@ -10,20 +9,15 @@ import { myCommentDataProps } from '@/type/personalCenter';
 import { useReply } from '@/utils/read';
 import { Values } from 'async-validator';
 import { replyRequestProps } from '@/type/book';
+import { itemCheckProps } from '@/pages/personalCenter/utils';
 
-type CommentItemProps = {
-  comment: myCommentDataProps;
-  onSelect?: (comment: myCommentDataProps) => void;
-  onDelete?: (comment: myCommentDataProps) => void;
-  onCheck?: (value: CheckboxChangeEvent) => void;
-  checked?: boolean; //选中check
-  isEdit: boolean; //编辑模式
+interface CommentItemProps extends itemCheckProps<myCommentDataProps> {
   commentReplyId: number | null;
   setCommentReplyId: (val: null | number) => void;
-};
+}
 
 export const CommentItem = ({
-  comment,
+  data: comment,
   onSelect,
   onCheck,
   onDelete,
