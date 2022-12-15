@@ -12,6 +12,7 @@ import {
   replyRequestProps,
   replyStoreProps,
   replyStoreRequestProps,
+  saveReadHistoryProps,
 } from '@/type/book';
 import { Book, Comment, ErrorCheck } from '@/common/api';
 import { message } from 'antd';
@@ -132,6 +133,18 @@ export const useCommentApproval = () => {
       //错误回滚
       onError(error, newItem, context) {
         queryClient.setQueriesData(queryKey, context?.previousItems);
+      },
+    },
+  );
+};
+// 保存阅读记录
+export const useSaveReadHistory = () => {
+  return useMutation(
+    ['saveReadHistory'],
+    (p: saveReadHistoryProps) => Book.saveReadHistory(p),
+    {
+      onSuccess(val) {
+        ErrorCheck(val);
       },
     },
   );

@@ -16,6 +16,7 @@ import {
   readComponentProps,
   replyRequestProps,
   replyStoreRequestProps,
+  saveReadHistoryProps,
 } from '@/type/book';
 import {
   accountLoginProps,
@@ -35,6 +36,13 @@ import {
   myCommentProps,
 } from '@/type/personalCenter';
 import { newsProps } from '@/type/home';
+import {
+  topCaseProps,
+  topicDetailsProps,
+  topicListRequestProps,
+  topListProps,
+} from '@/type/topic';
+import { baseApiUrl } from '@/assets/config';
 
 export const ErrorCheck = <T>(val: ResponseData<T> | null) => {
   if (val?.status_code === 200) return true;
@@ -51,7 +59,7 @@ export const ErrorCheck = <T>(val: ResponseData<T> | null) => {
   return false;
 };
 
-const apiUrl = 'http://localhost:8000/proxy/api';
+const apiUrl = baseApiUrl;
 export const Home = {
   //首页书本推荐
   getHomeBook: <T>() => http.get<T>(`${apiUrl}/chart`, {}),
@@ -100,6 +108,9 @@ export const Book = {
       `${apiUrl}/book/library`,
       cleanObject(p),
     ),
+  //   保存阅读记录
+  saveReadHistory: (p: saveReadHistoryProps) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/userRead/store`, p),
 };
 export const Comment = {
   //  获取评论
@@ -178,4 +189,16 @@ export const PersonalCenter = {
   //  从我的书架移除
   delMyBooks: (p: { book_id: string }) =>
     http.post<ResponseData<myBookListProps>>(`${apiUrl}/bookcase/destroy`, p),
+};
+export const Topic = {
+  // 话题书架
+  getTopicCase: (p: pageRequestProps) =>
+    http.post<ResponseData<topCaseProps>>(
+      `${apiUrl}/bookcase/topicBookList`,
+      p,
+    ),
+  getTopicList: (p: topicListRequestProps) =>
+    http.post<ResponseData<topListProps>>(`${apiUrl}/topic/bookList`, p),
+  getTopicDetails: (p: { id: number }) =>
+    http.post<ResponseData<topicDetailsProps>>(`${apiUrl}/topic/detail`, p),
 };

@@ -2,6 +2,7 @@ export const logoUrl = require('./image/logo.png'); //logo
 export const netName = '读点小故事'; //网站名称
 export const swiperDuration = 5; //首页swiper切换时间 单位 s
 export const imgBaseUrl = 'http://qingjuoss.datzww.com/fz/'; //图片路径
+export const baseApiUrl = 'http://localhost:8000/proxy/api';
 export const uploadImageUrl =
   'https://www.mocky.io/v2/5cc8019d300000980a055e76'; //图片上传地址
 export const tipLinks = [

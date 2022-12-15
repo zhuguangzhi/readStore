@@ -1,5 +1,6 @@
 // 书籍信息
 import { authorProps } from '@/type/user';
+import { topicProps } from '@/type/topic';
 
 // 书的信息
 export type bookInfoProps = {
@@ -34,6 +35,8 @@ export type bookInfoProps = {
   is_attention: 2 | 1; //当前用户是否关注作者( 1：是  2：否 ）
   book_extension?: bookExtension; //书籍额外信息
   topic: topicProps; //话题信息
+  read_line: number; //当前阅读行
+  read_progress: number; //当前阅读进度
 };
 // 书籍额外信息
 export type bookExtension = {
@@ -47,11 +50,7 @@ export type bookExtension = {
   all_read: number; //总阅读数
   all_approval: number; //总点赞数
 };
-// 话题信息
-export type topicProps = {
-  id: number; //主键ID
-  title: string; //话题标题
-};
+
 // __________________________________
 
 //用户阅读书本类型 TODO:对接口时替换成book
@@ -135,6 +134,7 @@ export interface readBookProps {
   book_id: number; //书籍ID
   book_title: string; //书籍名称
   cname: string; //章节标题
+  line_count: 0; //总行数
   content: string; //内容
 }
 // 书本详情
@@ -237,4 +237,11 @@ export type bookLibraryRequestProps = {
   book_title?: string; //书籍名
   page?: number; //页数
   page_size?: number; //条数
+};
+//保存阅读历史
+export type saveReadHistoryProps = {
+  book_id: number;
+  chapter_id: number; //章节id
+  read_progress: number; //阅读进度
+  read_line: number; //阅读行
 };

@@ -25,6 +25,7 @@ import { globalState } from '@/models/global';
 
 export default () => {
   const [{ [BookId]: bookId }] = useSearchParam([BookId]);
+  const [scrollTopData, setScrollTop] = useState(0);
   const bodyRef = useRef<HTMLElement>(document.body);
   const globalState = useSelector(
     (state: ConnectState) => state.global,
@@ -49,6 +50,7 @@ export default () => {
   const { setLoadingModel } = useAuth();
   // 点赞
   const { mutate: setApproval } = useModifyApproval('readBookInfo');
+
   const [commentList, setCommentList] = useState<
     readComponentProps | undefined
   >(undefined);
@@ -103,31 +105,23 @@ export default () => {
       const bodyHeight = bodyRef.current.clientHeight;
       const scrollTop = document.documentElement.scrollTop;
       const scrollHeight = bodyRef.current.scrollHeight;
+      setScrollTop(scrollTop);
       if (scrollHeight - (bodyHeight + scrollTop) < 500) {
         uploadGetMore();
       }
-      if (!readContainerRef.current) return;
-      const readContainerHeight = readContainerRef.current.clientHeight || 0;
+      const readContainerHeight = readContainerRef.current?.clientHeight || 0;
       // 设置底部信息框
       if (scrollTop + bodyHeight <= readContainerHeight) setOperationTab(true);
       else setOperationTab(false);
-      // 内容实际滚动距离
-      const realScroll =
-        document.documentElement.scrollTop + document.body.clientHeight - 390;
-      let progress = Math.ceil(
-        (realScroll / readContainerRef.current.clientHeight) * 100,
-      );
-      progress = progress > 100 ? 100 : progress;
-      console.log('progress', progress);
     };
   }, [commentLoading]);
   useMounted(() => {
     document.documentElement.scrollTop = 0;
-    document.documentElement.style.scrollBehavior = 'smooth';
+    // document.documentElement.style.scrollBehavior = 'smooth';
     // 路由跳转拦截
-    return () => {
-      document.documentElement.style.scrollBehavior = 'initial';
-    };
+    // return () => {
+    //   document.documentElement.style.scrollBehavior = 'initial';
+    // };
   });
 
   return (
@@ -172,7 +166,13 @@ export default () => {
         </div>
         {/*    内容*/}
         <div className={'readBook_container'} ref={readContainerRef}>
-          <ReadContainer container={bookContainer?.content || ''} />
+          <ReadContainer
+            containerRef={readContainerRef.current}
+            bookInfo={bookInfo}
+            container={bookContainer?.content || ''}
+            scrollTop={scrollTopData}
+            allCount={bookContainer?.line_count || 1}
+          />
         </div>
         <UseNode rIf={useOperationTab}>
           <div className={'readOperationBox'}>
@@ -180,8 +180,10 @@ export default () => {
               bookId={bookInfo?.id}
               isApproval={bookInfo?.is_user_approval || 2}
               commentChange={() => {
-                document.documentElement.scrollTop =
-                  readContainerRef.current?.clientHeight || 0;
+                document.documentElement.scrollTo({
+                  top: readContainerRef.current?.clientHeight || 0,
+                  behavior: 'smooth',
+                });
               }}
               onApproval={onApprovalChange}
               onInput={() =>
