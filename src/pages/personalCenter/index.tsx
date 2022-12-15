@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { IconFont } from '@/components/IconFont';
 
 import './style/index.less';
-import { netName } from '@/assets/config';
+import { netName } from '../../../public/config';
 import { useSetState } from '@/hook';
 import { Outlet } from 'react-router';
 import router, { useGetUrlPath } from '@/hook/url';

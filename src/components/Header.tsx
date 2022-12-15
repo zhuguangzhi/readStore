@@ -4,7 +4,7 @@ import { Input } from 'antd';
 import { useSetState } from '@/hook';
 import { IconFont } from '@/components/IconFont';
 import { inputEvent } from '@/type';
-import { logoUrl } from '@/assets/config';
+import { logoUrl } from '../../public/config';
 import router, { useGetUrlPath } from '@/hook/url';
 
 import './style/header.less';

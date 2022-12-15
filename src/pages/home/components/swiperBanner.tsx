@@ -1,6 +1,6 @@
 import Slider, { Settings } from 'react-slick';
 import React, { useRef, useState } from 'react';
-import { swiperDuration } from '@/assets/config';
+import { swiperDuration } from '../../../../public/config';
 import { useMounted } from '@/hook';
 import { IconFont } from '@/components/IconFont';
 import { bookInfoProps } from '@/type/book';

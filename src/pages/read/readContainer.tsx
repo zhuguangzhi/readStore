@@ -1,6 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { rankBook } from '@/type/book';
 import { useSaveReadHistory } from '@/utils/read';
+import { getToken } from '@/hook/useAuth';
+import { targetColumnArray } from '@/common/publicFn';
 
 type ReadContainerProps = {
   container: string;
@@ -20,16 +22,58 @@ export const ReadContainer = ({
   const { mutate: saveHistory } = useSaveReadHistory();
   const timerRef = useRef<NodeJS.Timer | null>(null);
   const readBox = useRef<HTMLDivElement>(null);
+  const token = getToken();
   // 展示列表数据 默认只显示showDataNum行
-  const [bookData, setBookData] = useState<string[]>([]);
+  // const [bookData, setBookData] = useState<string[]>([]);
+  //滚动到记录的行数
+  const toScroll = () => {
+    const y =
+      readBox.current?.children[
+        (bookInfo?.read_line || 1) - 1
+      ]?.getBoundingClientRect().top || 0;
+    document.documentElement.scrollTo({
+      top: y + scrollTop,
+      behavior: 'smooth',
+    });
+  };
   useEffect(() => {
-    if (!container || !bookInfo) return;
+    if (
+      !container ||
+      !bookInfo ||
+      !readBox.current ||
+      readBox.current.children.length !== 0
+    )
+      return;
     const regExp = /<p[^>]*[^>]*>(.*?)<\/p>/g;
-    let arr = [];
+    let arr: string[] = [];
     while (regExp.exec(container) !== null) {
-      arr.push(RegExp.$1 + '\n'); //如果是RegExp.$1那么匹配的就是href里的属性了!
+      arr.push(RegExp.$1 + '\n');
     }
-    setBookData(arr);
+    let once = 120;
+    let bookData = targetColumnArray(arr, once);
+    let countRender = 0;
+    const render = () => {
+      const fragment = document.createDocumentFragment();
+      // 超过300会出现白屏
+      bookData[countRender]?.forEach((data, index) => {
+        const p = document.createElement('p');
+        // if (content===undefined) return;
+        p.id = (once * countRender + index + 1).toString();
+        p.innerHTML = data;
+        fragment.appendChild(p);
+      });
+      readBox.current?.appendChild(fragment);
+      countRender++;
+      if (countRender < bookData.length) {
+        // window.requestAnimationFrame() 告诉浏览器——你希望执行一个动画，并且要求浏览器在下次重绘之前调用指定的回调函    数更新动画。
+        window.requestAnimationFrame(render);
+      } else {
+        // 执行完毕，跳转历史记录
+        toScroll();
+      }
+    };
+    render();
+    // setBookData(arr);
   }, [container, bookInfo]);
   useEffect(() => {
     // 获取屏幕底部的元素
@@ -37,14 +81,15 @@ export const ReadContainer = ({
       document.body.clientWidth / 2,
       document.body.clientHeight - 70,
     );
-    if (!containerRef || !bookInfo || !pEl) return;
+
+    if (!containerRef || !bookInfo || !pEl || !token) return;
     if (timerRef.current !== null) clearTimeout(timerRef.current);
     let progress: number;
     let currentLine: number;
     // pEl不为p标签或者id不为数字，则说明已经看完了所有内容
     if (pEl.tagName !== 'P' || !Number(pEl.id)) {
       progress = 100;
-      currentLine = bookData.length;
+      currentLine = pEl.children.length;
     } else {
       progress = Math.ceil((Number(pEl.id) / allCount) * 100);
       currentLine = Number(pEl.id);
@@ -59,17 +104,21 @@ export const ReadContainer = ({
     }, 2000);
   }, [scrollTop]);
 
+  useEffect(() => {
+    // console.log('okkk',readBox.current?.children.length)
+  }, [readBox.current]);
+
   return (
     <div ref={readBox}>
-      {bookData.map((data, index) => {
-        return (
-          <p
-            key={index}
-            id={(index + 1).toString()}
-            dangerouslySetInnerHTML={{ __html: data }}
-          ></p>
-        );
-      })}
+      {/*{bookData.map((data, index) => {*/}
+      {/*  return (*/}
+      {/*    <p*/}
+      {/*      key={index}*/}
+      {/*      id={(index + 1).toString()}*/}
+      {/*      dangerouslySetInnerHTML={{ __html: data }}*/}
+      {/*    ></p>*/}
+      {/*  );*/}
+      {/*})}*/}
     </div>
   );
 };

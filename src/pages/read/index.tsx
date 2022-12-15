@@ -41,7 +41,7 @@ export default () => {
   // 是否使用阅读底部信息框
   const [useOperationTab, setOperationTab] = useState(true);
   // 获取内容
-  const { data: bookContainer, isLoading: containerLogin } =
+  const { data: bookContainer, isLoading: containerLoading } =
     useGetBookContainer({ book_id: parseInt(bookId) });
   // 获取详情
   const { data: bookInfo, isLoading: infoLogin } = useGetBookInfo({
@@ -74,8 +74,8 @@ export default () => {
   }, [commentLoading]);
   // 监听 触发loading 只有首次获取时才会触发，避免乐观更新时触发
   useEffect(() => {
-    setLoadingModel(containerLogin && infoLogin);
-  }, [containerLogin, infoLogin]);
+    setLoadingModel(containerLoading && infoLogin);
+  }, [containerLoading, infoLogin]);
 
   //上拉新增
   useEffect(() => {
@@ -194,21 +194,23 @@ export default () => {
         </UseNode>
       </div>
       {/* 评论区*/}
-      <div className={'readBook_comment'}>
-        <Comment
-          usePullLoad={false}
-          isReverse={false}
-          bookId={parseInt(bookId)}
-          commentPage={commentPage}
-          commentData={commentList}
-          setSlotType={(num) => {
-            setCommentSlotType(num);
-            setCommentPage(1);
-          }}
-          slotType={commentSlotType}
-          getMoreComment={uploadGetMore}
-        />
-      </div>
+      <UseNode rIf={!containerLoading}>
+        <div className={'readBook_comment'}>
+          <Comment
+            usePullLoad={false}
+            isReverse={false}
+            bookId={parseInt(bookId)}
+            commentPage={commentPage}
+            commentData={commentList}
+            setSlotType={(num) => {
+              setCommentSlotType(num);
+              setCommentPage(1);
+            }}
+            slotType={commentSlotType}
+            getMoreComment={uploadGetMore}
+          />
+        </div>
+      </UseNode>
       <ReadModel
         width={'947px'}
         useTitle={false}

@@ -42,7 +42,7 @@ import {
   topicListRequestProps,
   topListProps,
 } from '@/type/topic';
-import { baseApiUrl } from '@/assets/config';
+import { baseApiUrl } from '../../public/config';
 
 export const ErrorCheck = <T>(val: ResponseData<T> | null) => {
   if (val?.status_code === 200) return true;

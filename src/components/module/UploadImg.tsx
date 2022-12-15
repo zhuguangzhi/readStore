@@ -4,7 +4,7 @@ import { RcFile, UploadChangeParam, UploadProps } from 'antd/es/upload';
 import { IconFont } from '@/components/IconFont';
 import './style/uploadImg.less';
 import { LoadingOutlined } from '@ant-design/icons';
-import { uploadImageUrl } from '@/assets/config';
+import { uploadImageUrl } from '../../../public/config';
 
 const UploadIcon = () => (
   <IconFont width={'60px'} height={'60px'} icon={'upload2'} />

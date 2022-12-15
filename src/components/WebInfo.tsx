@@ -1,5 +1,5 @@
 import React from 'react';
-import { tipLinks } from '@/assets/config';
+import { tipLinks } from '../../public/config';
 import './style/WebInfo.less';
 
 //网站信息

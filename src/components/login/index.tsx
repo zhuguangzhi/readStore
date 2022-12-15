@@ -4,7 +4,7 @@ import { ModalProps } from 'antd';
 import Login from '@/components/login/login';
 
 import './index.less';
-import { netName } from '@/assets/config';
+import { netName } from '../../../public/config';
 import { Register } from '@/components/login/register';
 import { useAuth } from '@/hook/useAuth';
 

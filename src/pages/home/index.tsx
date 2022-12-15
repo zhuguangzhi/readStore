@@ -19,7 +19,10 @@ const Index = () => {
         className={'home_carousel'}
       />
       {/*  container*/}
-      <main className={'justify_between'} style={{ marginBottom: '12px' }}>
+      <main
+        className={'justify_between'}
+        style={{ marginBottom: '12px', position: 'relative' }}
+      >
         <BookList />
         <NoticeList />
       </main>

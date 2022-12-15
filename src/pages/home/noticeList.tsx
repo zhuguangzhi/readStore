@@ -53,7 +53,10 @@ export const NoticeList = () => {
   const [currenVaneIndex, setVaneIndex] = useState(0);
 
   return (
-    <div style={{ marginLeft: '17px' }}>
+    <div
+      style={{ marginLeft: '17px', top: '0', height: '100%' }}
+      className={'position_sticky'}
+    >
       <NoticeBox title={'新闻公告'} Icon={<NewsIcon />} useMore={false}>
         <div className={'news'}>
           {newList?.map((news) => {

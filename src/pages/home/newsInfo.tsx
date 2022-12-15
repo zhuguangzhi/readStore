@@ -3,7 +3,7 @@ import { useGetNewsInfo } from '@/utils/home';
 import { NewsId } from '@/constants/url';
 import router, { useSearchParam } from '@/hook/url';
 import { useAuth } from '@/hook/useAuth';
-import { netName } from '@/assets/config';
+import { netName } from '../../../public/config';
 import './style/newInfo.less';
 
 export default () => {
