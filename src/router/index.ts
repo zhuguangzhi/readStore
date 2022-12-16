@@ -55,6 +55,16 @@ const useHeaderRouter = {
       title: '阅读',
       component: '@/pages/read/index',
     },
+    {
+      path: '/topicList',
+      title: '话题列表',
+      component: '@/pages/topic/topicList',
+    },
+    {
+      path: '/topicInfo',
+      title: '话题详情',
+      component: '@/pages/topic/topicInfo',
+    },
   ],
 };
 

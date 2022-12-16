@@ -60,17 +60,19 @@ export const useAuthorRecommend = () => {
 //热门话题
 export const useGetTopic = () => {
   return useQuery<topicProps, Error>(['getTopic'], () =>
-    Home.getTopicList<ResponseData<topicProps>>().then((value) => value.data),
+    Home.getHotTopicList<ResponseData<topicProps>>().then(
+      (value) => value.data,
+    ),
   );
 };
 
-// 点赞、取消点赞 TODO: 乐观更新没有生效
+// 点赞、取消点赞
 export const useModifyApproval = (
-  type: 'home' | 'readBookInfo',
+  type: 'home' | 'readBookInfo' | 'topicBookList',
   tabIndex?: number,
 ) => {
   const queryClient = useQueryClient();
-  const queryKey = ['home'];
+  const queryKey = [type];
   return useMutation(
     'approval',
     (param: approvalProps) => Book.approval<ResponseData<{}>>(param),

@@ -7,10 +7,11 @@ import { homeChartProps } from '@/type/home';
 import { useAuth } from '@/hook/useAuth';
 import { useMounted } from '@/hook';
 import router from '@/hook/url';
-import { BookId } from '@/constants/url';
+import { BookId, TopicId } from '@/constants/url';
 import { useDispatch, useSelector } from 'umi';
 import { globalState } from '@/models/global';
 import { ConnectState } from '@/models/modelConnect';
+import { useAddBookCase } from '@/utils/rank';
 
 export const tabBarList = [
   { label: '推荐', key: 'recommend' },
@@ -43,6 +44,8 @@ const BookList = () => {
     });
     router.push('/read', { [BookId]: bookId });
   };
+  // 加入书架
+  const { mutate: addBookCase } = useAddBookCase('home', currentTabIndex);
 
   // tabBarList 选择改变
   const tabChange = (tab: tabProps) => {
@@ -78,14 +81,17 @@ const BookList = () => {
         selectChange={tabChange}
       />
       <BookItem
-        bookList={bookList}
+        bookList={bookList?.data || null}
         onApprove={(param) => setApproval(param)}
-        tabIndex={currentTabIndex}
         onClick={(book) => readBook(book.id, currentTabIndex)}
         onComment={(book) => {
           readBook(book.id, currentTabIndex);
           disPatch({ type: 'global/setCommentBox', payload: true });
         }}
+        clickTitle={(topicId) =>
+          topicId ? router.push('/topicInfo', { [TopicId]: topicId }) : ''
+        }
+        onAddBookCase={(bookId) => addBookCase({ book_id: bookId })}
       />
     </div>
   );

@@ -4,22 +4,23 @@ import { IconFont } from '@/components/IconFont';
 import './style/bookItem.less';
 import { UseNode } from '@/components/UseNode';
 import { homeChartProps } from '@/type/home';
-import { useAddBookCase } from '@/utils/rank';
 import { stopProp } from '@/common/publicFn';
 
 type BookItemProps = {
-  tabIndex: number;
-  bookList: homeChartProps | null;
+  bookList: homeChartProps['data'] | null;
   onClick?: (book: bookInfoProps) => void;
   onApprove?: (param: approvalProps) => void;
   onComment?: (param: bookInfoProps) => void;
+  onAddBookCase?: (bookId: number) => void;
+  clickTitle?: (topicId: number) => void;
 };
 export const BookItem = ({
   bookList,
   onClick,
   onComment,
   onApprove,
-  tabIndex,
+  onAddBookCase,
+  clickTitle,
 }: BookItemProps) => {
   const setApprove = (book: bookInfoProps) => {
     const param: approvalProps = {
@@ -28,11 +29,10 @@ export const BookItem = ({
     };
     onApprove?.(param);
   };
-  // 加入书架
-  const { mutate: addBookCase } = useAddBookCase('home', tabIndex);
+
   return (
     <>
-      {bookList?.data.map((book) => {
+      {bookList?.map((book) => {
         return (
           <div className={'book'} key={book.id} onClick={() => onClick?.(book)}>
             {/*左侧书皮*/}
@@ -45,7 +45,10 @@ export const BookItem = ({
             {/*    右侧内容*/}
             <div className={'book_right'}>
               {/*标题*/}
-              <p className={'font_18 font_bold cursor'}>
+              <p
+                className={'font_18 font_bold cursor'}
+                onClick={(e) => stopProp(e, () => clickTitle?.(book.topic?.id))}
+              >
                 {book.topic.title ? `来自话题：${book.topic.title}` : book.name}
               </p>
               {/*内容*/}
@@ -70,7 +73,7 @@ export const BookItem = ({
                 <UseNode rIf={book.in_user_case !== 1}>
                   <div
                     className={'book_right_bookshelf'}
-                    onClick={() => addBookCase({ book_id: book.id })}
+                    onClick={() => onAddBookCase?.(book.id)}
                   >
                     <IconFont
                       width={'10px'}

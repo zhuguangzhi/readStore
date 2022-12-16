@@ -1,0 +1,91 @@
+.topicList {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  margin: 20px 0;
+  min-height: calc(100vh - var(--headerHeight) - 40px);
+
+  &_box {
+    width: 906px;
+    height: 100%;
+    padding: 5px 15px;
+    box-sizing: border-box;
+    margin-right: 14px;
+    background-color: white;
+  }
+  &_item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 102px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    border-bottom: var(--border);
+    &_title {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 19px;
+      margin-bottom: 9px;
+      &_rank {
+        display: inline-block;
+        width: 37px;
+        height: 19px;
+        background: #afb5c5;
+        border-radius: 3px;
+        transform: skew(-15deg, 0);
+        color: white !important;
+        font-size: 12px;
+        text-align: center;
+        line-height: 19px;
+        margin-right: 8px;
+        padding: 0 8px;
+        box-sizing: border-box;
+      }
+    }
+  }
+}
+.topicListRank0,
+.topicListRank1,
+.topicListRank2 {
+  text-align: right;
+}
+.topicListRank0 {
+  background: linear-gradient(90deg, #fa2f3c 18%, #fa2f3c 100%) !important;
+  color: #fa2f3c;
+}
+.topicListRank1 {
+  background: linear-gradient(90deg, #fc4103 18%, #fa9120 100%) !important;
+  color: #fa2f3c;
+}
+.topicListRank2 {
+  background: linear-gradient(90deg, #f17a04 18%, #fac921 100%) !important;
+  color: #fa2f3c;
+}
+.topicListIcon0,
+.topicListIcon1,
+.topicListIcon2 {
+  display: inline-block;
+  position: absolute;
+  left: -14px;
+  top: -8px;
+  z-index: 2;
+  width: 35px;
+  height: 37px;
+  //background: linear-gradient(to right, orange, purple);
+  //background: -webkit-gradient(linear, 0 0, 0 100%, from(#000), to(#FFF));
+}
+.topicListIcon0 {
+  background: url('../../../assets/image/topic/hot0.png') no-repeat 100% 100%;
+  background-size: cover;
+}
+.topicListIcon1 {
+  background: url('../../../assets/image/topic/hot1.png') no-repeat 100% 100%;
+  background-size: cover;
+}
+.topicListIcon2 {
+  background: url('../../../assets/image/topic/hot2.png') no-repeat 100% 100%;
+  background-size: cover;
+}

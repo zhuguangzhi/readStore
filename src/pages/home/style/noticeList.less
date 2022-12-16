@@ -57,15 +57,14 @@
 
 .author {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   &_item {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 33%;
+    width: 100%;
     margin: 7px 0;
     cursor: pointer;
     &_photo {

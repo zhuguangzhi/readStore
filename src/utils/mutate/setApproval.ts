@@ -1,6 +1,7 @@
 import { QueryClient } from 'react-query';
 import { approvalProps, readBookInfoProps } from '@/type/book';
 import { homeChartProps } from '@/type/home';
+import { topicBookListProps } from '@/type/topic';
 
 export const setApprovalMutate = {
   home: (
@@ -27,5 +28,22 @@ export const setApprovalMutate = {
       arr.is_user_approval = target.is_approval;
       return arr;
     });
+  },
+  topicBookList: (target: approvalProps, queryClient: QueryClient) => {
+    queryClient.setQueriesData(
+      ['topicBookList'],
+      (old?: topicBookListProps) => {
+        if (!old) return {} as topicBookListProps;
+        const data = old?.data.map((item) => {
+          if (item.id === target.book_id)
+            item.is_user_approval = target.is_approval;
+          return item;
+        });
+        return {
+          page_info: old?.page_info,
+          data,
+        };
+      },
+    );
   },
 };

@@ -10,6 +10,7 @@ import router, { useGetUrlPath } from '@/hook/url';
 import './style/header.less';
 import { LoginPopup } from '@/components/login';
 import { useAuth } from '@/hook/useAuth';
+import { SearchKey } from '@/constants/url';
 
 const SearchIcon = () => (
   <IconFont
@@ -41,7 +42,12 @@ const Header = () => {
 
   // 搜索框事件
   const onSearch = (e: inputEvent) => {
-    console.log(' e.target.value', e.target.value);
+    window.onkeyup = (ev) => {
+      const value = e.target.value;
+      if (ev.key === 'Enter' && value) {
+        router.push('/books', { [SearchKey]: value });
+      }
+    };
   };
 
   const SearchInput = () => {

@@ -1,4 +1,6 @@
 // 路由变量
-export const BookId = 'b_id'; //书本id
-export const NewsId = 'n_id'; //公告id
-export const TopicId = 't_id'; //话题id
+export const BookId = 'bd'; //书本id
+export const NewsId = 'nd'; //公告id
+export const TopicId = 'td'; //话题id
+export const SearchKey = 'wd'; //关键字
+export const authorPenName = 'pn'; // 作者笔名

@@ -54,13 +54,14 @@ const MyComment = () => {
     ) {
       setPage((val) => ++val);
     }
-  }, [commentLoading]);
+  }, [commentLoading, commentPage]);
 
   // 删除评论
   const confirmDelete = () => {
     deleteComment({ comment_id: popupOption.ids.join(',') });
     setCommentList([]);
     setPopupOption((val) => ({ ...val, open: false }));
+    setPage(1);
   };
 
   useEffect(() => {

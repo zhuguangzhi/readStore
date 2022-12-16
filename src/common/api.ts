@@ -40,7 +40,9 @@ import {
   topCaseProps,
   topicDetailsProps,
   topicListRequestProps,
-  topListProps,
+  topicBookListProps,
+  topicListProps,
+  attentionTopicProps,
 } from '@/type/topic';
 import { baseApiUrl } from '../../public/config';
 
@@ -73,7 +75,7 @@ export const Home = {
   getAuthorRecommend: <T>() =>
     http.get<T>(`${apiUrl}/chart/index/7`, {}, false),
   //热门话题
-  getTopicList: <T>() => http.get<T>(`${apiUrl}/chart/index/8`, {}, false),
+  getHotTopicList: <T>() => http.get<T>(`${apiUrl}/chart/index/8`, {}, false),
   //  公告详情
   getNewsInfo: (id: number) =>
     http.post<ResponseData<newsProps>>(`${apiUrl}/article/detail/${id}`, {}),
@@ -197,8 +199,14 @@ export const Topic = {
       `${apiUrl}/bookcase/topicBookList`,
       p,
     ),
-  getTopicList: (p: topicListRequestProps) =>
-    http.post<ResponseData<topListProps>>(`${apiUrl}/topic/bookList`, p),
+  getTopicBookList: (p: topicListRequestProps) =>
+    http.post<ResponseData<topicBookListProps>>(`${apiUrl}/topic/bookList`, p),
   getTopicDetails: (p: { id: number }) =>
     http.post<ResponseData<topicDetailsProps>>(`${apiUrl}/topic/detail`, p),
+  //  话题列表
+  getTopicList: (p: pageRequestProps) =>
+    http.post<ResponseData<topicListProps>>(`${apiUrl}/topic/list`, p),
+  //  关注话题
+  attentionTopic: (p: attentionTopicProps) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/topic/attention`, p),
 };

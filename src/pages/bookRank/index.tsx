@@ -48,7 +48,7 @@ export default () => {
   return (
     <div className={'bookRank'}>
       {/*侧边栏*/}
-      <div className={'bookRank_side'}>
+      <div className={'bookRank_side position_sticky'} style={{ top: 0 }}>
         <p>热门排行榜</p>
         {slideList.map((item, index) => {
           return (

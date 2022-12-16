@@ -56,18 +56,19 @@ export default () => {
 
   useEffect(() => {
     if (
+      topicData?.data.length === 0 &&
+      (!topicCaseList || topicCaseList.length === 0)
+    )
+      setNoData(true);
+    else setNoData(false);
+    if (
       !topicData ||
       (topicCaseList && topicData.data.toString() === topicCaseList.toString())
     )
       return;
 
     let arr = [...(topicCaseList || []), ...topicData.data];
-    if (
-      topicData.data.length === 0 &&
-      (!topicCaseList || topicCaseList?.length === 0)
-    )
-      setNoData(true);
-    else setNoData(false);
+
     //根据id去重
     let map = new Map();
     for (let item of arr) {

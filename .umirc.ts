@@ -15,7 +15,7 @@ export default defineConfig({
     type: 'hash',
   },
   scripts: [
-    '//at.alicdn.com/t/c/font_3753867_7u7n7fy7ckt.js', //阿里图标库
+    '//at.alicdn.com/t/c/font_3753867_9h5atf8yhg6.js', //阿里图标库
   ],
   proxy: {
     '/proxy': {

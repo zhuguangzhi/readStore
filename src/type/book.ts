@@ -235,6 +235,7 @@ export type bookLibraryRequestProps = {
   search_word_count?: number; //搜索字数( 0：全部  1：30万以下  2：30-50万  3：50-100万  4：100-200万  5：200万以上  ）
   pen_name?: string; //作者名
   book_title?: string; //书籍名
+  search_keywords?: string; //搜索关键字
   page?: number; //页数
   page_size?: number; //条数
 };

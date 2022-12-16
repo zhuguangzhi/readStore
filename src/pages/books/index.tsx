@@ -7,8 +7,8 @@ import { useGetBookCategory, useGetBookLibrary } from '@/utils/bookShelf';
 import { scrollToBottom, targetColumnArray } from '@/common/publicFn';
 import { useAuth } from '@/hook/useAuth';
 import { BookLibrary } from '@/pages/books/bookLibrary';
-import router from '@/hook/url';
-import { BookId } from '@/constants/url';
+import router, { useSearchParam } from '@/hook/url';
+import { authorPenName, BookId, SearchKey } from '@/constants/url';
 import { useDispatch, useSelector } from 'umi';
 import { ConnectState } from '@/models/modelConnect';
 import { globalState } from '@/models/global';
@@ -49,6 +49,9 @@ export default () => {
     (state: ConnectState) => state.global,
   ) as globalState;
   const dispatch = useDispatch();
+  const [{ [SearchKey]: searchKey, [authorPenName]: penName }] = useSearchParam(
+    [SearchKey, authorPenName],
+  );
   //主题列表 用于展示 男频
   const [categoryMenList, setCategoryMenList] = useState<bookCategoryProps[][]>(
     [],
@@ -75,6 +78,8 @@ export default () => {
     search_word_count: state.textKey,
     page: libraryPage,
     page_size: 10,
+    [penName ? 'pen_name' : '']: penName,
+    [searchKey ? 'search_keywords' : '']: searchKey,
   });
   const { setLoadingModel } = useAuth();
 

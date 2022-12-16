@@ -22,7 +22,7 @@ export const useGetBookRank = (
 };
 // 加入书架
 export const useAddBookCase = (
-  queryType: 'rank' | 'home',
+  queryType: 'rank' | 'home' | 'topicBookList',
   tabIndex?: number,
 ) => {
   const queryClient = useQueryClient();
