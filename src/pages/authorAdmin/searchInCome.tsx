@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, DatePicker, Form, Input, Pagination, Select } from 'antd';
+import { Button, DatePicker, Form, Input, Select } from 'antd';
 import './style/searchInCome.less';
 import {
   areaProps,
@@ -12,6 +12,7 @@ import {
 } from '@/pages/authorAdmin/components/tableData';
 import locale from 'antd/es/date-picker/locale/zh_CN';
 import { IconFont } from '@/components/IconFont';
+import { ReadPagination } from '@/components/module/ReadPagination';
 
 const SearchIcon = () => <IconFont className={'inCome_icon'} icon={'search'} />;
 const DeleteIcon = () => <IconFont className={'inCome_icon'} icon={'delete'} />;
@@ -270,12 +271,11 @@ export default () => {
           })}
         </div>
         {/*style={{display:"flex",justifyContent:"flex-end"}}*/}
-        <Pagination
+        <ReadPagination
           hideOnSinglePage={true}
-          defaultCurrent={1}
+          current={1}
           total={500}
           pageSize={10}
-          simple={true}
         />
       </div>
     </div>

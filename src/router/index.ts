@@ -114,6 +114,11 @@ export const routes = [
         name: '个人信息',
         component: '@/pages/authorAdmin/personalInfo',
       },
+      {
+        path: 'bookContainer',
+        name: '创建/编辑信息',
+        component: '@/pages/authorAdmin/works/addSection',
+      },
     ],
   },
 

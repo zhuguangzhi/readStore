@@ -2,12 +2,14 @@ import http, { ResponseData } from '@/common/http';
 import {
   approvalProps,
   bookCategoryProps,
+  bookInfoProps,
   bookLibraryRequestProps,
   commentApprovalProps,
   commentReply,
   commentReplyRequestProps,
   commentRequestProps,
   commentStoreRequestProps,
+  createBooksProps,
   pageRequestProps,
   rankBookInfoProps,
   rankParamProps,
@@ -45,6 +47,7 @@ import {
   attentionTopicProps,
 } from '@/type/topic';
 import { baseApiUrl } from '../../public/config';
+import { worksListProps } from '@/type/authorAdmin/worksManager';
 
 export const ErrorCheck = <T>(val: ResponseData<T> | null) => {
   if (val?.status_code === 200) return true;
@@ -209,4 +212,22 @@ export const Topic = {
   //  关注话题
   attentionTopic: (p: attentionTopicProps) =>
     http.post<ResponseData<{}>>(`${apiUrl}/topic/attention`, p),
+};
+// --------------------------作者后台start-------------------------------------------------
+export const AuthorBook = {
+  //   获取作者作品列表
+  getAuthorBook: (p: pageRequestProps) =>
+    http.post<ResponseData<worksListProps>>(`${apiUrl}/author/book/list`, p),
+  //  删除作品
+  deleteAuthorBook: (p: { id: number }) =>
+    http.post(`${apiUrl}/author/book/delete`, p),
+  //  创建作品
+  createAuthorBook: (p: createBooksProps) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/author/book/store`, p),
+  //  编辑作品
+  editAuthorBook: (p: createBooksProps) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/author/book/edit`, p),
+  //  作品详情
+  getAuthorBookDetails: (p: { id: number }) =>
+    http.post<ResponseData<bookInfoProps>>(`${apiUrl}/author/book/detail`, p),
 };

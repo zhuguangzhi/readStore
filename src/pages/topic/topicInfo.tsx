@@ -11,7 +11,7 @@ import { BookItem } from '@/pages/home/components/bookItem';
 import { useModifyApproval } from '@/utils/home';
 import { useDispatch } from '@@/exports';
 import { useAddBookCase } from '@/utils/rank';
-import { scrollToBottom } from '@/common/publicFn';
+import { scrollToBottom, setArrayForId } from '@/common/publicFn';
 
 export default () => {
   const disPatch = useDispatch();
@@ -25,7 +25,7 @@ export default () => {
   });
   //  获取话题列表
   const { data: topicListData, isLoading: listLoading } = useGetTopicBookList({
-    page,
+    page: page,
     page_size: 20,
     sort_type: sortType,
     topic_id: Number(topicId),
@@ -57,9 +57,13 @@ export default () => {
     // (document.getElementsByClassName('webContainer') as HTMLElement ).onscroll= ()=>{}
   }, [listLoading, detailLoading]);
   useEffect(() => {
-    console.log('topicListData', topicListData);
-    if (!topicListData) return;
-    setTopicBooks(topicListData.data);
+    if (
+      !topicListData ||
+      topicListData.data.toString() === topicBooks.toString()
+    )
+      return;
+    let arr = setArrayForId([...topicBooks, ...topicListData.data]);
+    setTopicBooks(arr);
   }, [topicListData]);
   return (
     <div className={'topicInfo'}>

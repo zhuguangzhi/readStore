@@ -37,7 +37,7 @@ export type phoneLoginProps = {
 // 登陆返回结果
 export type loginResultProps = { access_token: string };
 // 验证码返回结果
-export type sendCodeResultProps = { verify_key: string };
+export type sendCodeResultProps = { captcha_key: string };
 //发送验证码
 export type sendCodeProps = Omit<
   phoneLoginProps,

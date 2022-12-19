@@ -39,6 +39,7 @@ export const SendCode = ({
         User.sendCode({ mobile: num }),
       )) as ResponseData<sendCodeResultProps>;
       if (!ErrorCheck(sendCodeRes)) return false;
+      console.log('sendCodeRes');
       setCaptchaKey?.(sendCodeRes.data.captcha_key);
       setCount(60);
       timerRef.current = setInterval(() => {

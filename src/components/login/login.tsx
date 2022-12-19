@@ -50,17 +50,19 @@ const Login = () => {
   };
 
   const PhoneInput = () => {
-    const [mobile, setMobile] = useState<string>('');
-    const inputOnchange = (val: React.ChangeEvent<HTMLInputElement>) => {
-      setMobile(val.target.value);
-    };
+    // const [mobile, setMobile] = useState<string>('');
+    // const inputOnchange = (val: React.ChangeEvent<HTMLInputElement>) => {
+    //   setMobile(val.target.value);
+    // };
+    const mobile = Form.useWatch('mobile', formValue);
+
     return (
       <>
         <Form.Item name={'mobile'}>
           <Input
             className={'login_form_input'}
             placeholder={'请输入手机号码'}
-            onChange={inputOnchange}
+            // onChange={inputOnchange}
             autoComplete={'off'}
           />
         </Form.Item>

@@ -28,7 +28,7 @@ export const useGetTopicDetail = (p: { id: number }) => {
 };
 // 获取话题列表
 export const useGetTopicBookList = (p: topicListRequestProps) => {
-  return useQuery<topicBookListProps, Error>(['topicBookList'], () =>
+  return useQuery<topicBookListProps, Error>(['topicBookList', p], () =>
     Topic.getTopicBookList(p).then((value) => {
       ErrorCheck(value);
       return value.data;

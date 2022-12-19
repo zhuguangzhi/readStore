@@ -4,7 +4,6 @@ import { IconFont } from '@/components/IconFont';
 import { Tabs } from 'antd';
 import WorksInfo from '@/pages/authorAdmin/works/worksInfo';
 import SectionList from '@/pages/authorAdmin/works/sectionList';
-import AddSection from '@/pages/authorAdmin/works/addSection';
 
 const SubIcon = () => (
   <IconFont width={'37px'} height={'44px'} icon={'bookShelf'} />
@@ -18,11 +17,11 @@ export default () => {
       key: 'worksInfo',
       children: <WorksInfo />,
     },
-    {
-      label: '章节列表',
-      key: 'sectionList',
-      children: <SectionList type={'section'} />,
-    },
+    // {
+    //   label: '章节列表',
+    //   key: 'sectionList',
+    //   children: <SectionList type={'section'} />,
+    // },
     {
       label: '草稿箱',
       key: 'draftBox',
@@ -31,7 +30,6 @@ export default () => {
     {
       label: '上传章节',
       key: 'addSection',
-      children: <AddSection />,
     },
   ];
   return (

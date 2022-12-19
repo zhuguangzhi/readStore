@@ -9,7 +9,7 @@ import { BaseTableProps } from 'ali-react-table';
 export const SectionList = ({ type }: { type: 'section' | 'draft' }) => {
   const columns: BaseTableProps['columns'] = [
     {
-      name: '章节名称',
+      name: '书籍名称',
       code: 'key',
       width: 250,
     },
@@ -23,7 +23,7 @@ export const SectionList = ({ type }: { type: 'section' | 'draft' }) => {
       width: 150,
     },
     {
-      name: '发布时间',
+      name: '创建时间',
       code: 'key',
       width: 250,
     },
@@ -57,7 +57,11 @@ export const SectionList = ({ type }: { type: 'section' | 'draft' }) => {
           <span>新建章节</span>
         </p>
       </UseNode>
-      <ReadTable columns={columns} dataSource={data} />
+      <ReadTable
+        columns={columns}
+        dataSource={data}
+        maxHeight={'calc(100vh - 215px)'}
+      />
     </div>
   );
 };

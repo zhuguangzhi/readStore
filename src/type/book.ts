@@ -22,6 +22,7 @@ export type bookInfoProps = {
   update_time: string; //更新时间
   last_update_chapter_time: string; //最后更新时间
   chapter_id: number; //最后更新章节ID
+  month_word: number; //月更新字数
   word_count: number; //总字数
   is_finish_text: string; //是否完结描述
   is_vip_text: string; //是否收费描述
@@ -37,6 +38,7 @@ export type bookInfoProps = {
   topic: topicProps; //话题信息
   read_line: number; //当前阅读行
   read_progress: number; //当前阅读进度
+  book_status_text: string; //审核状态
 };
 // 书籍额外信息
 export type bookExtension = {
@@ -245,4 +247,15 @@ export type saveReadHistoryProps = {
   chapter_id: number; //章节id
   read_progress: number; //阅读进度
   read_line: number; //阅读行
+};
+
+// 创建作品
+export type createBooksProps = {
+  id?: number; //修改时使用
+  name: string;
+  channel_type: 1 | 2; //频道类型( 1：男频  2：女频 ）
+  parent_category_id: number; //一级分类id
+  category_id: number; //二级分类id
+  keyword?: string; //关键字
+  description: string; //描述
 };

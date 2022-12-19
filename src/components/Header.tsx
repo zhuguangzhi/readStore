@@ -76,7 +76,7 @@ const Header = () => {
         <img
           onClick={() => router.push('/personal/bookShelf')}
           className={'cursor'}
-          src={require('../assets/test/personPhoto.png')}
+          src={userInfo?.user_image}
           alt=""
         />
       </div>

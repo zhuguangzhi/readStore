@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './style/index.less';
 import router, { useGetUrlPath } from '@/hook/url';
 import { Outlet } from 'react-router';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 type operationProps = {
   label: string;
@@ -11,6 +12,7 @@ type operationProps = {
 export const homeZoom = document.documentElement.clientWidth / 1920;
 // export const homeZoom = 1;
 export default () => {
+  const queryClient = new QueryClient();
   const routerInfo = useGetUrlPath();
   // 侧边栏选项
   const adminOperationList: operationProps[] = [
@@ -35,58 +37,71 @@ export default () => {
   }, [routerInfo.length]);
 
   // 首页缩放为1980
+  // style={{
+  //   transform:`scale(${homeZoom})`,
+  //       transformOrigin:"left top",
+  //       height:document.documentElement.clientHeight/homeZoom
+  // }}
   return (
-    <div className={'author_admin'} style={{ zoom: homeZoom }}>
-      <p
-        className={`author_admin_back  ${
-          currentOperate === 'home' ? 'banner' : 'banner2'
-        }`}
-      ></p>
-      <div
-        className={'flex'}
-        style={{ marginTop: '-310px', minHeight: '100%' }}
-      >
-        {/*side*/}
-        <div className={'author_admin_side'}>
-          {/*    用户信息*/}
-          <div className={'user_info'}>
-            {/*TODO:对接修改用户信息*/}
-            <div className={'user_info_box'}>
-              <img
-                className={'user_info_box_img'}
-                src={require('@/assets/test/personPhoto.png')}
-                alt=""
-              />
-            </div>
-            <p className={'font_16'}>如若</p>
-            <p className={'font_14'}>ID: 12345678900</p>
-          </div>
-          {/*    侧边栏*/}
-          <div className={'author_admin_side_box'}>
-            {adminOperationList.map((item) => {
-              return (
-                <div
-                  key={item.key}
-                  className={`author_admin_side_item ${
-                    currentOperate === item.key ? 'itemSelect' : ''
-                  }`}
-                  onClick={() => onOperateChange(item)}
-                >
-                  <p>{item.label}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        {/*  右侧内容  */}
+    <QueryClientProvider client={queryClient}>
+      <div className={'author_admin'} style={{ zoom: homeZoom }}>
+        <p
+          className={`author_admin_back  ${
+            currentOperate === 'home' ? 'banner' : 'banner2'
+          }`}
+        ></p>
         <div
-          className={`${
-            currentOperate !== 'home' ? 'author_admin_box' : ''
-          } author_admin_container`}
+          className={'flex'}
+          style={{ marginTop: '-310px', minHeight: '100%' }}
         >
-          <Outlet />
+          {/*side*/}
+          <div className={'author_admin_side'}>
+            {/*    用户信息*/}
+            <div className={'user_info'}>
+              {/*TODO:对接修改用户信息*/}
+              <div className={'user_info_box'}>
+                <img
+                  className={'user_info_box_img'}
+                  src={require('@/assets/test/personPhoto.png')}
+                  alt=""
+                />
+              </div>
+              <p className={'font_16'}>如若</p>
+              <p className={'font_14'}>ID: 12345678900</p>
+            </div>
+            {/*    侧边栏*/}
+            <div className={'author_admin_side_box'}>
+              {adminOperationList.map((item) => {
+                return (
+                  <div
+                    key={item.key}
+                    className={`author_admin_side_item ${
+                      currentOperate === item.key ? 'itemSelect' : ''
+                    }`}
+                    onClick={() => onOperateChange(item)}
+                  >
+                    <p>{item.label}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          {/*  右侧内容  */}
+          <div
+            className={`${
+              currentOperate !== 'home' ? 'author_admin_box' : ''
+            } author_admin_container`}
+            style={{
+              height:
+                currentOperate !== 'home'
+                  ? `calc(100vh/${homeZoom} - 65px)`
+                  : '',
+            }}
+          >
+            <Outlet />
+          </div>
         </div>
       </div>
-    </div>
+    </QueryClientProvider>
   );
 };
