@@ -1,0 +1,22 @@
+.commentAdmin {
+  display: flex;
+  flex-direction: column;
+  &_container {
+    flex: 1;
+    height: 100%;
+    &_form {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      .ant-form-item-label {
+        margin-right: 20px;
+      }
+      .ant-btn-primary {
+        background: var(--adminTheme);
+        width: 112px;
+        height: 40px;
+        border-radius: 9px;
+      }
+    }
+  }
+}

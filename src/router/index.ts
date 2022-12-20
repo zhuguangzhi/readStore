@@ -95,9 +95,19 @@ export const routes = [
         component: '@/pages/authorAdmin/searchInCome',
       },
       {
+        path: 'works/bookContainer',
+        name: '创建/编辑信息',
+        component: '@/pages/authorAdmin/works/addSection',
+      },
+      {
         path: 'works/worksInfo',
         name: '作品信息',
         component: '@/pages/authorAdmin/works/index',
+      },
+      {
+        path: 'comment',
+        name: '评论管理',
+        component: '@/pages/authorAdmin/commentManager',
       },
       {
         path: 'message',
@@ -113,11 +123,6 @@ export const routes = [
         path: 'personalInfo',
         name: '个人信息',
         component: '@/pages/authorAdmin/personalInfo',
-      },
-      {
-        path: 'bookContainer',
-        name: '创建/编辑信息',
-        component: '@/pages/authorAdmin/works/addSection',
       },
     ],
   },

@@ -57,7 +57,7 @@ export const worksInfo = () => {
     formValues.setFieldsValue({ ...worksInfo });
   }, [worksInfo]);
   useEffect(() => {
-    if (!cateGoryData || !worksInfo) return;
+    if (!cateGoryData || !worksInfo || !channelType) return;
     setParentCategory(cateGoryData[channelType - 1].child);
     if (!category)
       onParentCategoryChange(
@@ -79,7 +79,7 @@ export const worksInfo = () => {
   ) => {
     const arr =
       (parentCategory || list).find((item) => item.id === Number(value))
-        ?.child || [];
+        ?.child || null;
     setCategory(arr);
   };
   // 清除选中一二级分类
@@ -116,7 +116,7 @@ export const worksInfo = () => {
           colon={false}
           {...formItemLayout}
           onFinish={onSubmit}
-          initialValues={{ channel_type: 1 }}
+          initialValues={worksId ? {} : { channel_type: 1 }}
           requiredMark={false}
         >
           <Form.Item
@@ -228,7 +228,7 @@ export const worksInfo = () => {
               style={{ color: '#E74E4E', bottom: '-25px' }}
               className={'worksInfo_right_tip'}
             >
-              注意：严禁上传任何涉黄、涉赌、涉毒、涉政、涉黑等违规内容。一经查实，全书屏蔽整改并取消福利，情节严重的会追
+              注意：严禁上传任何涉黄、涉赌、涉毒、涉政、涉黑等违规内容。一经查实，全书屏蔽整改并取消福利，情节严重的会追究其法律责任！
             </span>
           </Form.Item>
           <Form.Item label=" ">

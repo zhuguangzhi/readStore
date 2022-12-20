@@ -47,7 +47,12 @@ import {
   attentionTopicProps,
 } from '@/type/topic';
 import { baseApiUrl } from '../../public/config';
-import { worksListProps } from '@/type/authorAdmin/worksManager';
+import {
+  chapterDetailsProps,
+  creatChapterProps,
+  worksListProps,
+} from '@/type/authorAdmin/worksManager';
+import { adminCommentRequestProps } from '@/type/authorAdmin/commentManager';
 
 export const ErrorCheck = <T>(val: ResponseData<T> | null) => {
   if (val?.status_code === 200) return true;
@@ -230,4 +235,25 @@ export const AuthorBook = {
   //  作品详情
   getAuthorBookDetails: (p: { id: number }) =>
     http.post<ResponseData<bookInfoProps>>(`${apiUrl}/author/book/detail`, p),
+  //  创建章节
+  createWorksChapter: (p: creatChapterProps) =>
+    http.post(`${apiUrl}/author/chapter/store`, p),
+  //  修改章节
+  editWorksChapter: (p: creatChapterProps) =>
+    http.post(`${apiUrl}/author/chapter/edit`, p),
+  //  章节详情
+  worksChapterDetails: (p: { book_id: number; chapter_id?: number }) => {
+    p['chapter_id'] = p.chapter_id ? p.chapter_id : 0;
+    return http.post<ResponseData<chapterDetailsProps>>(
+      `${apiUrl}/author/chapter/detail`,
+      p,
+    );
+  },
+};
+export const AuthorComment = {
+  getCommentList: (p: adminCommentRequestProps) =>
+    http.post<ResponseData<readComponentProps>>(
+      `${apiUrl}/author/comment/list`,
+      p,
+    ),
 };

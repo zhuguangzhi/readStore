@@ -145,6 +145,7 @@ export type readBookInfoProps = rankBook;
 export type commentProps = {
   id: number; //主键ID
   user_id: number; //用户ID
+  book_title: string; //书籍名称
   book_id: number; //书籍ID
   content: string; //评论内容
   reply: number; //回复数

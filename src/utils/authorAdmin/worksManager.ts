@@ -1,7 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { AuthorBook, ErrorCheck } from '@/common/api';
 import { bookInfoProps, createBooksProps, pageRequestProps } from '@/type/book';
-import { worksListProps } from '@/type/authorAdmin/worksManager';
+import {
+  chapterDetailsProps,
+  worksListProps,
+} from '@/type/authorAdmin/worksManager';
 import router from '@/hook/url';
 import { message } from 'antd';
 
@@ -54,5 +57,18 @@ export const useModifyAuthorBook = () => {
         message.success('修改成功');
       },
     },
+  );
+};
+
+// 获取章节详情
+export const useGetChapterDetails = (p: {
+  book_id: number;
+  chapter_id?: number;
+}) => {
+  return useQuery<chapterDetailsProps, Error>(['getChapterDetails'], () =>
+    AuthorBook.worksChapterDetails(p).then((value) => {
+      ErrorCheck(value);
+      return value.data;
+    }),
   );
 };

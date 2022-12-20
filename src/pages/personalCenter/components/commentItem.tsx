@@ -80,18 +80,20 @@ export const CommentItem = ({
             <span>选择</span>
           </div>
         ) : (
-          <div
-            className={'cursor flex flex_align'}
-            onClick={(event) => stopProp(event, () => onDelete?.(comment))}
-          >
-            <IconFont
-              width={'14px'}
-              height={'20px'}
-              marginRight={'8px'}
-              icon={'delete'}
-            />
-            <span>删除</span>
-          </div>
+          <UseNode rIf={comment.is_comment === 1}>
+            <div
+              className={'cursor flex flex_align'}
+              onClick={(event) => stopProp(event, () => onDelete?.(comment))}
+            >
+              <IconFont
+                width={'14px'}
+                height={'20px'}
+                marginRight={'8px'}
+                icon={'delete'}
+              />
+              <span>删除</span>
+            </div>
+          </UseNode>
         )}
       </div>
       {/*    container*/}

@@ -3,6 +3,7 @@ import './style/index.less';
 import router, { useGetUrlPath } from '@/hook/url';
 import { Outlet } from 'react-router';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { useAuth } from '@/hook/useAuth';
 
 type operationProps = {
   label: string;
@@ -11,19 +12,22 @@ type operationProps = {
 //缩放
 export const homeZoom = document.documentElement.clientWidth / 1920;
 // export const homeZoom = 1;
+// 侧边栏选项
+const adminOperationList: operationProps[] = [
+  { key: 'home', label: '首页' },
+  { key: 'works', label: '作品管理' },
+  { key: 'income', label: '收入查询' },
+  { key: 'message', label: '消息通知' },
+  { key: 'comment', label: '评论管理' },
+  { key: 'contract', label: '我的合同' },
+  { key: 'personalInfo', label: '个人信息' },
+];
 export default () => {
   const queryClient = new QueryClient();
   const routerInfo = useGetUrlPath();
-  // 侧边栏选项
-  const adminOperationList: operationProps[] = [
-    { key: 'home', label: '首页' },
-    { key: 'works', label: '作品管理' },
-    { key: 'income', label: '收入查询' },
-    { key: 'message', label: '消息通知' },
-    { key: 'comment', label: '评论管理' },
-    { key: 'contract', label: '我的合同' },
-    { key: 'personalInfo', label: '个人信息' },
-  ];
+  // 用户信息
+  const { userInfo } = useAuth();
+
   const [currentOperate, setOperate] = useState('home');
 
   //路由调转
@@ -58,16 +62,17 @@ export default () => {
           <div className={'author_admin_side'}>
             {/*    用户信息*/}
             <div className={'user_info'}>
-              {/*TODO:对接修改用户信息*/}
               <div className={'user_info_box'}>
                 <img
                   className={'user_info_box_img'}
-                  src={require('@/assets/test/personPhoto.png')}
+                  src={userInfo?.user_image}
                   alt=""
                 />
               </div>
-              <p className={'font_16'}>如若</p>
-              <p className={'font_14'}>ID: 12345678900</p>
+              <p className={'font_16'}>
+                {userInfo?.pen_name || userInfo?.nickname || userInfo?.name}
+              </p>
+              <p className={'font_14'}>ID: {userInfo?.id}</p>
             </div>
             {/*    侧边栏*/}
             <div className={'author_admin_side_box'}>

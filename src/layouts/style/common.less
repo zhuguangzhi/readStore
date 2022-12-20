@@ -173,3 +173,20 @@
   position: -webkit-sticky;
   position: sticky;
 }
+
+// modal全屏
+.full-modal {
+  width: 100vw;
+  height: 100vh;
+  .ant-modal {
+    width: 100% !important;
+    max-width: 100% !important;
+    top: 0;
+    padding: 0 !important;
+    height: 100%;
+    margin: 0;
+    .ant-modal-content {
+      height: 100%;
+    }
+  }
+}

@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AdminHeader } from '@/pages/authorAdmin/components/adminHeader';
 import { IconFont } from '@/components/IconFont';
 import { Tabs } from 'antd';
 import WorksInfo from '@/pages/authorAdmin/works/worksInfo';
 import SectionList from '@/pages/authorAdmin/works/sectionList';
+import router, { useSearchParam } from '@/hook/url';
+import { WorksId } from '@/constants/url';
+import { useMounted } from '@/hook';
 
 const SubIcon = () => (
   <IconFont width={'37px'} height={'44px'} icon={'bookShelf'} />
 );
 
 export default () => {
+  const [{ [WorksId]: worksId }] = useSearchParam([WorksId]);
   // 标签栏
-  const tabList = [
+  const [tabList, setTabList] = useState([
     {
       label: '作品信息',
       key: 'worksInfo',
@@ -28,10 +32,16 @@ export default () => {
       children: <SectionList type={'draft'} />,
     },
     {
-      label: '上传章节',
+      label: '上传文章',
       key: 'addSection',
     },
-  ];
+  ]);
+  useMounted(() => {
+    if (worksId) return;
+    const arr = [...tabList];
+    arr.splice(1, 2);
+    setTabList(arr);
+  });
   return (
     <div className={'works'}>
       <div style={{ paddingRight: '69px' }}>
@@ -39,7 +49,15 @@ export default () => {
       </div>
       {/*    内容*/}
       <main className={'admin_container'}>
-        <Tabs defaultActiveKey="1" items={tabList} tabBarGutter={57} />
+        <Tabs
+          defaultActiveKey="1"
+          items={tabList}
+          tabBarGutter={57}
+          onTabClick={(key) => {
+            if (key === 'addSection')
+              router.push('/admin/works/bookContainer', { [WorksId]: worksId });
+          }}
+        />
       </main>
     </div>
   );

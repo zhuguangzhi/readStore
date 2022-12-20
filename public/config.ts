@@ -6,6 +6,8 @@ export const baseApiUrl = 'http://localhost:8000/proxy/api';
 // export const baseApiUrl = 'http://apipost.datangzww.com/api';
 export const uploadImageUrl =
   'https://www.mocky.io/v2/5cc8019d300000980a055e76'; //图片上传地址
+//tiny 编辑器的keyApi
+export const TinyKeyApi = 'jni2urpheuduspto4c6oryvbs5mx0x8mskf42vgxtvmio1wk';
 export const tipLinks = [
   { name: '书香云集', href: 'http://www.sxyj.net/' },
   { name: '大唐中文网', href: 'https://www.datzww.com/' },
