@@ -1,9 +1,8 @@
-import React, { ReactElement, useCallback, useEffect, useState } from 'react';
-import { Checkbox, Progress } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Progress } from 'antd';
 import { IconFont } from '@/components/IconFont';
 import './style/bookShelf.less';
 import { PersonalHeader } from '@/pages/personalCenter/components/personalHeader';
-import { ShelfFloor } from '@/pages/personalCenter/components/shelfFloor';
 import ReadPopup from '@/components/module/ReadPopup';
 import { DelPopup } from '@/pages/personalCenter/utils';
 import { PullLoad } from '@/components/module/PullLoad';
@@ -14,6 +13,8 @@ import { setArrayForId, targetColumnArray } from '@/common/publicFn';
 import { UseNode } from '@/components/UseNode';
 import router from '@/hook/url';
 import { BookId } from '@/constants/url';
+import { BookFace } from '@/pages/personalCenter/components/bookFace';
+import { BookLayer } from '@/pages/personalCenter/components/bookLayer';
 
 const tabBars = [
   { key: 'getMyBookList', label: '我的书架' },
@@ -46,7 +47,7 @@ export default () => {
   });
 
   const getMore = useCallback(() => {
-    if (!bookLoading && myBooks && page * 10 < myBooks.page_info.total) {
+    if (!bookLoading && myBooks && page * 22 < myBooks.page_info.total) {
       setPage((val) => ++val);
     }
   }, [bookLoading]);
@@ -84,49 +85,21 @@ export default () => {
   }, [myBooks]);
 
   // 封面
-  const BoobFace = ({
-    book,
-    className,
-    children,
-  }: {
-    book: myBookProps;
-    children?: ReactElement;
-    className?: string;
-  }) => {
-    return (
-      <div className={`myBookShelf_face ${className}`}>
-        <img
-          style={{ width: '100%', height: '100%' }}
-          src={book.cover_url}
-          alt="封面"
-        />
-        <div className={`myBookShelf_face_mask ${edit ? 'showMask' : ''}`}>
-          {edit ? (
-            <Checkbox
-              className={'myBookShelf_face_icon myBookShelf_face_check'}
-              defaultChecked={false}
-              checked={popupOption.ids.includes(book.book_id)}
-              onChange={(e) => delPopup.onChangeCheckBox(e, book.book_id)}
-            />
-          ) : (
-            <IconFont
-              onClick={() =>
-                delPopup.onDelChange(book.book_title, book.book_id)
-              }
-              className={'myBookShelf_face_icon'}
-              icon={'delete'}
-            />
-          )}
-          {children}
-        </div>
-      </div>
-    );
-  };
+
   // 最近阅读
   const RecentlyRead = ({ book }: { book: myBookProps }) => {
     return (
       <div className={'recently'}>
-        <BoobFace book={book} className={'recently_face'} />
+        <BookFace
+          book={book}
+          className={'recently_face'}
+          edit={edit}
+          selectIds={popupOption.ids}
+          onDelete={() => delPopup.onDelChange(book.book_title, book.book_id)}
+          onCheckBox={(event, bookId) =>
+            delPopup.onChangeCheckBox(event, bookId)
+          }
+        />
         <div className={'recently_info'}>
           {/*TODO:对接时换成话题标题*/}
           <p className={'recently_info_topic textOverflow_2'}>
@@ -200,117 +173,16 @@ export default () => {
             </UseNode>
             {/*  书架*/}
             <div className={'myBookShelf_book'}>
-              {
-                //每层书架
-                bookList.map((bookItem, index) => {
-                  return (
-                    <div key={index} className={'myBookShelf_book_layer'}>
-                      <div className={'flex'}>
-                        {
-                          //每本书
-                          bookItem.map((book) => {
-                            if (book)
-                              return (
-                                <div
-                                  key={book.id}
-                                  className={'myBookShelf_book_layer_item'}
-                                >
-                                  <BoobFace
-                                    book={book}
-                                    className={
-                                      'myBookShelf_book_layer_item_face'
-                                    }
-                                  >
-                                    <div
-                                      style={{ width: '100%', height: '100%' }}
-                                      className={
-                                        'flex flex_column flex_justify flex_align'
-                                      }
-                                    >
-                                      {/*进度条*/}
-                                      <div
-                                        className={
-                                          'progress myBookShelf_face_check'
-                                        }
-                                        style={{
-                                          transform: `rotate(${
-                                            3.6 * Number(book.read_progress)
-                                          }deg)`,
-                                        }}
-                                      >
-                                        <i className={'circle'}></i>
-                                        <Progress
-                                          className={'rotate'}
-                                          style={{
-                                            transform: `rotate(${
-                                              -3.6 * Number(book.read_progress)
-                                            }deg)`,
-                                          }}
-                                          width={59}
-                                          type="circle"
-                                          percent={Number(book.read_progress)}
-                                          strokeWidth={4}
-                                          strokeColor={'#f77a2a'}
-                                          format={(percent) => percent}
-                                        />
-                                      </div>
-                                      <span
-                                        className={'font_14'}
-                                        onClick={() => goToRead(book)}
-                                        style={{
-                                          display: 'inline-block',
-                                          marginTop: '26px',
-                                        }}
-                                      >
-                                        继续阅读
-                                      </span>
-                                    </div>
-                                  </BoobFace>
-                                  <div className={'bookInfo font_14'}>
-                                    {/*TODO:需要将话题字段动态*/}
-                                    <div
-                                      className={'textOverflow_2'}
-                                      style={{ width: '100%' }}
-                                    >
-                                      <span className={'bookInfo_tag'}>
-                                        话题
-                                      </span>
-                                      <span className={'color_33'}>
-                                        {book.topic_title}
-                                      </span>
-                                    </div>
-                                    <p className={'font_12 textOverflow'}>
-                                      {book.book_title}
-                                    </p>
-                                  </div>
-                                </div>
-                              );
-                            else
-                              return (
-                                <div
-                                  key={'add'}
-                                  className={'myBookShelf_book_layer_item'}
-                                  onClick={() => router.push('/books')}
-                                >
-                                  <i className={'addBook'}>
-                                    <IconFont
-                                      className={'cursor'}
-                                      icon={'jia'}
-                                      width={'36px'}
-                                      height={'36px'}
-                                      color={'#C6CECD'}
-                                    />
-                                  </i>
-                                </div>
-                              );
-                          })
-                        }
-                      </div>
-                      <ShelfFloor />
-                    </div>
-                  );
-                })
-              }
+              <BookLayer
+                bookList={bookList}
+                edit={edit}
+                selectIds={popupOption.ids}
+                onDelete={(title, id) => delPopup.onDelChange(title, id)}
+                onCheckBox={(event, bookId) =>
+                  delPopup.onChangeCheckBox(event, bookId)
+                }
+                goToRead={goToRead}
+              />
             </div>
           </>
         </PullLoad>

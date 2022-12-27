@@ -1,7 +1,10 @@
 .worksManager {
   display: flex;
   flex-direction: column;
-  height: calc(100% - 20px);
+  &_container {
+    flex: 1;
+    height: 100%;
+  }
   &_header {
     display: flex;
     justify-content: space-between;
@@ -89,6 +92,23 @@
           }
         }
       }
+      &_channel {
+        display: flex;
+        align-items: center;
+        span {
+          display: inline-block;
+          margin: 0 8px;
+        }
+      }
+    }
+  }
+  &_channelList {
+    display: flex;
+    align-items: center;
+    img {
+      width: 26px;
+      height: 26px;
+      margin: 0 8px;
     }
   }
 }

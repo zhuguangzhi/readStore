@@ -14,6 +14,8 @@ export type bookInfoProps = {
   parent_category_id: number; //二级分类ID
   parent_category_name: string; //二级分类名称
   is_finish: 1 | 2; //是否完本( 1：是 2：否)
+  is_signing: 1 | 2; //是否签约( 1：是 2：否)
+  is_signing_text: string; //是否签约描述
   channel_type: 1 | 2; //频道类型( 1：男生 2：女生）
   is_vip: 1 | 2; //是否收费(1：是 2：否)
   is_display: 1 | 2; //是否前台显示(1：是 2：否）
@@ -39,6 +41,13 @@ export type bookInfoProps = {
   read_line: number; //当前阅读行
   read_progress: number; //当前阅读进度
   book_status_text: string; //审核状态
+  keyword: string; //关键字,号隔开
+  empowers: empowerProps[];
+};
+// 上架渠道信息
+export type empowerProps = {
+  title: string; //授权渠道标题
+  cover_url: string; //授权渠道封面地址
 };
 // 书籍额外信息
 export type bookExtension = {

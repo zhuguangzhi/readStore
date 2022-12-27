@@ -21,6 +21,7 @@ export type PopupProps = {
   useCancelBtn?: boolean; //是否展示取消按钮
   width?: string; //宽度
   disabled?: boolean; // okBtn是否禁用
+  loading?: boolean; // loading
 };
 export const ReadPopup = (props: PopupProps) => {
   const Container: (props: PopupProps) => ReactElement = useCallback(
@@ -72,6 +73,7 @@ export const ReadPopup = (props: PopupProps) => {
                   type={'primary'}
                   danger={isDanger}
                   disabled={props.disabled}
+                  loading={props.loading}
                 >
                   {props.okBtnName || '确定'}
                 </Button>

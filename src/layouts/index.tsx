@@ -5,7 +5,7 @@ import './style/base.less';
 import './style/common.less';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { message, Spin } from 'antd';
+import { ConfigProvider, message, Spin } from 'antd';
 import { useMounted } from '@/hook';
 import { getToken, useAuth } from '@/hook/useAuth';
 import { ConnectState } from '@/models/modelConnect';
@@ -18,6 +18,11 @@ import { useAsync } from '@/hook/useAsync';
 import { ResponseData } from '@/common/http';
 import { authorProps, loginResultProps } from '@/type/user';
 import { ErrorCheck, User } from '@/common/api';
+import zhCN from 'antd/es/locale/zh_CN';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+
+moment.locale('zh-cn');
 
 const Index = () => {
   // 全局配置message
@@ -70,7 +75,9 @@ const Index = () => {
         delay={200}
         className={'spinLoading'}
       />
-      <Outlet />
+      <ConfigProvider locale={zhCN}>
+        <Outlet />
+      </ConfigProvider>
     </div>
   );
 };

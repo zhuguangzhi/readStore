@@ -3,8 +3,8 @@ import { Button, Form, Input, Radio, Select } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import './style/worksInfo.less';
 import { Values } from 'async-validator';
-import router, { useSearchParam } from '@/hook/url';
-import { WorksId } from '@/constants/url';
+import router, { useSearchParam, useSetUrlParams } from '@/hook/url';
+import { WorksChapterId, WorksId } from '@/constants/url';
 import {
   uesGetAuthorBookDetails,
   useCreateAuthorBook,
@@ -22,6 +22,8 @@ const formItemLayout = {
 };
 export const worksInfo = () => {
   const [{ [WorksId]: worksId }] = useSearchParam([WorksId]);
+  // 设置路由参数
+  const setRouterParam = useSetUrlParams();
   const { data: worksInfo, isLoading: detailsLoading } =
     uesGetAuthorBookDetails({ id: Number(worksId) });
   // 分类列表
@@ -54,12 +56,14 @@ export const worksInfo = () => {
 
   useEffect(() => {
     if (!worksInfo) return;
-    formValues.setFieldsValue({ ...worksInfo });
+    setRouterParam({ [WorksChapterId]: worksInfo.chapter_id });
+    const key = worksInfo.keyword ? worksInfo.keyword.split(',') : [];
+    formValues.setFieldsValue({ ...worksInfo, keyword: key });
   }, [worksInfo]);
   useEffect(() => {
-    if (!cateGoryData || !worksInfo || !channelType) return;
+    if (!cateGoryData || !channelType) return;
     setParentCategory(cateGoryData[channelType - 1].child);
-    if (!category)
+    if (!category && worksInfo)
       onParentCategoryChange(
         worksInfo.parent_category_id,
         cateGoryData[channelType - 1].child,
@@ -67,11 +71,12 @@ export const worksInfo = () => {
   }, [channelType, cateGoryData, worksInfo]);
 
   const onSubmit = (values: Values) => {
+    const param = { ...values, keyword: values.keyword.join(',') };
     if (worksId) {
-      modifyAuthorBook({ ...values, id: Number(worksId) } as createBooksProps);
+      modifyAuthorBook({ ...param, id: Number(worksId) } as createBooksProps);
       return;
     }
-    createAuthorBook({ ...values } as createBooksProps);
+    createAuthorBook({ ...param } as createBooksProps);
   };
   const onParentCategoryChange = (
     value: number,
@@ -146,7 +151,12 @@ export const worksInfo = () => {
                   rules={[{ required: true, message: '请选择一级分类' }]}
                 >
                   <Select
-                    onChange={(value) => onParentCategoryChange(value)}
+                    onChange={(value) => {
+                      onParentCategoryChange(value);
+                      formValues.setFieldsValue({
+                        category_id: '',
+                      });
+                    }}
                     style={{ width: '120px' }}
                     getPopupContainer={() =>
                       document.getElementById(
@@ -196,7 +206,7 @@ export const worksInfo = () => {
             </div>
           </Form.Item>
           <Form.Item label="作品标签">
-            <Form.Item name={'tags'}>
+            <Form.Item name={'keyword'}>
               <Select
                 mode="tags"
                 style={{ width: '100%' }}
@@ -221,7 +231,7 @@ export const worksInfo = () => {
             <span>0</span>
           </Form.Item>
           <Form.Item label="作品简介">
-            <Form.Item name={'worksDescription'}>
+            <Form.Item name={'description'}>
               <TextArea rows={4} style={{ resize: 'none', height: '155px' }} />
             </Form.Item>
             <span

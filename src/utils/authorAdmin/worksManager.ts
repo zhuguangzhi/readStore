@@ -7,6 +7,7 @@ import {
 } from '@/type/authorAdmin/worksManager';
 import router from '@/hook/url';
 import { message } from 'antd';
+import { WorksChapterId, WorksId } from '@/constants/url';
 
 export const useGetWorks = (p: pageRequestProps) => {
   return useQuery<worksListProps, Error>(['getWorks'], () =>
@@ -39,7 +40,10 @@ export const useCreateAuthorBook = (closeLoad: Function) => {
       async onSuccess(val) {
         ErrorCheck(val);
         await closeLoad();
-        router.push('/admin/bookContainer');
+        router.push('/admin/bookContainer', {
+          [WorksId]: val.data.book_id,
+          [WorksChapterId]: val.data.chapter_id,
+        });
       },
     },
   );
@@ -70,5 +74,21 @@ export const useGetChapterDetails = (p: {
       ErrorCheck(value);
       return value.data;
     }),
+  );
+};
+// 删除作品
+export const useDeleteWorks = (call?: Function) => {
+  const queryClient = useQueryClient();
+  const queryKey = ['getWorks'];
+  return useMutation(
+    ['delWorks'],
+    (p: { id: number }) => AuthorBook.deleteAuthorBook(p),
+    {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(queryKey);
+        call?.();
+        message.success('删除成功');
+      },
+    },
   );
 };

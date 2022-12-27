@@ -179,6 +179,8 @@ export const User = {
   // 注册
   register: (p: registerProps) =>
     http.post<ResponseData<loginResultProps>>(`${apiUrl}/auth/register`, p),
+  // 退出登陆
+  logout: () => http.post<ResponseData<{}>>(`${apiUrl}/auth/logout`, {}),
 };
 export const PersonalCenter = {
   getAllComment: (p: pageRequestProps) =>
@@ -228,7 +230,10 @@ export const AuthorBook = {
     http.post(`${apiUrl}/author/book/delete`, p),
   //  创建作品
   createAuthorBook: (p: createBooksProps) =>
-    http.post<ResponseData<{}>>(`${apiUrl}/author/book/store`, p),
+    http.post<ResponseData<{ book_id: number; chapter_id: number }>>(
+      `${apiUrl}/author/book/store`,
+      p,
+    ),
   //  编辑作品
   editAuthorBook: (p: createBooksProps) =>
     http.post<ResponseData<{}>>(`${apiUrl}/author/book/edit`, p),

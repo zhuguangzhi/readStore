@@ -5,7 +5,7 @@ import { Tabs } from 'antd';
 import WorksInfo from '@/pages/authorAdmin/works/worksInfo';
 import SectionList from '@/pages/authorAdmin/works/sectionList';
 import router, { useSearchParam } from '@/hook/url';
-import { WorksId } from '@/constants/url';
+import { WorksChapterId, WorksId } from '@/constants/url';
 import { useMounted } from '@/hook';
 
 const SubIcon = () => (
@@ -13,7 +13,10 @@ const SubIcon = () => (
 );
 
 export default () => {
-  const [{ [WorksId]: worksId }] = useSearchParam([WorksId]);
+  const [{ [WorksId]: worksId, [WorksChapterId]: chapterId }] = useSearchParam([
+    WorksId,
+    WorksChapterId,
+  ]);
   // 标签栏
   const [tabList, setTabList] = useState([
     {
@@ -55,7 +58,10 @@ export default () => {
           tabBarGutter={57}
           onTabClick={(key) => {
             if (key === 'addSection')
-              router.push('/admin/works/bookContainer', { [WorksId]: worksId });
+              router.push('/admin/works/bookContainer', {
+                [WorksId]: worksId,
+                [WorksChapterId]: chapterId,
+              });
           }}
         />
       </main>

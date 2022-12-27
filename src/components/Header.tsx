@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { Input } from 'antd';
+import React, { useState } from 'react';
+import { Input, message, Popover } from 'antd';
 
 import { useSetState } from '@/hook';
 import { IconFont } from '@/components/IconFont';
 import { inputEvent } from '@/type';
 import { logoUrl } from '../../public/config';
-import router, { useGetUrlPath } from '@/hook/url';
+import router from '@/hook/url';
 
 import './style/header.less';
 import { LoginPopup } from '@/components/login';
-import { useAuth } from '@/hook/useAuth';
+import { clearToken, useAuth } from '@/hook/useAuth';
 import { SearchKey } from '@/constants/url';
-
+import { useAsync } from '@/hook/useAsync';
+import { ErrorCheck, User } from '@/common/api';
+import { ResponseData } from '@/common/http';
 const SearchIcon = () => (
   <IconFont
     width={'13px'}
@@ -21,8 +23,8 @@ const SearchIcon = () => (
   />
 );
 const Header = () => {
-  const routerInfo = useGetUrlPath();
   const { userInfo, setLoginPopup } = useAuth();
+  const { run } = useAsync<ResponseData<{}>>();
   //路由选项跳转
   const optionList = [
     { title: '首页', key: 'home' },
@@ -35,10 +37,6 @@ const Header = () => {
   });
   //调用该hook改变state
   const changeState = useSetState(state, setState);
-
-  useEffect(() => {
-    changeState({ currentOptionKey: routerInfo[1] });
-  }, [routerInfo[1]]);
 
   // 搜索框事件
   const onSearch = (e: inputEvent) => {
@@ -62,10 +60,98 @@ const Header = () => {
     );
   };
 
+  // 用户卡片
+  const UserCard = () => {
+    const logout = async () => {
+      const hide = message.loading('退出中');
+      const res = await run(User.logout());
+      if (!ErrorCheck(res)) return;
+      hide();
+      clearToken();
+    };
+    return (
+      <div className={'header_card'}>
+        {/*    上部分*/}
+        <div className={'header_card_top'}>
+          {/* 头*/}
+          <div className={'header_card_top_title'}>
+            <div className={'flex flex_align'}>
+              <img src={userInfo?.user_image} alt="" />
+              <span className={'font_14'}>{userInfo?.nickname}</span>
+              {userInfo?.is_vip === 1 ? (
+                <img
+                  className={'header_card_top_title_vipLogo'}
+                  src={require('@/assets/image/home/vip.png')}
+                  alt=""
+                />
+              ) : (
+                <img
+                  className={'header_card_top_title_vipLogo'}
+                  src={require('@/assets/image/home/noVip.png')}
+                  alt=""
+                />
+              )}
+            </div>
+            <p className={'cursor font_14'} onClick={logout}>
+              退出
+            </p>
+          </div>
+          {/*    充值*/}
+          <div className={'header_card_top_vipPay'}>
+            <div className={'header_card_top_vipPay_info'}>
+              <img src={require('@/assets/image/home/vipSign.png')} alt="" />
+              <span className={'font_12'}>您还不是会员</span>
+            </div>
+            <div className={'header_card_top_vipPay_btn'}>
+              {userInfo?.is_vip === 1 ? '立即续费' : '开通会员'}
+            </div>
+          </div>
+        </div>
+        {/*    脚*/}
+        <div className={'header_card_footer'}>
+          <div
+            className={'header_card_footer_item'}
+            onClick={() => router.push('/personal/userInfo')}
+          >
+            <IconFont width={'22px'} height={'22px'} icon={'user'} />
+            <p>个人中心</p>
+          </div>
+          <div
+            className={'header_card_footer_item'}
+            onClick={() => router.push('/personal/bookShelf')}
+          >
+            <IconFont width={'20px'} height={'21px'} icon={'icon_shujianor'} />
+            <p>我的书架</p>
+          </div>
+          <div
+            className={'header_card_footer_item'}
+            onClick={() => router.push('/personal/topicShelf')}
+          >
+            <IconFont width={'22px'} height={'22px'} icon={'myTopic'} />
+            <p>话题书架</p>
+          </div>
+          <div
+            className={'header_card_footer_item'}
+            onClick={() => router.push('/personal/comment')}
+          >
+            <IconFont width={'22px'} height={'22px'} icon={'comment'} />
+            <p>我的评论</p>
+          </div>
+          <div
+            className={'header_card_footer_item'}
+            onClick={() => router.push('/personal/notice')}
+          >
+            <IconFont width={'22px'} height={'22px'} icon={'tip'} />
+            <p>系统通知</p>
+          </div>
+        </div>
+      </div>
+    );
+  };
   // 用户信息
   const UserInfoChildren = () => {
     return (
-      <div className={'header_user'}>
+      <div className={'header_user'} id={'userInfoHeader'}>
         <IconFont
           className={'cursor'}
           width={'26px'}
@@ -73,12 +159,20 @@ const Header = () => {
           icon={'xin'}
           onClick={() => router.push('/personal/notice')}
         />
-        <img
-          onClick={() => router.push('/personal/bookShelf')}
-          className={'cursor'}
-          src={userInfo?.user_image}
-          alt=""
-        />
+        <Popover
+          placement="bottom"
+          content={<UserCard />}
+          getPopupContainer={() =>
+            document.getElementById('userInfoHeader') as HTMLDivElement
+          }
+        >
+          <img
+            // onClick={() => router.push('/personal/bookShelf')}
+            className={'cursor'}
+            src={userInfo?.user_image}
+            alt=""
+          />
+        </Popover>
       </div>
     );
   };

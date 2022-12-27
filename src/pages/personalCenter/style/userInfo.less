@@ -1,0 +1,177 @@
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  &_box {
+    width: 100%;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    margin-top: 60px;
+    &_img {
+      width: 90px;
+      height: 90px;
+      border-radius: 90px;
+      margin-right: 14px;
+    }
+    &_info {
+      &_edit {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        margin-right: 95px;
+        p {
+          width: 73px;
+          height: 25px;
+          border: 1px solid var(--themeColor);
+          border-radius: 12px;
+          margin-left: 24px;
+          text-align: center;
+          line-height: 25px;
+          color: var(--themeColor);
+          font-size: 14px;
+          cursor: pointer;
+        }
+      }
+    }
+    &_data {
+      display: flex;
+      align-items: center;
+      &_item {
+        padding: 0 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-right: 1px solid #e5e5e5;
+        cursor: pointer;
+        p {
+          font-size: 16px;
+          font-weight: bolder;
+        }
+        &_desc {
+          font-size: 14px;
+          color: #999999;
+          span {
+            display: inline-block;
+            margin-right: 4px;
+          }
+        }
+      }
+      &_item:last-child {
+        border: none;
+      }
+    }
+  }
+  &_bookShelf {
+    margin-top: 69px;
+    width: 100%;
+    &_title {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-left: 13px;
+      color: var(--themeColor);
+      font-size: 16px;
+      font-weight: bolder;
+      margin-bottom: 48px;
+      &_right {
+        font-size: 14px;
+        cursor: pointer;
+        font-weight: normal;
+      }
+      &_num {
+        position: absolute;
+        top: -3px;
+        left: 83px;
+        display: inline-block;
+        font-size: 14px;
+      }
+    }
+    &_title::before {
+      content: '';
+      position: absolute;
+      left: -4px;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--themeColor);
+    }
+  }
+  &_comment {
+    width: 100%;
+    &_box {
+      &_item {
+        width: 100%;
+        padding: 13px 0;
+        border-bottom: 1px solid #e7e7e7;
+        &_img {
+          width: 34px;
+          height: 34px;
+          border-radius: 34px;
+          margin-right: 12px;
+        }
+        &_content {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+          margin-top: 20px;
+          span {
+            display: inline-block;
+            width: calc(100% - 160px);
+            flex: 1;
+            margin-right: 12px;
+            word-wrap: break-word;
+            text-align: left;
+            font-size: 14px;
+            color: #0d0d0d;
+          }
+          p {
+            width: 160px;
+            white-space: nowrap;
+            text-align: right;
+          }
+        }
+      }
+      &_tip {
+        display: inline-block;
+        height: 40px;
+        width: 100%;
+        line-height: 40px;
+        text-align: center;
+        color: #999999;
+      }
+    }
+
+    .ant-tabs-tab {
+      color: #848484;
+    }
+    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn,
+    .ant-tabs-tab-btn:active {
+      color: var(--themeColor);
+    }
+    .ant-tabs-ink-bar {
+      background: var(--themeColor);
+    }
+  }
+}
+.userInfo::before {
+  content: '';
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: white !important;
+  z-index: -1;
+}
+.userInfo::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--headerHeight);
+  border-bottom: var(--border);
+  z-index: -1;
+}

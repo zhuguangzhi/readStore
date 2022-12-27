@@ -3,12 +3,12 @@ export type authorProps = {
   id: number; //主键ID
   name: string; //名称
   nickname: string; //昵称
-  is_author: number; //是否是作者(1：是 2：否)
+  is_author: 1 | 2; //是否是作者(1：是 2：否)
   is_author_desc: '读者' | '作者'; //用户身份信息
   pen_name: string; //笔名
   user_image: string; //用户头像
   mobile: string; //手机号
-  sex: 0; //性别
+  sex: 0 | 1 | 2; //性别
   sex_desc: '男' | '女' | '未知'; //性别 1：男 2：女 0 ：未知
   birthday: string; //生日
   address: string; //地址
@@ -21,6 +21,7 @@ export type authorProps = {
   user_status: number; //用户状态
   user_status_desc: string; //用户状态描述
   chart_description: string; //推荐语
+  is_vip: 1 | 2; //是否是vip(1：是 2：否)
 };
 
 // 账号密码登陆

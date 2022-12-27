@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { AdminHeader } from '@/pages/authorAdmin/components/adminHeader';
 import { IconFont } from '@/components/IconFont';
-import { WorksId } from '@/constants/url';
+import { WorksChapterId, WorksId } from '@/constants/url';
 import { useSearchParam } from '@/hook/url';
 import {
   uesGetAuthorBookDetails,
@@ -22,7 +22,10 @@ const SubIcon = () => (
 export const AddSection = () => {
   // 编辑器实例
   const [editorEl, setEditor] = useState<TinyMCEEditor | null>(null);
-  const [{ [WorksId]: worksId }] = useSearchParam([WorksId]);
+  const [{ [WorksId]: worksId, [WorksChapterId]: chapterId }] = useSearchParam([
+    WorksId,
+    WorksChapterId,
+  ]);
   const { data: worksInfo, isLoading: detailsLoading } =
     uesGetAuthorBookDetails({ id: Number(worksId) });
   const [worksModal, setWorksModal] = useState({
@@ -33,7 +36,10 @@ export const AddSection = () => {
   const { setLoadingModel } = useAuth();
   // 获取章节详情
   const { data: chapterDetails, isLoading: chapterDetailsLoading } =
-    useGetChapterDetails({ book_id: Number(worksId) });
+    useGetChapterDetails({
+      book_id: Number(worksId),
+      chapter_id: Number(chapterId),
+    });
 
   // 弹窗关闭
   const onModalCancel = useCallback(() => {

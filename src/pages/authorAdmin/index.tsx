@@ -4,6 +4,7 @@ import router, { useGetUrlPath } from '@/hook/url';
 import { Outlet } from 'react-router';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { useAuth } from '@/hook/useAuth';
+import { Properties } from 'csstype';
 
 type operationProps = {
   label: string;
@@ -48,7 +49,17 @@ export default () => {
   // }}
   return (
     <QueryClientProvider client={queryClient}>
-      <div className={'author_admin'} style={{ zoom: homeZoom }}>
+      <div
+        className={'author_admin'}
+        style={
+          {
+            zoom: homeZoom,
+            transformOrigin: 'left top',
+            MozTransform: `scale(${homeZoom})`,
+            height: document.documentElement.clientHeight / homeZoom,
+          } as Properties<string | number, string & {}>
+        }
+      >
         <p
           className={`author_admin_back  ${
             currentOperate === 'home' ? 'banner' : 'banner2'
