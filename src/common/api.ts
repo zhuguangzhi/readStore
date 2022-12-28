@@ -218,7 +218,7 @@ export const Topic = {
     http.post<ResponseData<topicListProps>>(`${apiUrl}/topic/list`, p),
   //  关注话题
   attentionTopic: (p: attentionTopicProps) =>
-    http.post<ResponseData<{}>>(`${apiUrl}/topic/attention`, p),
+    http.post<ResponseData<{}>>(`${apiUrl}/user/topic/attention`, p),
 };
 // --------------------------作者后台start-------------------------------------------------
 export const AuthorBook = {
@@ -227,7 +227,7 @@ export const AuthorBook = {
     http.post<ResponseData<worksListProps>>(`${apiUrl}/author/book/list`, p),
   //  删除作品
   deleteAuthorBook: (p: { id: number }) =>
-    http.post(`${apiUrl}/author/book/delete`, p),
+    http.post<ResponseData<{}>>(`${apiUrl}/author/book/delete`, p),
   //  创建作品
   createAuthorBook: (p: createBooksProps) =>
     http.post<ResponseData<{ book_id: number; chapter_id: number }>>(
@@ -242,18 +242,19 @@ export const AuthorBook = {
     http.post<ResponseData<bookInfoProps>>(`${apiUrl}/author/book/detail`, p),
   //  创建章节
   createWorksChapter: (p: creatChapterProps) =>
-    http.post(`${apiUrl}/author/chapter/store`, p),
+    http.post<ResponseData<{ chapter_id: number }>>(
+      `${apiUrl}/author/chapter/store`,
+      p,
+    ),
   //  修改章节
   editWorksChapter: (p: creatChapterProps) =>
-    http.post(`${apiUrl}/author/chapter/edit`, p),
+    http.post<ResponseData<{}>>(`${apiUrl}/author/chapter/edit`, p),
   //  章节详情
-  worksChapterDetails: (p: { book_id: number; chapter_id?: number }) => {
-    p['chapter_id'] = p.chapter_id ? p.chapter_id : 0;
-    return http.post<ResponseData<chapterDetailsProps>>(
+  worksChapterDetails: (p: { book_id: number; chapter_id?: number }) =>
+    http.post<ResponseData<chapterDetailsProps>>(
       `${apiUrl}/author/chapter/detail`,
       p,
-    );
-  },
+    ),
 };
 export const AuthorComment = {
   getCommentList: (p: adminCommentRequestProps) =>

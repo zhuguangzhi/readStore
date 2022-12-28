@@ -3,6 +3,7 @@ import { AuthorBook, ErrorCheck } from '@/common/api';
 import { bookInfoProps, createBooksProps, pageRequestProps } from '@/type/book';
 import {
   chapterDetailsProps,
+  creatChapterProps,
   worksListProps,
 } from '@/type/authorAdmin/worksManager';
 import router from '@/hook/url';
@@ -40,7 +41,7 @@ export const useCreateAuthorBook = (closeLoad: Function) => {
       async onSuccess(val) {
         ErrorCheck(val);
         await closeLoad();
-        router.push('/admin/bookContainer', {
+        router.push('/admin/works/bookContainer', {
           [WorksId]: val.data.book_id,
           [WorksChapterId]: val.data.chapter_id,
         });
@@ -69,8 +70,15 @@ export const useGetChapterDetails = (p: {
   book_id: number;
   chapter_id?: number;
 }) => {
-  return useQuery<chapterDetailsProps, Error>(['getChapterDetails'], () =>
+  if (!p.chapter_id)
+    return {
+      data: undefined,
+      isLoading: false,
+    };
+  console.log('chapter_id', p.chapter_id);
+  return useQuery<chapterDetailsProps, Error>(['getChapterDetails', p], () =>
     AuthorBook.worksChapterDetails(p).then((value) => {
+      console.log('chapter_id11111111111', p.chapter_id);
       ErrorCheck(value);
       return value.data;
     }),
@@ -84,10 +92,53 @@ export const useDeleteWorks = (call?: Function) => {
     ['delWorks'],
     (p: { id: number }) => AuthorBook.deleteAuthorBook(p),
     {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries(queryKey);
+      onSuccess() {
+        queryClient.invalidateQueries(queryKey);
         call?.();
-        message.success('删除成功');
+      },
+      onMutate(target) {
+        let previousItems;
+        queryClient.setQueriesData(queryKey, (old?: worksListProps) => {
+          console.log('old', queryClient.getQueriesData(queryKey));
+          previousItems = { ...old };
+          return {
+            page_info: old?.page_info,
+            data: old?.data.filter((item) => item.id !== target.id),
+          } as worksListProps;
+        });
+        return { previousItems };
+      },
+      //错误回滚
+      onError(error, newItem, context) {
+        queryClient.setQueriesData(queryKey, context?.previousItems);
+      },
+    },
+  );
+};
+// // 创建章节
+// export const useCreateChapter = ()=>{
+//     return useMutation(
+//         ['createChapter'],
+//         (p:creatChapterProps)=>AuthorBook.createWorksChapter(p),
+//         {
+//             onSuccess(val){
+//                 if (!ErrorCheck(val))return;
+//                 message.success("创建成功")
+//             }
+//         }
+//     )
+// }
+//编辑章节
+export const useEditChapter = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ['editChapter'],
+    (p: creatChapterProps) => AuthorBook.editWorksChapter(p),
+    {
+      onSuccess(val) {
+        if (!ErrorCheck(val)) return;
+        queryClient.invalidateQueries(['getChapterDetails']);
+        message.success('修改成功');
       },
     },
   );

@@ -96,6 +96,7 @@ export const useDelMyBook = (type: 'topicCase' | 'myBooks') => {
       },
       onMutate(target) {
         let previousItems = queryClient.getQueriesData(queryKey);
+        console.log('queryClient', queryClient.getQueryCache());
         queryClient.setQueriesData(queryKey, (old?: myBookListProps) => {
           if (!old) return {} as myBookListProps;
           const delIds = target.book_id?.split(',') || [];

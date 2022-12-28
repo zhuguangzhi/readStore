@@ -40,8 +40,11 @@ export type bookInfoProps = {
   topic: topicProps; //话题信息
   read_line: number; //当前阅读行
   read_progress: number; //当前阅读进度
+  book_status: -4 | -3 | -2 | -1 | 0 | 1 | 2 | 3 | 4; //书籍状态( 0：待审  1：审核通过  -1：审核未通过  2：申请签约  -2：签约未通过  3：已签约  -3：删除  4：签约申请通过  -4：草稿 ）
   book_status_text: string; //审核状态
   keyword: string; //关键字,号隔开
+  chapter_status: -7 | -6 | -5 | -3 | -2 | -1 | 0 | 1 | 4; //章节状态( 1:已发布 0: 待审 -1: 驳回 -2: 存稿 -3: 定时发布4:删除 -5: 复审-6: 隐藏 -7: 草稿 )
+  audit_content: string; //审核内容
   empowers: empowerProps[];
 };
 // 上架渠道信息
@@ -87,25 +90,6 @@ export type booksThemeProps = {
   name: string;
   subTheme?: booksThemeProps[];
 };
-
-//作者作品 TODO:对接口时替换成book
-export interface worksProps {
-  id: number;
-  title: string;
-  description: string; //摘要
-  face: string; //封面
-  authorInfo: Partial<authorProps>; //作者信息
-
-  word_count: number; //字数
-  month_update_count: number; //本月更新字数
-  is_finish: boolean; //连载状态
-  is_contract: boolean; //是否签约
-  channel: 'man' | 'woman'; //man 男频 woman女频
-  tags: string; //标签
-  audit_num: number; //正在审核数
-  all_collection: number; //点赞数
-  create_time?: string; //创建时间
-}
 
 //--------------------------------------------------
 // 分页

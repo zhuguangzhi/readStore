@@ -3,7 +3,6 @@ import { AdminHeader } from '@/pages/authorAdmin/components/adminHeader';
 import { IconFont } from '@/components/IconFont';
 import { Tabs } from 'antd';
 import WorksInfo from '@/pages/authorAdmin/works/worksInfo';
-import SectionList from '@/pages/authorAdmin/works/sectionList';
 import router, { useSearchParam } from '@/hook/url';
 import { WorksChapterId, WorksId } from '@/constants/url';
 import { useMounted } from '@/hook';
@@ -29,11 +28,11 @@ export default () => {
     //   key: 'sectionList',
     //   children: <SectionList type={'section'} />,
     // },
-    {
-      label: '草稿箱',
-      key: 'draftBox',
-      children: <SectionList type={'draft'} />,
-    },
+    // {
+    //   label: '草稿箱',
+    //   key: 'draftBox',
+    //   children: <SectionList type={'draft'} />,
+    // },
     {
       label: '上传文章',
       key: 'addSection',

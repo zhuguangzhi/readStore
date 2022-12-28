@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import router, { useSearchParam } from '@/hook/url';
 import { BookId, TopicId } from '@/constants/url';
-import { useGetTopicBookList, useGetTopicDetail } from '@/utils/topic';
+import {
+  useAttentionTopic,
+  useGetTopicBookList,
+  useGetTopicDetail,
+} from '@/utils/topic';
 import { useAuth } from '@/hook/useAuth';
 import { topicBookListProps } from '@/type/topic';
 import { translateNumber } from '@/utils/format';
@@ -30,6 +34,8 @@ export default () => {
     sort_type: sortType,
     topic_id: Number(topicId),
   });
+  // 关注话题
+  const { mutate: attentionTopic } = useAttentionTopic();
   const { setLoadingModel } = useAuth();
   //点赞
   const { mutate: setApproval } = useModifyApproval('topicBookList');
@@ -104,6 +110,12 @@ export default () => {
               backgroundColor:
                 topicDetail?.is_user_attention === 1 ? 'white' : '',
             }}
+            onClick={() =>
+              attentionTopic({
+                topic_id: topicDetail?.id || 0,
+                is_attention: topicDetail?.is_user_attention === 1 ? 2 : 1,
+              })
+            }
           >
             {topicDetail?.is_user_attention === 1 ? (
               <span style={{ color: 'var(--themeColor)' }}>取消关注</span>

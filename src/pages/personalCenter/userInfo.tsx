@@ -12,9 +12,10 @@ import {
 } from '@/utils/personalCenter';
 import { BookLayer } from '@/pages/personalCenter/components/bookLayer';
 import { myBookProps } from '@/type/personalCenter';
-import { BookId } from '@/constants/url';
+import { BookId, TopicId } from '@/constants/url';
 import { UseNode } from '@/components/UseNode';
 import { Tabs } from 'antd';
+import { DefaultNoData } from '@/components/defaultNoData';
 
 export default () => {
   const { userInfo, setLoadingModel } = useAuth();
@@ -46,53 +47,81 @@ export default () => {
   // 评论组件
   const CommentComponent = () => {
     return (
-      <div className={'userInfo_comment_box'}>
-        {commentData?.data.map((comment) => {
-          return (
-            <div key={comment.id} className={'userInfo_comment_box_item'}>
-              <div>
-                <img
-                  className={'userInfo_comment_box_item_img'}
-                  src={userInfo?.user_image}
-                  alt=""
-                />
-                <span className={'font_16 color_99'}>
-                  《{comment.book_title}》
-                </span>
-              </div>
-              <div className={'userInfo_comment_box_item_content'}>
-                <span>{comment.content}</span>
-                <p>{comment.create_time}</p>
-              </div>
-            </div>
-          );
-        })}
-        <span className={'userInfo_comment_box_tip'}>最多仅展示10条评论</span>
-      </div>
+      <>
+        {(!topicData || topicData.data.length === 0) && !topicLoading ? (
+          <DefaultNoData
+            className={'userInfo_comment_nodata'}
+            type={'noData'}
+          />
+        ) : (
+          <div className={'userInfo_comment_box'}>
+            {commentData?.data.map((comment) => {
+              return (
+                <div key={comment.id} className={'userInfo_comment_box_item'}>
+                  <div>
+                    <img
+                      className={'userInfo_comment_box_item_img'}
+                      src={userInfo?.user_image}
+                      alt=""
+                    />
+                    <span className={'font_16 color_99'}>
+                      《{comment.book_title}》
+                    </span>
+                  </div>
+                  <div className={'userInfo_comment_box_item_content'}>
+                    <span>{comment.content}</span>
+                    <p>{comment.create_time}</p>
+                  </div>
+                </div>
+              );
+            })}
+            <span className={'userInfo_comment_box_tip'}>
+              最多仅展示10条评论
+            </span>
+          </div>
+        )}
+      </>
     );
   };
-  // 评论组件
+  // 话题组件
   const TopicComponent = () => {
     return (
-      <div className={'userInfo_comment_box'}>
-        {topicData?.data.map((topic) => {
-          return (
-            <div key={topic.book_id} className={'userInfo_comment_box_item'}>
-              <div>
-                <span className={'font_16 color_99'}>
-                  # {topic.topic_title}
-                </span>
-              </div>
-              <div className={'userInfo_comment_box_item_content'}>
-                {/*<span>已经有{topic.extension.all_attention}进行关注，共有*/}
-                {/*    {topic.extension.all_read}进行浏览</span>*/}
-                <span>已经有0进行关注，共有 0进行浏览</span>
-              </div>
-            </div>
-          );
-        })}
-        <span className={'userInfo_comment_box_tip'}>最多仅展示10条话题</span>
-      </div>
+      <>
+        {(!commentData || commentData.data.length === 0) && !commentLoading ? (
+          <DefaultNoData
+            className={'userInfo_comment_nodata'}
+            type={'noData'}
+          />
+        ) : (
+          <div className={'userInfo_comment_box'}>
+            {topicData?.data.map((topic) => {
+              return (
+                <div
+                  key={topic.book_id}
+                  className={'userInfo_comment_box_item cursor'}
+                  onClick={() =>
+                    router.push('/topicInfo', { [TopicId]: topic.topic_id })
+                  }
+                >
+                  <div>
+                    <span className={'font_16 color_99'}>
+                      # {topic.topic_title}
+                    </span>
+                  </div>
+                  <div className={'userInfo_comment_box_item_content'}>
+                    {/*<span>已经有{topic.extension.all_attention}进行关注，共有*/}
+                    {/*    {topic.extension.all_read}进行浏览</span>*/}
+                    <span>已经有0进行关注，共有 0进行浏览</span>
+                  </div>
+                </div>
+              );
+            })}
+            <span className={'userInfo_comment_box_tip'}>
+              最多仅展示10条话题
+            </span>
+          </div>
+        )}
+      </>
     );
   };
 

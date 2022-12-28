@@ -11,6 +11,7 @@ import { WorksId } from '@/constants/url';
 import { Popover } from 'antd';
 import { bookInfoProps } from '@/type/book';
 import ReadPopup from '@/components/module/ReadPopup';
+import { UseNode } from '@/components/UseNode';
 
 const SubIcon = () => (
   <IconFont width={'37px'} height={'44px'} icon={'bookShelf'} />
@@ -37,7 +38,7 @@ export default () => {
   }, [worksLoading]);
 
   // 确认删除作品
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     delWorks({ id: popupOption.id });
   };
 
@@ -82,11 +83,13 @@ export default () => {
             {worksList?.data.map((item) => {
               return (
                 <div key={item.id} className={'worksManager_list_item'}>
-                  <img
-                    className={'worksManager_list_item_img'}
-                    src={item.cover_url}
-                    alt=""
-                  />
+                  <UseNode rIf={item.cover_url}>
+                    <img
+                      className={'worksManager_list_item_img'}
+                      src={item.cover_url}
+                      alt=""
+                    />
+                  </UseNode>
                   <div
                     className={'worksManager_list_item_container'}
                     id={'worksManager_list'}
@@ -109,39 +112,43 @@ export default () => {
                         </span>
                       </div>
 
-                      <div
-                        className={'worksManager_list_item_container_channel'}
-                      >
-                        <IconFont
-                          width={'17px'}
-                          height={'17px'}
-                          icon={'shangjia'}
-                        />
-                        <span>上架渠道</span>
-                        <Popover
-                          placement="bottomRight"
-                          content={<WorksChannel works={item} />}
-                          trigger="click"
-                          getPopupContainer={() =>
-                            document.getElementById(
-                              'worksManager_list',
-                            ) as HTMLDivElement
-                          }
+                      <UseNode rIf={item.is_signing === 1}>
+                        <div
+                          className={'worksManager_list_item_container_channel'}
                         >
-                          <i className={'flex flex_align'}>
-                            <IconFont
-                              className={'cursor'}
-                              width={'17px'}
-                              height={'17px'}
-                              icon={'arrow'}
-                            />
-                          </i>
-                        </Popover>
-                      </div>
+                          <IconFont
+                            width={'17px'}
+                            height={'17px'}
+                            icon={'shangjia'}
+                          />
+                          <span>上架渠道</span>
+                          <Popover
+                            placement="bottomRight"
+                            content={<WorksChannel works={item} />}
+                            trigger="click"
+                            getPopupContainer={() =>
+                              document.getElementById(
+                                'worksManager_list',
+                              ) as HTMLDivElement
+                            }
+                          >
+                            <i className={'flex flex_align'}>
+                              <IconFont
+                                className={'cursor'}
+                                width={'17px'}
+                                height={'17px'}
+                                icon={'arrow'}
+                              />
+                            </i>
+                          </Popover>
+                        </div>
+                      </UseNode>
                     </div>
                     {/*    审核*/}
-                    <p className={'worksManager_list_item_container_audit'}>
-                      {item.book_status_text}
+                    <p
+                      className={`worksManager_list_item_container_audit worksManager_chapterStatus${item.chapter_status}`}
+                    >
+                      {item.audit_content}
                       {/*{item.audit_num > 0*/}
                       {/*  ? `共 ${item.audit_num} 章节正在审核`*/}
                       {/*  : '暂无审核内容'}*/}
@@ -186,16 +193,24 @@ export default () => {
                             height={'26px'}
                             icon={'upload'}
                           />
-                          <span>上传章节</span>
+                          <span>
+                            {item.is_finish === 1
+                              ? '查看内容'
+                              : item.chapter_id !== 0
+                              ? '内容修改'
+                              : '上传内容'}
+                          </span>
                         </div>
-                        <div>
-                          <IconFont
-                            width={'20px'}
-                            height={'22px'}
-                            icon={'qianyue'}
-                          />
-                          <span>申请签约</span>
-                        </div>
+                        <UseNode rIf={item.is_signing === 2}>
+                          <div>
+                            <IconFont
+                              width={'20px'}
+                              height={'22px'}
+                              icon={'qianyue'}
+                            />
+                            <span>申请签约</span>
+                          </div>
+                        </UseNode>
                         <div
                           onClick={() =>
                             router.push(`/admin/works/worksInfo`, {

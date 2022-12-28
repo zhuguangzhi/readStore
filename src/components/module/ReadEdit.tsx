@@ -4,15 +4,28 @@ import { useEffect, useRef, useState } from 'react';
 import './style/ReadEdit.less';
 import { TinyKeyApi } from '../../../public/config';
 import React from 'react';
+import { useMounted } from '@/hook';
+import { useAuth } from '@/hook/useAuth';
+import { fnGetCpmisWords } from '@/common/publicFn';
+import { translateNumber } from '@/utils/format';
+import { UseNode } from '@/components/UseNode';
 
 type ReadEditorProps = {
   setEditorEl: (el: TinyMCEEditor) => void;
   defaultContent: string;
+  wordCount: number;
+  isEdit?: boolean; //是否编辑模式
+  setWordCount?: (count: number) => void;
 };
 export const ReadEditor = ({
   setEditorEl,
+  wordCount,
   defaultContent,
+  setWordCount,
+  isEdit = true,
 }: ReadEditorProps) => {
+  const { setLoadingModel } = useAuth();
+  const [wordNum, setWordNum] = useState(wordCount);
   const editorRef = useRef<TinyMCEEditor | null>(null);
   const [editorOption] = useState<
     RawEditorOptions & { selector?: undefined; target?: undefined }
@@ -30,13 +43,26 @@ export const ReadEditor = ({
   });
 
   const onInit = (editor: TinyMCEEditor) => {
+    setLoadingModel(false);
     editorRef.current = editor;
     setEditorEl(editor);
   };
   useEffect(() => {
     if (!editorRef.current) return;
+    setLoadingModel(false);
     editorRef.current.setContent(defaultContent);
+    editorRef.current.getBody().setAttribute('contenteditable', String(isEdit));
+    editorRef.current.on('keyup', () => {
+      const num = fnGetCpmisWords(
+        editorRef.current?.getContent({ format: 'text' }) || '',
+      );
+      setWordNum(num);
+      setWordCount?.(num);
+    });
   }, [editorRef.current]);
+  useMounted(() => {
+    setLoadingModel(true);
+  });
 
   return (
     <div className="readEditor">
@@ -47,6 +73,12 @@ export const ReadEditor = ({
         initialValue="<p>This is the initial content of the editor.</p>"
         init={editorOption}
       />
+      <UseNode rIf={editorRef.current}>
+        <span className={'readEditor_wordNum'}>
+          {' '}
+          总字数：{translateNumber(Number(wordNum))}
+        </span>
+      </UseNode>
     </div>
   );
 };

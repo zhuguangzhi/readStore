@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Input, Radio, Select } from 'antd';
+import { Button, Form, Input, message, Radio, Select } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import './style/worksInfo.less';
 import { Values } from 'async-validator';
@@ -71,7 +71,11 @@ export const worksInfo = () => {
   }, [channelType, cateGoryData, worksInfo]);
 
   const onSubmit = (values: Values) => {
-    const param = { ...values, keyword: values.keyword.join(',') };
+    if (values.keyword && values.keyword.length > 5) {
+      message.error('作品标签数量超过5个');
+      return;
+    }
+    const param = { ...values, keyword: values.keyword?.join(',') };
     if (worksId) {
       modifyAuthorBook({ ...param, id: Number(worksId) } as createBooksProps);
       return;
@@ -210,7 +214,7 @@ export const worksInfo = () => {
               <Select
                 mode="tags"
                 style={{ width: '100%' }}
-                placeholder="请输入标签(超出5个无效)"
+                placeholder="请输入标签(最多五个)"
                 getPopupContainer={() =>
                   document.getElementById('formItemSelect') as HTMLDivElement
                 }

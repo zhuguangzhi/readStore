@@ -6,15 +6,20 @@ import { WorksChapterId, WorksId } from '@/constants/url';
 import { useSearchParam } from '@/hook/url';
 import {
   uesGetAuthorBookDetails,
+  useEditChapter,
   useGetChapterDetails,
 } from '@/utils/authorAdmin/worksManager';
 import { useAuth } from '@/hook/useAuth';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import './style/addSection.less';
 import { ReadModel } from '@/components/module/ReadModel';
 import ReadEditor from '@/components/module/ReadEdit';
 import { Editor as TinyMCEEditor } from 'tinymce/tinymce';
 import router from '@/hook/url';
+import { translateNumber } from '@/utils/format';
+import { useAsync } from '@/hook/useAsync';
+import { AuthorBook, ErrorCheck } from '@/common/api';
+import { ResponseData } from '@/common/http';
 
 const SubIcon = () => (
   <IconFont width={'37px'} height={'44px'} icon={'bookShelf'} />
@@ -26,6 +31,9 @@ export const AddSection = () => {
     WorksId,
     WorksChapterId,
   ]);
+  const { run, isLoading: createLoading } =
+    useAsync<ResponseData<{ chapter_id: number }>>();
+  // 作品详情
   const { data: worksInfo, isLoading: detailsLoading } =
     uesGetAuthorBookDetails({ id: Number(worksId) });
   const [worksModal, setWorksModal] = useState({
@@ -40,6 +48,8 @@ export const AddSection = () => {
       book_id: Number(worksId),
       chapter_id: Number(chapterId),
     });
+  // 编辑章节
+  const { mutate: editChapter, isLoading: editLoading } = useEditChapter();
 
   // 弹窗关闭
   const onModalCancel = useCallback(() => {
@@ -49,6 +59,44 @@ export const AddSection = () => {
       container: editorEl?.getContent() || '',
     }));
   }, [editorEl]);
+
+  // 存稿
+  const saveWorks = async (draft: 1 | 2) => {
+    if (worksInfo?.is_finish === 1) {
+      message.error('完结作品仅支持查看');
+      return;
+    }
+    const regExp = /<p[^>]*[^>]*>(.*?)<\/p>/g;
+    let lineNum: number = 0;
+    while (regExp.exec(worksModal.container) !== null) {
+      lineNum++;
+    }
+    if (!Number(chapterId) || draft === 1) {
+      const res = await run(
+        AuthorBook.createWorksChapter({
+          book_id: Number(worksId),
+          content: worksModal.container,
+          word_count: worksModal.textNum,
+          is_draft: draft,
+          line_count: lineNum,
+        }),
+      );
+      if (!ErrorCheck(res)) return;
+      message.success('提交成功');
+      // setUrlParams({[WorksChapterId]:30})
+      router.push('/admin/works');
+    } else {
+      //  编辑章节
+      editChapter({
+        chapter_id: Number(chapterId),
+        book_id: Number(worksId),
+        content: worksModal.container,
+        word_count: worksModal.textNum,
+        is_draft: 2,
+        line_count: lineNum,
+      });
+    }
+  };
 
   useEffect(() => {
     if (!chapterDetails) return;
@@ -74,7 +122,7 @@ export const AddSection = () => {
               router.push('/admin/works/worksInfo', { [WorksId]: worksId })
             }
           >
-            作品管理
+            作品信息
           </span>
           <span>
             &nbsp;{'>'}&nbsp; {worksInfo?.name}
@@ -89,12 +137,21 @@ export const AddSection = () => {
               onClick={() => setWorksModal((val) => ({ ...val, open: true }))}
             >
               <p dangerouslySetInnerHTML={{ __html: worksModal.container }}></p>
-              <p className={'addSection_container_box_works_textNum'}>0</p>
+              {/*<p className={'addSection_container_box_works_textNum'}>0</p>*/}
             </div>
-            <p style={{ padding: '0 18px' }}>内容不得少于500字</p>
+            <div className={'justify_between'} style={{ padding: '0 18px' }}>
+              <p>内容不得少于500字</p>
+              <p>总字数：{translateNumber(Number(worksModal.textNum))}</p>
+            </div>
             <div className={'addSection_container_box_btn'}>
-              <Button type={'primary'}>存稿</Button>
-              <Button type={'primary'}>提交</Button>
+              {/*<Button type={'primary'} onClick={()=>saveWorks(1)}>存稿</Button>*/}
+              <Button
+                type={'primary'}
+                onClick={() => saveWorks(2)}
+                loading={editLoading || createLoading}
+              >
+                提交
+              </Button>
             </div>
           </div>
         </div>
@@ -109,6 +166,11 @@ export const AddSection = () => {
         <ReadEditor
           setEditorEl={setEditor}
           defaultContent={worksModal.container}
+          wordCount={worksModal.textNum}
+          setWordCount={(count) =>
+            setWorksModal((val) => ({ ...val, textNum: count }))
+          }
+          isEdit={worksInfo?.is_finish === 2}
         />
       </ReadModel>
     </div>

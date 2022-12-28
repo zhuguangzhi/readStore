@@ -29,6 +29,7 @@ export interface authorRecommend extends homeProps {
 //话题
 export interface topicProps extends homeProps {
   data: {
+    topic_id: number;
     chart_sort: number; //推荐序号
     album_id: number; //书单ID
     title: string; //名称

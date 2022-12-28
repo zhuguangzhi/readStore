@@ -12,6 +12,7 @@ import {
 } from '@/type/user';
 import { ResponseData } from '@/common/http';
 import { useAuth } from '@/hook/useAuth';
+import { IconFont } from '@/components/IconFont';
 
 export const Register = () => {
   const [currentStep, setStep] = useState(1);
@@ -42,7 +43,7 @@ export const Register = () => {
       if (!ErrorCheck(checkRes)) return false;
       setRegisterParam({
         mobile: mobile,
-        verify_key: checkRes.data.verify_key,
+        verify_key: checkRes.data.captcha_key,
       });
       setStep(2);
     };
@@ -54,6 +55,7 @@ export const Register = () => {
             placeholder={'请输入手机号码'}
             autoComplete={'off'}
             onChange={inputOnchange}
+            prefix={<IconFont icon={'user'} color={'#999999'} />}
           />
         </Form.Item>
         <Form.Item>
@@ -63,6 +65,7 @@ export const Register = () => {
                 className={'login_form_sendCode_input'}
                 placeholder={'请输入验证码'}
                 autoComplete={'off'}
+                prefix={<IconFont icon={'lock'} color={'#999999'} />}
               />
             </Form.Item>
             <SendCode
@@ -119,6 +122,7 @@ export const Register = () => {
             minLength={8}
             type={'password'}
             autoComplete="off"
+            prefix={<IconFont icon={'lock'} color={'#999999'} />}
           />
         </Form.Item>
         <Form.Item name={'check_password'}>
@@ -127,6 +131,7 @@ export const Register = () => {
             placeholder={'请再次输入密码'}
             type={'password'}
             autoComplete="off"
+            prefix={<IconFont icon={'lock'} color={'#999999'} />}
           />
         </Form.Item>
         <Form.Item>

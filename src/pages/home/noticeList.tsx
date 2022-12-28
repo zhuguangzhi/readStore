@@ -11,7 +11,7 @@ import {
   useGetTopic,
   useGetVane,
 } from '@/utils/home';
-import { BookId, NewsId } from '@/constants/url';
+import { BookId, NewsId, TopicId } from '@/constants/url';
 
 const NewsIcon = () => (
   <IconFont
@@ -181,7 +181,13 @@ export const NoticeList = ({
           <div className={'news'}>
             {topicList?.data.map((topic, index) => {
               return (
-                <p key={index} className={'news_item textOverflow'}>
+                <p
+                  key={index}
+                  className={'news_item textOverflow'}
+                  onClick={() =>
+                    router.push('/topicInfo', { [TopicId]: topic.topic_id })
+                  }
+                >
                   <span className={'font_bold'}>【话题】</span>
                   <span>{topic.title}</span>
                 </p>

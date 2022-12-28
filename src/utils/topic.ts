@@ -1,7 +1,8 @@
 import { pageRequestProps } from '@/type/book';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { ErrorCheck, Topic } from '@/common/api';
 import {
+  attentionTopicProps,
   topicBookListProps,
   topicDetailsProps,
   topicListProps,
@@ -33,5 +34,35 @@ export const useGetTopicBookList = (p: topicListRequestProps) => {
       ErrorCheck(value);
       return value.data;
     }),
+  );
+};
+// 关注话题
+export const useAttentionTopic = () => {
+  const queryClient = useQueryClient();
+  const queryKey = ['topicDetail'];
+  return useMutation(
+    ['attentionTopic'],
+    (p: attentionTopicProps) => Topic.attentionTopic(p),
+    {
+      async onSuccess(val) {
+        if (!ErrorCheck(val)) return;
+        await queryClient.invalidateQueries(queryKey);
+      },
+      onMutate(target) {
+        let previousItems;
+        queryClient.setQueriesData(queryKey, (old?: topicDetailsProps) => {
+          previousItems = { ...old };
+          return {
+            ...old,
+            is_user_attention: target.is_attention,
+          } as topicDetailsProps;
+        });
+        return { previousItems };
+      },
+      //错误回滚
+      onError(error, newItem, context) {
+        queryClient.setQueriesData(queryKey, context?.previousItems);
+      },
+    },
   );
 };

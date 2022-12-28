@@ -7,6 +7,7 @@ export type worksListProps = {
 // 创建、修改章节、保存草稿
 export type creatChapterProps = {
   book_id: number; //书籍ID
+  chapter_id?: number; //章节id
   cname?: string; //章节标题
   content: string; //内容
   word_count: number; //字数

@@ -14,6 +14,7 @@ import {
 } from '@/type/user';
 import { ErrorCheck, User } from '@/common/api';
 import { ResponseData } from '@/common/http';
+import { IconFont } from '@/components/IconFont';
 
 const Login = () => {
   const { setToken, setUserInfo, setLoginPopup } = useAuth();
@@ -64,6 +65,7 @@ const Login = () => {
             placeholder={'请输入手机号码'}
             // onChange={inputOnchange}
             autoComplete={'off'}
+            prefix={<IconFont icon={'user'} color={'#999999'} />}
           />
         </Form.Item>
         <div className={'flex login_form_sendCode'}>
@@ -72,6 +74,7 @@ const Login = () => {
               className={'login_form_sendCode_input'}
               placeholder={'请输入验证码'}
               autoComplete={'off'}
+              prefix={<IconFont icon={'lock'} color={'#999999'} />}
             />
           </Form.Item>
           <SendCode className={'login_form_sendCode_btn'} mobile={mobile} />
@@ -87,6 +90,7 @@ const Login = () => {
             className={'login_form_input'}
             placeholder={'请输入手机号码'}
             autoComplete={'off'}
+            prefix={<IconFont icon={'user'} color={'#999999'} />}
           />
         </Form.Item>
         <Form.Item name={'password'}>
@@ -95,6 +99,7 @@ const Login = () => {
             placeholder={'请输入密码'}
             autoComplete={'false'}
             type={'password'}
+            prefix={<IconFont icon={'lock'} color={'#999999'} />}
           />
         </Form.Item>
       </>

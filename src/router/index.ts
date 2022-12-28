@@ -72,6 +72,64 @@ const useHeaderRouter = {
     },
   ],
 };
+const noUseHeaderRouter = {
+  path: '/',
+  component: '@/layouts/noHeader',
+  routes: [
+    {
+      path: '/admin',
+      component: '@/pages/authorAdmin/index',
+      name: '读者后台',
+      routes: [
+        {
+          path: 'home',
+          name: '首页',
+          component: '@/pages/authorAdmin/home',
+        },
+        {
+          path: 'works',
+          name: '作品管理',
+          component: '@/pages/authorAdmin/worksManager',
+        },
+        {
+          path: 'income',
+          name: '收入管理',
+          component: '@/pages/authorAdmin/searchInCome',
+        },
+        {
+          path: 'works/bookContainer',
+          name: '创建/编辑信息',
+          component: '@/pages/authorAdmin/works/addSection',
+        },
+        {
+          path: 'works/worksInfo',
+          name: '作品信息',
+          component: '@/pages/authorAdmin/works/index',
+        },
+        {
+          path: 'comment',
+          name: '评论管理',
+          component: '@/pages/authorAdmin/commentManager',
+        },
+        {
+          path: 'message',
+          name: '消息通知',
+          component: '@/pages/authorAdmin/message/index',
+        },
+        {
+          path: 'contract',
+          name: '我的合同',
+          component: '@/pages/authorAdmin/contract',
+        },
+        {
+          path: 'personalInfo',
+          name: '个人信息',
+          component: '@/pages/authorAdmin/personalInfo',
+        },
+      ],
+    },
+  ],
+};
 
 export const routes = [
   {
@@ -79,59 +137,9 @@ export const routes = [
     redirect: '/home',
     component: '@/layouts/index',
   },
-  {
-    path: '/admin',
-    component: '@/pages/authorAdmin/index',
-    name: '读者后台',
-    routes: [
-      {
-        path: 'home',
-        name: '首页',
-        component: '@/pages/authorAdmin/home',
-      },
-      {
-        path: 'works',
-        name: '作品管理',
-        component: '@/pages/authorAdmin/worksManager',
-      },
-      {
-        path: 'income',
-        name: '收入管理',
-        component: '@/pages/authorAdmin/searchInCome',
-      },
-      {
-        path: 'works/bookContainer',
-        name: '创建/编辑信息',
-        component: '@/pages/authorAdmin/works/addSection',
-      },
-      {
-        path: 'works/worksInfo',
-        name: '作品信息',
-        component: '@/pages/authorAdmin/works/index',
-      },
-      {
-        path: 'comment',
-        name: '评论管理',
-        component: '@/pages/authorAdmin/commentManager',
-      },
-      {
-        path: 'message',
-        name: '消息通知',
-        component: '@/pages/authorAdmin/message/index',
-      },
-      {
-        path: 'contract',
-        name: '我的合同',
-        component: '@/pages/authorAdmin/contract',
-      },
-      {
-        path: 'personalInfo',
-        name: '个人信息',
-        component: '@/pages/authorAdmin/personalInfo',
-      },
-    ],
-  },
 
   //使用头部的路由
   { ...useHeaderRouter },
+  //    不使用头部路由
+  { ...noUseHeaderRouter },
 ];

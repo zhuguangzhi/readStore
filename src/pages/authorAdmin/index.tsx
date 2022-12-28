@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import './style/index.less';
 import router, { useGetUrlPath } from '@/hook/url';
 import { Outlet } from 'react-router';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import { useAuth } from '@/hook/useAuth';
 import { Properties } from 'csstype';
 
@@ -24,7 +23,6 @@ const adminOperationList: operationProps[] = [
   { key: 'personalInfo', label: '个人信息' },
 ];
 export default () => {
-  const queryClient = new QueryClient();
   const routerInfo = useGetUrlPath();
   // 用户信息
   const { userInfo } = useAuth();
@@ -47,77 +45,76 @@ export default () => {
   //       transformOrigin:"left top",
   //       height:document.documentElement.clientHeight/homeZoom
   // }}
+
   return (
-    <QueryClientProvider client={queryClient}>
+    <div
+      className={'author_admin'}
+      style={
+        {
+          zoom: homeZoom,
+          transformOrigin: 'left top',
+          MozTransform: `scale(${homeZoom})`,
+          height: document.documentElement.clientHeight / homeZoom,
+        } as Properties<string | number, string & {}>
+      }
+    >
+      <p
+        className={`author_admin_back  ${
+          currentOperate === 'home' ? 'banner' : 'banner2'
+        }`}
+      ></p>
       <div
-        className={'author_admin'}
-        style={
-          {
-            zoom: homeZoom,
-            transformOrigin: 'left top',
-            MozTransform: `scale(${homeZoom})`,
-            height: document.documentElement.clientHeight / homeZoom,
-          } as Properties<string | number, string & {}>
-        }
+        className={'flex'}
+        style={{ marginTop: '-310px', minHeight: '100%' }}
       >
-        <p
-          className={`author_admin_back  ${
-            currentOperate === 'home' ? 'banner' : 'banner2'
-          }`}
-        ></p>
-        <div
-          className={'flex'}
-          style={{ marginTop: '-310px', minHeight: '100%' }}
-        >
-          {/*side*/}
-          <div className={'author_admin_side'}>
-            {/*    用户信息*/}
-            <div className={'user_info'}>
-              <div className={'user_info_box'}>
-                <img
-                  className={'user_info_box_img'}
-                  src={userInfo?.user_image}
-                  alt=""
-                />
-              </div>
-              <p className={'font_16'}>
-                {userInfo?.pen_name || userInfo?.nickname || userInfo?.name}
-              </p>
-              <p className={'font_14'}>ID: {userInfo?.id}</p>
+        {/*side*/}
+        <div className={'author_admin_side'}>
+          {/*    用户信息*/}
+          <div className={'user_info'}>
+            <div className={'user_info_box'}>
+              <img
+                className={'user_info_box_img'}
+                src={userInfo?.user_image}
+                alt=""
+              />
             </div>
-            {/*    侧边栏*/}
-            <div className={'author_admin_side_box'}>
-              {adminOperationList.map((item) => {
-                return (
-                  <div
-                    key={item.key}
-                    className={`author_admin_side_item ${
-                      currentOperate === item.key ? 'itemSelect' : ''
-                    }`}
-                    onClick={() => onOperateChange(item)}
-                  >
-                    <p>{item.label}</p>
-                  </div>
-                );
-              })}
-            </div>
+            <p className={'font_16'}>
+              {userInfo?.pen_name || userInfo?.nickname || userInfo?.name}
+            </p>
+            <p className={'font_14'}>ID: {userInfo?.id}</p>
           </div>
-          {/*  右侧内容  */}
-          <div
-            className={`${
-              currentOperate !== 'home' ? 'author_admin_box' : ''
-            } author_admin_container`}
-            style={{
-              height:
-                currentOperate !== 'home'
-                  ? `calc(100vh/${homeZoom} - 65px)`
-                  : '',
-            }}
-          >
-            <Outlet />
+          {/*    侧边栏*/}
+          <div className={'author_admin_side_box'}>
+            {adminOperationList.map((item) => {
+              return (
+                <div
+                  key={item.key}
+                  className={`author_admin_side_item ${
+                    currentOperate === item.key ? 'itemSelect' : ''
+                  }`}
+                  onClick={() => onOperateChange(item)}
+                >
+                  <p>{item.label}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
+        {/*  右侧内容  */}
+        <div
+          className={`${
+            currentOperate !== 'home' ? 'author_admin_box' : ''
+          } author_admin_container`}
+          style={{
+            height:
+              currentOperate !== 'home' ? `calc(100vh/${homeZoom} - 65px)` : '',
+          }}
+        >
+          {/*<QueryClientProvider client={queryClient}>*/}
+          <Outlet />
+          {/*</QueryClientProvider>*/}
+        </div>
       </div>
-    </QueryClientProvider>
+    </div>
   );
 };
