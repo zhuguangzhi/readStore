@@ -1,4 +1,5 @@
 import React from 'react';
+import { RcFile } from 'antd/es/upload';
 
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 export const isVoid = (val: unknown) =>
@@ -94,4 +95,10 @@ export const fnGetCpmisWords = (str: string) => {
     sLen = str.length;
   } catch (e) {}
   return sLen;
+};
+// 图片转Base64
+export const imgToBase64 = (img: RcFile, callback: (url: string) => void) => {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result as string));
+  reader.readAsDataURL(img);
 };

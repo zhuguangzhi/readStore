@@ -27,12 +27,21 @@
   }
 
   &_user {
+    position: relative;
     display: flex;
     align-items: center;
     img {
       margin-left: 23px;
       width: 26px;
       height: 26px;
+      border-radius: 26px;
+    }
+    &_vipIcon {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 14px !important;
+      height: 14px !important;
     }
     .ant-popover-content,
     .ant-popover-inner-content {

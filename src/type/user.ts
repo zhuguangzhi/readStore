@@ -7,6 +7,7 @@ export type authorProps = {
   is_author_desc: '读者' | '作者'; //用户身份信息
   pen_name: string; //笔名
   user_image: string; //用户头像
+  user_image_url: string; //用户头像(完整地址)
   mobile: string; //手机号
   sex: 0 | 1 | 2; //性别
   sex_desc: '男' | '女' | '未知'; //性别 1：男 2：女 0 ：未知
@@ -52,4 +53,17 @@ export type registerProps = {
   verify_key: string; //手机验证码成功KEY值
   nickname?: string;
   password: string;
+};
+// 举报配置
+export type reportOptionProps = {
+  id: number; //主键ID
+  reason: string; //原因
+  is_default: 1 | 2; //是否默认( 1：是  2：否 ）
+};
+// 举报
+export type reportProps = {
+  book_id: number;
+  chapter_id: number;
+  report_reason_id: number; //举报原因ID
+  report_detail: string; //举报详情
 };

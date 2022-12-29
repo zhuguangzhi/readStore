@@ -27,6 +27,8 @@ import {
   loginResultProps,
   phoneLoginProps,
   registerProps,
+  reportOptionProps,
+  reportProps,
   sendCodeProps,
   sendCodeResultProps,
 } from '@/type/user';
@@ -181,6 +183,17 @@ export const User = {
     http.post<ResponseData<loginResultProps>>(`${apiUrl}/auth/register`, p),
   // 退出登陆
   logout: () => http.post<ResponseData<{}>>(`${apiUrl}/auth/logout`, {}),
+  //  获取举报配置
+  getReportOption: () =>
+    http.get<ResponseData<reportOptionProps[]>>(
+      `${apiUrl}/config/reportReason`,
+      {},
+    ),
+  //  举报
+  reportChapter: (p: reportProps) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/report/chapter`, p),
+  //  上传图片
+  uploadImg: (p: { file: File }) => http.post(`${apiUrl}/upload/header`, p),
 };
 export const PersonalCenter = {
   getAllComment: (p: pageRequestProps) =>

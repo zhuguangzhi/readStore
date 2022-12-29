@@ -1,22 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Form, Input } from 'antd';
 import { Values } from 'async-validator';
 import './style/report.less';
+import { useGetReportOption, useReport } from '@/utils/read';
+import { reportOptionProps } from '@/type/user';
+import { useAuth } from '@/hook/useAuth';
 
-export const Report = () => {
-  const reportType = [
-    { key: 0, label: '垃圾广告' },
-    { key: 1, label: '有害信息' },
-    { key: 2, label: '政治敏感' },
-    { key: 3, label: '低俗色情' },
-    { key: 4, label: '人身攻击' },
-    { key: 5, label: '涉嫌侵权' },
-    { key: 6, label: '骚扰' },
-  ];
-  const [reportIndex, setReportIndex] = useState(0);
+export type ReportProps = {
+  bookId: number;
+  chapterId: number;
+};
+export const Report = ({ bookId, chapterId }: ReportProps) => {
+  // 获取举报配置
+  const { data: reportOption, isLoading: optionLoading } = useGetReportOption();
+  // 举报
+  const { mutate: report, isLoading: reportLoading } = useReport();
+  const { setLoadingModel } = useAuth();
+  const [reportId, setReportId] = useState(0);
   const onSubmit = (val: Values) => {
-    console.log(val.result);
+    report({
+      book_id: bookId,
+      chapter_id: chapterId,
+      report_reason_id: reportId,
+      report_detail: val.result,
+    });
   };
+  useEffect(() => {
+    if (!reportOption) return;
+    const option = reportOption.find(
+      (option) => option.is_default === 1,
+    ) as reportOptionProps;
+    setReportId(option.id);
+  }, [reportOption]);
+  useEffect(() => {
+    setLoadingModel(optionLoading);
+  }, [optionLoading]);
   return (
     <div className={'report'}>
       <p className={'font_16 font_bold report_title'}>举报内容</p>
@@ -25,16 +43,16 @@ export const Report = () => {
         <span className={'font_14 font_bold'}>请选择举报原因</span>
       </div>
       <div className={'report_type'}>
-        {reportType.map((type) => {
+        {reportOption?.map((type) => {
           return (
             <span
-              key={type.key}
-              onClick={() => setReportIndex(type.key)}
+              key={type.id}
+              onClick={() => setReportId(type.id)}
               className={`report_type_item ${
-                reportIndex === type.key ? 'reportSelect' : ''
+                reportId === type.id ? 'reportSelect' : ''
               }`}
             >
-              {type.label}
+              {type.reason}
             </span>
           );
         })}
@@ -52,7 +70,7 @@ export const Report = () => {
           />
         </Form.Item>
         <Form.Item>
-          <Button type={'primary'} htmlType={'submit'}>
+          <Button type={'primary'} htmlType={'submit'} loading={reportLoading}>
             提交
           </Button>
         </Form.Item>

@@ -184,6 +184,7 @@ export default () => {
           <div className={'readOperationBox'}>
             <ReadOperationTab
               bookId={bookInfo?.id}
+              chapterId={bookInfo?.chapter_id}
               isApproval={bookInfo?.is_user_approval || 2}
               commentChange={() => {
                 webContainerRef.scrollTo({

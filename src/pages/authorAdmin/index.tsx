@@ -74,7 +74,7 @@ export default () => {
             <div className={'user_info_box'}>
               <img
                 className={'user_info_box_img'}
-                src={userInfo?.user_image}
+                src={userInfo?.user_image_url}
                 alt=""
               />
             </div>
@@ -94,6 +94,17 @@ export default () => {
                   }`}
                   onClick={() => onOperateChange(item)}
                 >
+                  <img
+                    src={require(`@/assets/image/admin/${item.key}${
+                      currentOperate === item.key ? '_select' : ''
+                    }.png`)}
+                    className={`${
+                      currentOperate === item.key
+                        ? 'author_admin_side_item_imgSelect'
+                        : ''
+                    }`}
+                    alt=""
+                  />
                   <p>{item.label}</p>
                 </div>
               );

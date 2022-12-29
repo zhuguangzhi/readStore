@@ -7,7 +7,7 @@ import { useDeleteWorks, useGetWorks } from '@/utils/authorAdmin/worksManager';
 import { useAuth } from '@/hook/useAuth';
 import { ReadPagination } from '@/components/module/ReadPagination';
 import { DefaultNoData } from '@/components/defaultNoData';
-import { WorksId } from '@/constants/url';
+import { WorksChapterId, WorksId } from '@/constants/url';
 import { Popover } from 'antd';
 import { bookInfoProps } from '@/type/book';
 import ReadPopup from '@/components/module/ReadPopup';
@@ -187,7 +187,14 @@ export default () => {
                       <div
                         className={'worksManager_list_item_container_operate'}
                       >
-                        <div>
+                        <div
+                          onClick={() => {
+                            router.push('/admin/works/bookContainer', {
+                              [WorksId]: item.id,
+                              [WorksChapterId]: item.chapter_id,
+                            });
+                          }}
+                        >
                           <IconFont
                             width={'26px'}
                             height={'26px'}

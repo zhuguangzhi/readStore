@@ -21,6 +21,7 @@ import { ErrorCheck, User } from '@/common/api';
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
+import { ErrorBoundaries } from '@/components/errorBoundaries';
 
 moment.locale('zh-cn');
 
@@ -66,18 +67,21 @@ const Index = () => {
     EventBus.on(Bus_ClearUserInfo, clearUserInfo);
     getUserInfo();
   });
+
   return (
     <div className={'webContainer'}>
-      <Spin
-        spinning={loading}
-        tip="数据加载中..."
-        size={'large'}
-        delay={200}
-        className={'spinLoading'}
-      />
-      <ConfigProvider locale={zhCN}>
-        <Outlet />
-      </ConfigProvider>
+      <ErrorBoundaries>
+        <Spin
+          spinning={loading}
+          tip="数据加载中..."
+          size={'large'}
+          delay={200}
+          className={'spinLoading'}
+        />
+        <ConfigProvider locale={zhCN}>
+          <Outlet />
+        </ConfigProvider>
+      </ErrorBoundaries>
     </div>
   );
 };

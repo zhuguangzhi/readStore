@@ -14,8 +14,9 @@ import {
   replyStoreRequestProps,
   saveReadHistoryProps,
 } from '@/type/book';
-import { Book, Comment, ErrorCheck } from '@/common/api';
+import { Book, Comment, ErrorCheck, User } from '@/common/api';
 import { message } from 'antd';
+import { reportOptionProps, reportProps } from '@/type/user';
 
 // 获取书本内容
 export const useGetBookContainer = (p: { book_id: number }) => {
@@ -148,4 +149,21 @@ export const useSaveReadHistory = () => {
       },
     },
   );
+};
+// 获取举报配置
+export const useGetReportOption = () => {
+  return useQuery<reportOptionProps[], Error>(['getReportOption'], () =>
+    User.getReportOption().then((value) => {
+      ErrorCheck(value);
+      return value.data;
+    }),
+  );
+};
+// 举报
+export const useReport = () => {
+  return useMutation(['report'], (p: reportProps) => User.reportChapter(p), {
+    onSuccess() {
+      message.success('感谢您的反馈，我们将尽快核实！');
+    },
+  });
 };

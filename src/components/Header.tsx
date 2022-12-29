@@ -76,21 +76,15 @@ const Header = () => {
           {/* 头*/}
           <div className={'header_card_top_title'}>
             <div className={'flex flex_align'}>
-              <img src={userInfo?.user_image} alt="" />
+              <img src={userInfo?.user_image_url} alt="" />
               <span className={'font_14'}>{userInfo?.nickname}</span>
-              {userInfo?.is_vip === 1 ? (
-                <img
-                  className={'header_card_top_title_vipLogo'}
-                  src={require('@/assets/image/home/vip.png')}
-                  alt=""
-                />
-              ) : (
-                <img
-                  className={'header_card_top_title_vipLogo'}
-                  src={require('@/assets/image/home/noVip.png')}
-                  alt=""
-                />
-              )}
+              <img
+                className={'header_card_top_title_vipLogo'}
+                src={require(`@/assets/image/home/${
+                  userInfo?.is_vip === 1 ? 'vip' : 'noVip'
+                }.png`)}
+                alt=""
+              />
             </div>
             <p className={'cursor font_14'} onClick={logout}>
               退出
@@ -169,7 +163,14 @@ const Header = () => {
           <img
             // onClick={() => router.push('/personal/bookShelf')}
             className={'cursor'}
-            src={userInfo?.user_image}
+            src={userInfo?.user_image_url}
+            alt=""
+          />
+          <img
+            className={'header_user_vipIcon'}
+            src={require(`@/assets/image/home/${
+              userInfo?.is_vip === 1 ? 'vip' : 'noVip'
+            }.png`)}
             alt=""
           />
         </Popover>

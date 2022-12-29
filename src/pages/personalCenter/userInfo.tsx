@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import router from '@/hook/url';
 import { netName } from '../../../public/config';
 import './style/index.less';
@@ -16,9 +16,13 @@ import { BookId, TopicId } from '@/constants/url';
 import { UseNode } from '@/components/UseNode';
 import { Tabs } from 'antd';
 import { DefaultNoData } from '@/components/defaultNoData';
+import { ReadModel } from '@/components/module/ReadModel';
+import { EditUserInfo } from '@/components/editUserInfo';
 
 export default () => {
   const { userInfo, setLoadingModel } = useAuth();
+  // 修改个人资料弹窗
+  const [userInfoModal, setUserInfoModal] = useState(true);
   // 获取书架数据
   const { data: myBooks, isLoading: bookLoading } = useGetMyBooks({
     page: { page: 1, page_size: 7 },
@@ -40,6 +44,7 @@ export default () => {
   const goToRead = (book: myBookProps) => {
     router.push('/read', { [BookId]: book.book_id });
   };
+
   useEffect(() => {
     setLoadingModel(bookLoading || topicLoading || commentLoading);
   }, [commentLoading, topicLoading, bookLoading]);
@@ -138,11 +143,15 @@ export default () => {
       </div>
       {/*    用户信息*/}
       <div className={'userInfo_box'}>
-        <img className={'userInfo_box_img'} src={userInfo?.user_image} alt="" />
+        <img
+          className={'userInfo_box_img'}
+          src={userInfo?.user_image_url}
+          alt=""
+        />
         <div className={'userInfo_box_info'}>
           <div className={'userInfo_box_info_edit'}>
             <span className={'font_20 font_bold'}>{userInfo?.nickname}</span>
-            <p>编辑资料</p>
+            <p onClick={() => setUserInfoModal(true)}>编辑资料</p>
           </div>
           <p className={'color_99 font_14'}>
             {userInfo?.description || '该用户很懒，什么都没留下'}
@@ -258,6 +267,15 @@ export default () => {
           ]}
         />
       </div>
+      <ReadModel
+        useTitle={false}
+        width={525}
+        open={userInfoModal}
+        closable={true}
+        onCancel={() => setUserInfoModal(false)}
+      >
+        <EditUserInfo />
+      </ReadModel>
     </div>
   );
 };

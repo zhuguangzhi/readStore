@@ -7,6 +7,7 @@ import { Report } from '@/components/report';
 
 type ReadOperationTabProps = {
   bookId: number | undefined;
+  chapterId: number | undefined;
   isApproval: 1 | 2;
   commentChange: Function;
   onApproval: Function;
@@ -63,7 +64,7 @@ export const ReadOperationTab = ({
         width={'560px'}
         onCancel={() => setOpenReport(false)}
       >
-        <Report />
+        <Report bookId={props.bookId || 0} chapterId={props.chapterId || 0} />
       </ReadModel>
     </div>
   );
