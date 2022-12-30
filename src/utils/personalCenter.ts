@@ -1,12 +1,13 @@
 import { pageRequestProps } from '@/type/book';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { ErrorCheck, PersonalCenter, Topic } from '@/common/api';
+import { ErrorCheck, PersonalCenter, Topic, User } from '@/common/api';
 import {
   delCommentProps,
   myBookListProps,
   myCommentProps,
 } from '@/type/personalCenter';
 import { topCaseProps } from '@/type/topic';
+import { editInfoProps } from '@/type/user';
 
 interface getMyCommentProps extends pageRequestProps {
   type: 'all' | 'myComment' | 'reply';
@@ -124,5 +125,22 @@ export const useGetTopicCase = (p: pageRequestProps) => {
       ErrorCheck(val);
       return val.data;
     }),
+  );
+};
+// 修改个人信息
+export const useEditInfo = (call?: (param: editInfoProps) => void) => {
+  let param: editInfoProps;
+  return useMutation(
+    ['editUserInfo'],
+    (p: editInfoProps) => {
+      param = { ...p };
+      return User.editInfo(p);
+    },
+    {
+      onSuccess(val) {
+        if (!ErrorCheck(val)) return;
+        call?.(param);
+      },
+    },
   );
 };

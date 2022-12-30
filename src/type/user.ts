@@ -24,6 +24,14 @@ export type authorProps = {
   chart_description: string; //推荐语
   is_vip: 1 | 2; //是否是vip(1：是 2：否)
 };
+// 修改个人信息
+export type editInfoProps = {
+  nickname: string; //昵称
+  sex: 0 | 1 | 2; //性别
+  birthday: string;
+  description: string; //描述
+  user_image: string; //头像
+};
 
 // 账号密码登陆
 export type accountLoginProps = {

@@ -22,7 +22,7 @@ import { EditUserInfo } from '@/components/editUserInfo';
 export default () => {
   const { userInfo, setLoadingModel } = useAuth();
   // 修改个人资料弹窗
-  const [userInfoModal, setUserInfoModal] = useState(true);
+  const [userInfoModal, setUserInfoModal] = useState(false);
   // 获取书架数据
   const { data: myBooks, isLoading: bookLoading } = useGetMyBooks({
     page: { page: 1, page_size: 7 },
@@ -274,7 +274,7 @@ export default () => {
         closable={true}
         onCancel={() => setUserInfoModal(false)}
       >
-        <EditUserInfo />
+        <EditUserInfo onClose={() => setUserInfoModal(false)} />
       </ReadModel>
     </div>
   );

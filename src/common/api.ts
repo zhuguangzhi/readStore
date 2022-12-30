@@ -24,6 +24,7 @@ import {
   accountLoginProps,
   authorProps,
   checkCodeProps,
+  editInfoProps,
   loginResultProps,
   phoneLoginProps,
   registerProps,
@@ -192,8 +193,9 @@ export const User = {
   //  举报
   reportChapter: (p: reportProps) =>
     http.post<ResponseData<{}>>(`${apiUrl}/report/chapter`, p),
-  //  上传图片
-  uploadImg: (p: { file: File }) => http.post(`${apiUrl}/upload/header`, p),
+  //  修改个人信息
+  editInfo: (p: editInfoProps) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/users/edit`, p),
 };
 export const PersonalCenter = {
   getAllComment: (p: pageRequestProps) =>
