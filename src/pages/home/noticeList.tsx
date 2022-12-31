@@ -92,7 +92,7 @@ export const NoticeList = ({
                     router.push('/home/news', { [NewsId]: news.id })
                   }
                 >
-                  <span className={'font_bold'}>【公告】</span>
+                  <span className={'font_500 SYMedium'}>【公告】</span>
                   <span>{news.title}</span>
                 </p>
               );
@@ -114,7 +114,10 @@ export const NoticeList = ({
                   {/*    排名*/}
                   <span className={'font_18 vane_rank'}>{index + 1}</span>
                   <div className={'vane_book'}>
-                    <p style={{ width: '100%' }} className={'textOverflow'}>
+                    <p
+                      style={{ width: '100%' }}
+                      className={'textOverflow color_33'}
+                    >
                       {vane.name}
                     </p>
                     <UseNode rIf={currenVaneIndex === index}>
@@ -127,11 +130,13 @@ export const NoticeList = ({
                         <div style={{ flex: 1, width: '20px' }}>
                           <p
                             style={{ width: '100%' }}
-                            className={'font_14 textOverflow'}
+                            className={'font_14 textOverflow SYMedium'}
                           >
                             {vane.name}
                           </p>
-                          <p className={'font_12 vane_book_description'}>
+                          <p
+                            className={'font_12 vane_book_description color_99'}
+                          >
                             {vane.description}
                           </p>
                         </div>
@@ -188,7 +193,7 @@ export const NoticeList = ({
                     router.push('/topicInfo', { [TopicId]: topic.topic_id })
                   }
                 >
-                  <span className={'font_bold'}>【话题】</span>
+                  <span className={'font_500 SYMedium'}>【话题】</span>
                   <span>{topic.title}</span>
                 </p>
               );

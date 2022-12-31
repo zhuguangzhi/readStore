@@ -28,10 +28,11 @@ export const PullLoad = ({
 }: PullLoadProps) => {
   const pullRef = useRef<HTMLDivElement | null>(null);
   const pullScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    if (!pullRef.current) return;
     props.onScroll?.(event);
-    const pullHeight = pullRef.current?.clientHeight as number;
-    const scrollTop = pullRef.current?.scrollTop as number;
-    const scrollHeight = pullRef.current?.scrollHeight as number;
+    const pullHeight = pullRef.current.clientHeight as number;
+    const scrollTop = pullRef.current.scrollTop as number;
+    const scrollHeight = pullRef.current.scrollHeight as number;
     if (
       pullHeight + scrollTop + props.bottomHeight >= scrollHeight &&
       props.page * props.pageSize < props.total
@@ -39,6 +40,13 @@ export const PullLoad = ({
       props.onBottom?.();
     }
   };
+  //
+  // useEffect(()=>{
+  //   console.log('moveScroll.current',pullRef.current)
+  // },[pullRef.current])
+  // useMounted(()=>{
+  //   console.log('重绘了')
+  // })
 
   return props.usePullLoad === false ? (
     <>{children}</>

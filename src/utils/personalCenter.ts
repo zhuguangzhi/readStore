@@ -7,7 +7,12 @@ import {
   myCommentProps,
 } from '@/type/personalCenter';
 import { topCaseProps } from '@/type/topic';
-import { editInfoProps } from '@/type/user';
+import {
+  fansApprovalProps,
+  authorInfoProps,
+  editInfoProps,
+  fansProps,
+} from '@/type/user';
 
 interface getMyCommentProps extends pageRequestProps {
   type: 'all' | 'myComment' | 'reply';
@@ -30,6 +35,15 @@ export const useGetMyComment = (p: getMyCommentProps) => {
     PersonalCenter[url](param).then((val) => {
       ErrorCheck(val);
       return val.data;
+    }),
+  );
+};
+// 作者信息
+export const useGetAuthorInfo = (p: { id: number }) => {
+  return useQuery<authorInfoProps, Error>(['geuAuthorInfo', p], () =>
+    PersonalCenter.getAuthorInfo(p).then((value) => {
+      ErrorCheck(value);
+      return value.data;
     }),
   );
 };
@@ -119,9 +133,13 @@ export const useDelMyBook = (type: 'topicCase' | 'myBooks') => {
   );
 };
 // 获取话题书架
-export const useGetTopicCase = (p: pageRequestProps) => {
-  return useQuery<topCaseProps, Error>(['topicCase'], () =>
-    Topic.getTopicCase(p).then((val) => {
+interface useGetTopicCaseProps extends pageRequestProps {
+  type: 'topicShelf' | 'topicHistory';
+}
+export const useGetTopicCase = (p: useGetTopicCaseProps) => {
+  const url = p.type === 'topicHistory' ? 'getTopicHistory' : 'getTopicCase';
+  return useQuery<topCaseProps, Error>(['topicCase', p], () =>
+    Topic[url](p).then((val) => {
       ErrorCheck(val);
       return val.data;
     }),
@@ -142,5 +160,35 @@ export const useEditInfo = (call?: (param: editInfoProps) => void) => {
         call?.(param);
       },
     },
+  );
+};
+
+// 获取粉丝、关注框的信息
+interface getFansModalListProps extends pageRequestProps {
+  type: 'fans' | 'attention' | 'approval';
+}
+export const useGetFansModalList = (p: getFansModalListProps) => {
+  type resProps = fansProps | fansApprovalProps;
+  let url: 'getFans' | 'getAttention' | 'getApprovalList';
+  let queryKey: string = 'getFans';
+  switch (p.type) {
+    case 'fans': {
+      url = 'getFans';
+      queryKey = url;
+      break;
+    }
+    case 'attention': {
+      url = 'getAttention';
+      queryKey = url;
+      break;
+    }
+    case 'approval': {
+      url = 'getApprovalList';
+      queryKey = url;
+      break;
+    }
+  }
+  return useQuery<resProps, Error>([queryKey, p], () =>
+    PersonalCenter[url](p).then((value) => value.data),
   );
 };

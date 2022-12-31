@@ -24,7 +24,7 @@ export const BookLibrary = ({ bookList, onClick }: BookLibraryProps) => {
             />
             <div className={'bookLibrary_item_container'}>
               <p
-                className={'font_16 color_33 font_bold'}
+                className={'font_16 color_33 font_bold SYBold'}
                 style={{ marginBottom: '6px' }}
               >
                 {book.name}

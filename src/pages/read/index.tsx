@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
+  useAttentionUser,
   useGetBookContainer,
   useGetBookInfo,
   useGetCommentData,
 } from '@/utils/read';
 import { useSearchParam } from '@/hook/url';
-import { BookId } from '@/constants/url';
+import { AuthorId, BookId } from '@/constants/url';
 import { useAuth } from '@/hook/useAuth';
 import { isFinish, translateNumber } from '@/utils/format';
 import { IconFont } from '@/components/IconFont';
@@ -17,12 +18,12 @@ import { useModifyApproval } from '@/utils/home';
 import { ReadModel } from '@/components/module/ReadModel';
 import { Comment } from '@/components/comment';
 import { readComponentProps } from '@/type/book';
-import { useMounted } from '@/hook';
 import { ReadContainer } from '@/pages/read/readContainer';
 import { useDispatch, useSelector } from 'umi';
 import { ConnectState } from '@/models/modelConnect';
 import { globalState } from '@/models/global';
 import { setArrayForId } from '@/common/publicFn';
+import { netName } from '../../../public/config';
 
 export default () => {
   const webContainerRef = document.querySelector(
@@ -50,9 +51,11 @@ export default () => {
   const { data: bookInfo, isLoading: infoLogin } = useGetBookInfo({
     id: parseInt(bookId),
   });
-  const { setLoadingModel } = useAuth();
+  const { setLoadingModel, userInfo } = useAuth();
   // 点赞
   const { mutate: setApproval } = useModifyApproval('readBookInfo');
+  // 关注
+  const { mutate: attentionUser } = useAttentionUser();
 
   const [commentList, setCommentList] = useState<
     readComponentProps | undefined
@@ -64,7 +67,6 @@ export default () => {
     page_size: 10,
     comment_sort_type: commentSlotType,
   });
-
   // 上拉加载
   const uploadGetMore = useCallback(() => {
     if (
@@ -75,11 +77,26 @@ export default () => {
       setCommentPage((val) => ++val);
     }
   }, [commentLoading]);
+  // 设置喜欢
+  const onApprovalChange = () => {
+    setApproval({
+      book_id: bookInfo?.id as number,
+      is_approval: bookInfo?.is_user_approval === 2 ? 1 : 2,
+    });
+  };
+  // 关注
+  const onAttention = () => {
+    if (!bookInfo) return;
+    attentionUser({
+      attention_user_id: bookInfo.author.id,
+      is_attention: bookInfo.is_attention === 1 ? 2 : 1,
+    });
+  };
+
   // 监听 触发loading 只有首次获取时才会触发，避免乐观更新时触发
   useEffect(() => {
     setLoadingModel(containerLoading && infoLogin);
   }, [containerLoading, infoLogin]);
-
   //上拉新增
   useEffect(() => {
     // 排序改变直接赋值
@@ -96,14 +113,6 @@ export default () => {
     list.page_info = commentData.page_info;
     setCommentList(list);
   }, [commentData]);
-  // 设置喜欢
-  const onApprovalChange = () => {
-    setApproval({
-      book_id: bookInfo?.id as number,
-      is_approval: bookInfo?.is_user_approval === 2 ? 1 : 2,
-    });
-  };
-
   useEffect(() => {
     if (!webContainerRef) return;
     webContainerRef.onscroll = () => {
@@ -121,20 +130,20 @@ export default () => {
       else setOperationTab(false);
     };
   }, [commentLoading]);
-  useMounted(() => {
-    // document.documentElement.scrollTop = 0;
-    // document.documentElement.style.scrollBehavior = 'smooth';
-    // 路由跳转拦截
-    // return () => {
-    //   document.documentElement.style.scrollBehavior = 'initial';
-    // };
-  });
+  // useMounted(() => {
+  //   // document.documentElement.scrollTop = 0;
+  //   // document.documentElement.style.scrollBehavior = 'smooth';
+  //   // 路由跳转拦截
+  //   // return () => {
+  //   //   document.documentElement.style.scrollBehavior = 'initial';
+  //   // };
+  // });
 
   return (
     <div className={'readBook'}>
       <div className={'readBook_box'}>
         <p className={'readBook_guid'} onClick={() => router.back()}>
-          <span>首页</span>&nbsp;-&nbsp;
+          <span>{netName}</span>&nbsp;-&nbsp;
           <span>{bookInfo?.name}</span>
         </p>
         <p className={'readBook_title font_24 font_bold'}>{bookInfo?.name}</p>
@@ -143,22 +152,35 @@ export default () => {
           <span>字数：{translateNumber(bookInfo?.word_count as number)}</span>
           <span>[{isFinish(bookInfo?.is_finish || 2)}]</span>
           <span>阅读：{bookInfo?.book_extension?.all_read}</span>
-          <span>发布：{bookInfo?.create_time}</span>
+          <span>更新：{bookInfo?.last_update_chapter_time}</span>
         </div>
         {/*作者信息*/}
         <div className={'readBook_author'}>
           <img
-            className={'readBook_author_image'}
+            className={'readBook_author_image cursor'}
             src={bookInfo?.author.user_image_url}
             alt=""
+            onClick={() =>
+              router.push('/personal/authorInfo', {
+                [AuthorId]: bookInfo?.author.id,
+              })
+            }
           />
           <div className={'readBook_author_right'}>
             <p>
               <span>作者：</span>
               <span>{bookInfo?.author.pen_name}</span>
             </p>
-            <UseNode rIf={bookInfo?.is_attention !== 1}>
-              <div className={'readBook_author_right_btn'}>
+            <UseNode
+              rIf={
+                bookInfo?.is_attention !== 1 &&
+                bookInfo?.author.id !== userInfo?.id
+              }
+            >
+              <div
+                className={'readBook_author_right_btn'}
+                onClick={() => onAttention()}
+              >
                 <IconFont
                   icon={'jia'}
                   width={'10px'}

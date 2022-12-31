@@ -45,7 +45,7 @@ export type bookInfoProps = {
   keyword: string; //关键字,号隔开
   chapter_status: -7 | -6 | -5 | -3 | -2 | -1 | 0 | 1 | 4; //章节状态( 1:已发布 0: 待审 -1: 驳回 -2: 存稿 -3: 定时发布4:删除 -5: 复审-6: 隐藏 -7: 草稿 )
   audit_content: string; //审核内容
-  empowers: empowerProps[];
+  empowers: empowerProps[]; // 上架渠道信息
 };
 // 上架渠道信息
 export type empowerProps = {

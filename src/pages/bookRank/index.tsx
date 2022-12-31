@@ -49,11 +49,11 @@ export default () => {
     <div className={'bookRank'}>
       {/*侧边栏*/}
       <div className={'bookRank_side position_sticky'} style={{ top: 0 }}>
-        <p>热门排行榜</p>
+        <p className={'SYMedium'}>热门排行榜</p>
         {slideList.map((item, index) => {
           return (
             <p
-              className={index === sideIndex ? 'sideSelect' : ''}
+              className={index === sideIndex ? 'sideSelect' : 'color_b2'}
               key={item.key}
               onClick={() => {
                 setSide(index);
@@ -69,7 +69,7 @@ export default () => {
       <div className={'bookRank_container'}>
         {/*header头*/}
         <div className={'bookRank_container_header'}>
-          <span className={'font_20'} style={{ marginRight: '17px' }}>
+          <span className={'font_20 SYMedium'} style={{ marginRight: '17px' }}>
             {slideList[sideIndex].label}
           </span>
           <span className={'font_12 color_99'}>

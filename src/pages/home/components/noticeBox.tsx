@@ -24,7 +24,7 @@ export const NoticeBox = ({
         {/*    图标*/}
         {Icon}
         <span
-          className={'font_16 font_bold notice_header_title'}
+          className={'font_16 font_600 SYBold notice_header_title'}
           onClick={() => props.onSelectTitle?.()}
         >
           {title}

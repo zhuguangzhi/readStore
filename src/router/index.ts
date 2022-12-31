@@ -56,6 +56,11 @@ const useHeaderRouter = {
       component: '@/pages/personalCenter/userInfo',
     },
     {
+      path: '/personal/authorInfo',
+      title: '作者中心',
+      component: '@/pages/personalCenter/authorInfo',
+    },
+    {
       path: '/read',
       title: '阅读',
       component: '@/pages/read/index',

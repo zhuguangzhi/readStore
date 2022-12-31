@@ -4,7 +4,11 @@ import { bookCategoryProps, rankBook } from '@/type/book';
 import { UseNode } from '@/components/UseNode';
 import { useMounted, useSetState } from '@/hook';
 import { useGetBookCategory, useGetBookLibrary } from '@/utils/bookShelf';
-import { scrollToBottom, targetColumnArray } from '@/common/publicFn';
+import {
+  scrollToBottom,
+  setArrayForId,
+  targetColumnArray,
+} from '@/common/publicFn';
 import { useAuth } from '@/hook/useAuth';
 import { BookLibrary } from '@/pages/books/bookLibrary';
 import router, { useSearchParam } from '@/hook/url';
@@ -137,11 +141,11 @@ export default () => {
     };
     if (
       !bookShelf ||
-      bookShelf.data.length === 0 ||
-      bookShelfData.toString() === bookShelf.data.toString()
+      bookShelf.data.length === 0
+      // bookShelfData.toString() === bookShelf.data.toString()
     )
       return;
-    const val = [...bookShelfData, ...bookShelf.data];
+    const val = setArrayForId([...bookShelfData, ...bookShelf.data]);
     setBookShelfData(val);
   }, [bookShelf]);
 

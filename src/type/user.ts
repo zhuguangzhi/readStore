@@ -1,4 +1,6 @@
 //用户信息
+import { bookInfoProps, pageProps } from '@/type/book';
+
 export type authorProps = {
   id: number; //主键ID
   name: string; //名称
@@ -74,4 +76,48 @@ export type reportProps = {
   chapter_id: number;
   report_reason_id: number; //举报原因ID
   report_detail: string; //举报详情
+};
+//关注
+export type attentionUserProps = {
+  attention_user_id: number; //关注用户的id
+  is_attention: 1 | 2; //是否关注( 1：是  2：否 ）
+};
+
+// 作者信息
+export interface authorInfoProps {
+  id: number; //主键ID
+  pen_name: string; //笔名
+  is_signing_author: 1 | 2; //是否是签约作者( 1：是  2：否 ）
+  user_image_url: string; //头像
+  book_count: number; //作品总数
+  word_count: string; //总字数
+  write_day: number; //创作天数
+  continue_count: number; //连载书籍数
+  continue_books: bookInfoProps[]; //连载书籍
+  books: bookInfoProps[]; //全部书籍
+}
+// 粉丝和关注信息
+export type fansListProp = {
+  id: number; //主键ID
+  user_id: number; //用户ID
+  nickname: string; //用户昵称
+  user_image_url: string; //用户头像地址
+  is_attention: 1 | 2; //是否关注( 1：是  2：否 ）
+};
+export type fansProps = {
+  page_info: pageProps;
+  data: fansListProp[];
+};
+// 获赞列表
+export type approvalListProps = {
+  id: number; //主键ID
+  content: string; //评论内容
+  approval_user_id: number; //点赞用户ID
+  approval_user_nickname: string; //点赞用户迷城
+  approval_user_image_url: string; //点赞用户头像地址
+  create_time: string; //创建时间
+};
+export type fansApprovalProps = {
+  page_info: pageProps;
+  data: approvalListProps[];
 };

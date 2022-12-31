@@ -82,7 +82,7 @@ export const SwiperBanner = ({ swiperBookInfo, className }: SliderProps) => {
   return (
     <div className={className}>
       <div className={'home_carousel_desc'}>
-        <p className={'font_24 font_bold'}>
+        <p className={'font_24 font_500 SYMedium'}>
           {swiperBookInfo?.[currentSwiperIndex].name}
         </p>
         <p style={{ width: '100%' }} className={'font_16 textOverflow'}>

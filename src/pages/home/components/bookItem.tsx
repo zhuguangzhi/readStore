@@ -39,14 +39,16 @@ export const BookItem = ({
             <UseNode rIf={book.cover !== ''}>
               <div className={'book_left'}>
                 <img className={'face'} src={book.cover_url} alt="封面" />
-                <p className={'font_14 font_bold textOverflow'}>{book.name}</p>
+                <p className={'font_14 font_600 SYBold textOverflow'}>
+                  {book.name}
+                </p>
               </div>
             </UseNode>
             {/*    右侧内容*/}
             <div className={'book_right'}>
               {/*标题*/}
               <p
-                className={'font_18 font_bold cursor'}
+                className={'font_18 font_500 SYMedium cursor'}
                 onClick={(e) => stopProp(e, () => clickTitle?.(book.topic?.id))}
               >
                 {book.topic.title ? `来自话题：${book.topic.title}` : book.name}

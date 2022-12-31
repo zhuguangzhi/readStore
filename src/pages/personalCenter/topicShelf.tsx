@@ -36,6 +36,7 @@ export default () => {
   const { data: topicData, isLoading: topicLoading } = useGetTopicCase({
     page,
     page_size: 10,
+    type: currentTab as 'topicShelf' | 'topicHistory',
   });
   const { setLoadingModel } = useAuth();
 

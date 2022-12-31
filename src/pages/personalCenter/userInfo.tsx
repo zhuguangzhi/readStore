@@ -18,11 +18,17 @@ import { Tabs } from 'antd';
 import { DefaultNoData } from '@/components/defaultNoData';
 import { ReadModel } from '@/components/module/ReadModel';
 import { EditUserInfo } from '@/components/editUserInfo';
+import { FansModal } from '@/pages/personalCenter/components/fansModal';
 
 export default () => {
   const { userInfo, setLoadingModel } = useAuth();
   // 修改个人资料弹窗
   const [userInfoModal, setUserInfoModal] = useState(false);
+  // 粉丝等列表弹窗
+  const [fansModal, setFansModal] = useState({
+    type: 'approval' as 'fans' | 'attention' | 'approval',
+    open: false,
+  });
   // 获取书架数据
   const { data: myBooks, isLoading: bookLoading } = useGetMyBooks({
     page: { page: 1, page_size: 7 },
@@ -39,6 +45,7 @@ export default () => {
   const { data: topicData, isLoading: topicLoading } = useGetTopicCase({
     page: 1,
     page_size: 10,
+    type: 'topicShelf',
   });
   // 继续阅读
   const goToRead = (book: myBookProps) => {
@@ -159,7 +166,15 @@ export default () => {
         </div>
         {/*TODO:用户资料数据待完善*/}
         <div className={'userInfo_box_data'}>
-          <div className={'userInfo_box_data_item'}>
+          <div
+            className={'userInfo_box_data_item'}
+            onClick={() =>
+              setFansModal({
+                open: true,
+                type: 'attention',
+              })
+            }
+          >
             <p>21</p>
             <div
               className={
@@ -170,7 +185,15 @@ export default () => {
               <IconFont width={'8px'} height={'8px'} icon={'right'} />
             </div>
           </div>
-          <div className={'userInfo_box_data_item'}>
+          <div
+            className={'userInfo_box_data_item'}
+            onClick={() =>
+              setFansModal({
+                open: true,
+                type: 'fans',
+              })
+            }
+          >
             <p>21</p>
             <div
               className={
@@ -181,7 +204,15 @@ export default () => {
               <IconFont width={'8px'} height={'8px'} icon={'right'} />
             </div>
           </div>
-          <div className={'userInfo_box_data_item'}>
+          <div
+            className={'userInfo_box_data_item'}
+            onClick={() =>
+              setFansModal({
+                open: true,
+                type: 'approval',
+              })
+            }
+          >
             <p>21</p>
             <div
               className={
@@ -232,7 +263,7 @@ export default () => {
       {/*    评论 话题*/}
       <div className={'userInfo_comment'}>
         <Tabs
-          defaultActiveKey="1"
+          defaultActiveKey="comment"
           items={[
             {
               label: (
@@ -275,6 +306,14 @@ export default () => {
         onCancel={() => setUserInfoModal(false)}
       >
         <EditUserInfo onClose={() => setUserInfoModal(false)} />
+      </ReadModel>
+      <ReadModel
+        useTitle={false}
+        width={775}
+        open={fansModal.open}
+        onCancel={() => setFansModal((val) => ({ ...val, open: false }))}
+      >
+        <FansModal choose={fansModal.type} />
       </ReadModel>
     </div>
   );

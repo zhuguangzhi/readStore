@@ -1,0 +1,68 @@
+.authorInfo {
+  width: 100%;
+  &_info {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 53px;
+    &_photo {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      margin-right: 14px;
+    }
+    &_box {
+      &_sign {
+        width: 73px;
+        height: 25px;
+        border: 1px solid var(--themeColor);
+        border-radius: 12px;
+        color: var(--themeColor);
+        text-align: center;
+        line-height: 25px;
+        font-size: 14px;
+        margin-left: 15px;
+      }
+      &_works {
+        display: flex;
+        align-items: center;
+        margin-top: 12px;
+        div {
+          margin-right: 66px;
+          p:last-child {
+            text-align: center;
+          }
+        }
+      }
+    }
+    &_pen {
+      position: absolute;
+      left: 636px;
+      bottom: 0;
+      width: 99px;
+      height: 82px;
+    }
+    &_btn {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 122px;
+      height: 39px;
+      border: 1px solid #000000;
+      border-radius: 19px;
+      text-align: center;
+      line-height: 39px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  }
+  &_noData {
+    margin: 100px auto 0 auto;
+    width: 200px !important;
+    height: 200px !important;
+    font-size: 18px;
+    text-align: center;
+  }
+}

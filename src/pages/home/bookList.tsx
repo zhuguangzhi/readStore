@@ -38,7 +38,8 @@ const BookList = () => {
     disPatch({
       type: 'global/setHomeTab',
       payload: {
-        scroll: document.documentElement.scrollTop,
+        scroll: (document.querySelector('.webContainer') as HTMLElement)
+          .scrollTop,
         tab: tabBarList[index],
       },
     });
@@ -66,7 +67,8 @@ const BookList = () => {
     }
   };
   useMounted(() => {
-    document.body.scrollTop = globalState.homeTab.scroll;
+    (document.querySelector('.webContainer') as HTMLElement).scrollTop =
+      globalState.homeTab.scroll;
     setLoadingModel(true);
   });
   useEffect(() => {

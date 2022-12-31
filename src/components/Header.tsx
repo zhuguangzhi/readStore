@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Input, message, Popover } from 'antd';
 
-import { useSetState } from '@/hook';
 import { IconFont } from '@/components/IconFont';
 import { inputEvent } from '@/type';
 import { logoUrl } from '../../public/config';
-import router from '@/hook/url';
+import router, { useGetUrlPath } from '@/hook/url';
 
 import './style/header.less';
 import { LoginPopup } from '@/components/login';
@@ -25,6 +24,7 @@ const SearchIcon = () => (
 const Header = () => {
   const { userInfo, setLoginPopup } = useAuth();
   const { run } = useAsync<ResponseData<{}>>();
+  const routerPath = useGetUrlPath();
   //路由选项跳转
   const optionList = [
     { title: '首页', key: 'home' },
@@ -32,11 +32,6 @@ const Header = () => {
     { title: '排行', key: 'bookRank' },
     { title: '作者专区', key: 'admin/home' },
   ];
-  const [state, setState] = useState({
-    currentOptionKey: '' as string, //当前选中的option
-  });
-  //调用该hook改变state
-  const changeState = useSetState(state, setState);
 
   // 搜索框事件
   const onSearch = (e: inputEvent) => {
@@ -201,10 +196,9 @@ const Header = () => {
             <span
               key={item.key}
               className={`option ${
-                state.currentOptionKey === item.key ? 'selectOption' : ''
+                routerPath[1] === item.key ? 'selectOption' : ''
               }`}
               onClick={() => {
-                changeState({ currentOptionKey: item.key });
                 router.push('/' + item.key);
               }}
             >

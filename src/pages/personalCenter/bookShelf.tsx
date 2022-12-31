@@ -69,11 +69,7 @@ export default () => {
     setLoadingModel(bookLoading);
   }, [bookLoading]);
   useEffect(() => {
-    if (
-      !myBooks ||
-      (historyList && myBooks.data.toString() === historyList.toString())
-    )
-      return;
+    if (!myBooks) return;
     let arr = [...(historyList || []), ...myBooks.data];
     //根据id去重
     arr = setArrayForId(arr);

@@ -16,7 +16,12 @@ import {
 } from '@/type/book';
 import { Book, Comment, ErrorCheck, User } from '@/common/api';
 import { message } from 'antd';
-import { reportOptionProps, reportProps } from '@/type/user';
+import {
+  attentionUserProps,
+  reportOptionProps,
+  reportProps,
+} from '@/type/user';
+import { setAttention } from '@/utils/mutate/setAttention';
 
 // 获取书本内容
 export const useGetBookContainer = (p: { book_id: number }) => {
@@ -166,4 +171,34 @@ export const useReport = () => {
       message.success('感谢您的反馈，我们将尽快核实！');
     },
   });
+};
+// 关注
+export const useAttentionUser = (
+  type: 'readBookInfo' | 'getFans' = 'readBookInfo',
+) => {
+  const queryClient = useQueryClient();
+  const queryKey = [type];
+  return useMutation(
+    ['attentionUser'],
+    (p: attentionUserProps) => User.attentionUser(p),
+    {
+      onSuccess(val) {
+        ErrorCheck(val);
+        if (type === 'readBookInfo') queryClient.invalidateQueries(queryKey);
+      },
+      onMutate(target) {
+        let previousItems = queryClient.getQueriesData(queryKey);
+        setAttention[type](target, queryClient);
+        // queryClient.setQueriesData(queryKey,(old?:readBookInfoProps)=>{
+        //     if (!old) return {} as readBookInfoProps
+        //     return {...old,is_attention:target.is_attention}
+        // })
+        return { previousItems };
+      },
+      //错误回滚
+      onError(error, newItem, context) {
+        queryClient.setQueriesData(queryKey, context?.previousItems);
+      },
+    },
+  );
 };

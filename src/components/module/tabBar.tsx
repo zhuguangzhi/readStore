@@ -39,7 +39,7 @@ export const TabBar = ({
           <li
             onClick={() => onClick(tab)}
             key={tab.key}
-            className={`tab_list ${props.tabClassName} ${
+            className={`tab_list SYMedium font_500 ${props.tabClassName} ${
               select === tab.key
                 ? props.selectClassName + ' tab_list_select'
                 : ''

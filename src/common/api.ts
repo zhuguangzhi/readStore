@@ -22,9 +22,13 @@ import {
 } from '@/type/book';
 import {
   accountLoginProps,
+  fansApprovalProps,
+  attentionUserProps,
+  authorInfoProps,
   authorProps,
   checkCodeProps,
   editInfoProps,
+  fansProps,
   loginResultProps,
   phoneLoginProps,
   registerProps,
@@ -196,6 +200,9 @@ export const User = {
   //  修改个人信息
   editInfo: (p: editInfoProps) =>
     http.post<ResponseData<{}>>(`${apiUrl}/users/edit`, p),
+  //  关注
+  attentionUser: (p: attentionUserProps) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/users/attention`, p),
 };
 export const PersonalCenter = {
   getAllComment: (p: pageRequestProps) =>
@@ -216,12 +223,36 @@ export const PersonalCenter = {
   //  从我的书架移除
   delMyBooks: (p: { book_id: string }) =>
     http.post<ResponseData<myBookListProps>>(`${apiUrl}/bookcase/destroy`, p),
+  //  获取作者信息
+  getAuthorInfo: (p: { id: number }) =>
+    http.post<ResponseData<authorInfoProps>>(
+      `${apiUrl}/show/authorInfo/${p.id}`,
+      {},
+    ),
+  //  获取粉丝列表
+  getFans: (p: pageRequestProps) =>
+    http.post<ResponseData<fansProps>>(`${apiUrl}/users/fans`, p),
+  //  获取关注列表
+  getAttention: (p: pageRequestProps) =>
+    http.post<ResponseData<fansProps>>(`${apiUrl}/users/attentions`, p),
+  //  获取粉丝列表
+  getApprovalList: (p: pageRequestProps) =>
+    http.post<ResponseData<fansApprovalProps>>(
+      `${apiUrl}/users/getApprovalList`,
+      p,
+    ),
 };
 export const Topic = {
   // 话题书架
   getTopicCase: (p: pageRequestProps) =>
     http.post<ResponseData<topCaseProps>>(
       `${apiUrl}/bookcase/topicBookList`,
+      p,
+    ),
+  // 话题历史
+  getTopicHistory: (p: pageRequestProps) =>
+    http.post<ResponseData<topCaseProps>>(
+      `${apiUrl}/userRead/topicBookList`,
       p,
     ),
   getTopicBookList: (p: topicListRequestProps) =>
