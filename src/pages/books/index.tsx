@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './style/index.less';
 import { bookCategoryProps, rankBook } from '@/type/book';
 import { UseNode } from '@/components/UseNode';
-import { useMounted, useSetState } from '@/hook';
+import { useSetState } from '@/hook';
 import { useGetBookCategory, useGetBookLibrary } from '@/utils/bookShelf';
 import {
   scrollToBottom,
@@ -16,6 +16,7 @@ import { authorPenName, BookId, SearchKey } from '@/constants/url';
 import { useDispatch, useSelector } from 'umi';
 import { ConnectState } from '@/models/modelConnect';
 import { globalState } from '@/models/global';
+import { DefaultNoData } from '@/components/defaultNoData';
 
 const readType = [
   { key: 0, label: '全部' },
@@ -48,7 +49,7 @@ type ThemeComponentProps = {
   type: 'men' | 'women';
 };
 
-export default () => {
+const Books = () => {
   const globalState = useSelector(
     (state: ConnectState) => state.global,
   ) as globalState;
@@ -81,11 +82,13 @@ export default () => {
     search_sort: state.status.slot,
     search_word_count: state.textKey,
     page: libraryPage,
-    page_size: 10,
+    page_size: 30,
     [penName ? 'pen_name' : '']: penName,
     [searchKey ? 'search_keywords' : '']: searchKey,
   });
   const { setLoadingModel } = useAuth();
+  // 内容是否空
+  const [noData, setNoData] = useState(false);
 
   // 获取分类
   const { data: cateGoryData } = useGetBookCategory({});
@@ -119,9 +122,12 @@ export default () => {
   };
   // 去阅读
   const toRead = (book: rankBook) => {
+    const webContainerRef = document.querySelector(
+      '.webContainer',
+    ) as HTMLElement;
     dispatch({
       type: 'global/setBookLibrary',
-      payload: { ...state },
+      payload: { ...state, scroll: webContainerRef.scrollTop },
     });
     setBookShelfData([]);
     router.push('/read', { [BookId]: book.id });
@@ -135,20 +141,19 @@ export default () => {
     webContainerRef.onscroll = () => {
       scrollToBottom(300, () => {
         const total = bookShelf?.page_info?.total || 0;
-        if (libraryPage * 10 >= total) return;
+        if (libraryPage * 30 >= total) return;
         setPage(libraryPage + 1);
       });
     };
-    if (
-      !bookShelf ||
-      bookShelf.data.length === 0
+    if (!bookShelf)
       // bookShelfData.toString() === bookShelf.data.toString()
-    )
       return;
+    if (bookShelf.data.length === 0 && bookShelfData.length === 0)
+      setNoData(true);
+    else setNoData(false);
     const val = setArrayForId([...bookShelfData, ...bookShelf.data]);
     setBookShelfData(val);
   }, [bookShelf]);
-
   useEffect(() => {
     if (!cateGoryData || cateGoryData.length === 0) return;
     let menArray = targetColumnArray<bookCategoryProps>(
@@ -162,11 +167,25 @@ export default () => {
     setCategoryMenList(menArray);
     setCategoryWomenList(womenArray);
   }, [cateGoryData]);
-
   useEffect(() => {
     setLoadingModel(shelfLoading);
   }, [shelfLoading]);
-
+  // 搜索词改变
+  useEffect(() => {
+    if (searchKey === null) return;
+    setBookShelfData([]);
+  }, [searchKey]);
+  // 滚动到记录位置
+  useEffect(() => {
+    if (bookShelfData.length === 0) return;
+    const webContainerRef = document.querySelector(
+      '.webContainer',
+    ) as HTMLElement;
+    webContainerRef.scrollTop = globalState.bookLibraryConfig.scroll;
+    return () => {
+      webContainerRef.removeEventListener('onscroll', () => {});
+    };
+  }, [bookShelfData]);
   const ThemeComponent = ({ themes, index, type }: ThemeComponentProps) => {
     return (
       <div className={'bookShelf_box_theme_layer'}>
@@ -210,11 +229,7 @@ export default () => {
       </div>
     );
   };
-  useMounted(() => {
-    return () => {
-      document.body.removeEventListener('onscroll', () => {});
-    };
-  });
+
   return (
     <div className={'bookShelf'}>
       {/*    类别*/}
@@ -329,12 +344,17 @@ export default () => {
           })}
         </div>
       </div>
-      <div>
-        <BookLibrary
-          bookList={bookShelfData}
-          onClick={(book) => toRead(book)}
-        />
-      </div>
+      {noData ? (
+        <DefaultNoData type={'noData'} className={'bookShelf_noData'} />
+      ) : (
+        <div>
+          <BookLibrary
+            bookList={bookShelfData}
+            onClick={(book) => toRead(book)}
+          />
+        </div>
+      )}
     </div>
   );
 };
+export default React.memo(Books);

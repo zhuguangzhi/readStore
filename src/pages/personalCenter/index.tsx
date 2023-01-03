@@ -18,6 +18,7 @@ export const PersonalCenter = () => {
       { key: 'topicShelf', label: '话题书架', icon: 'topic' },
       { key: 'comment', label: '我的评论', icon: 'message' },
       { key: 'notice', label: '系统通知', icon: 'tongzhi' },
+      { key: 'password', label: '修改密码', icon: 'password' },
     ], //菜单项
     currentMenuKey: 'bookShelf', //当前菜单选中项
   });

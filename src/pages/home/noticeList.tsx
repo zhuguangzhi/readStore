@@ -11,7 +11,7 @@ import {
   useGetTopic,
   useGetVane,
 } from '@/utils/home';
-import { BookId, NewsId, TopicId } from '@/constants/url';
+import { authorPenName, BookId, NewsId, TopicId } from '@/constants/url';
 
 const NewsIcon = () => (
   <IconFont
@@ -55,7 +55,10 @@ export const NoticeList = ({
   notUseWebInfo,
 }: NoticeListProps) => {
   const noticeRef = useRef<HTMLDivElement>(null);
-  const [noticeHeight, setNoticeHeight] = useState(0);
+  const [noticeHeight, setNoticeHeight] = useState({
+    top: 0,
+    height: '',
+  });
   //新闻公告列表
   const { data: newList, isLoading: newLoad } = useGetNews();
   //风向标列表
@@ -69,14 +72,28 @@ export const NoticeList = ({
 
   useEffect(() => {
     if (newLoad || vaneLoad || authorLoad || topicLoad) return;
-    const height =
+    let top =
       document.body.clientHeight - (noticeRef.current?.clientHeight || 0) - 12;
-    setNoticeHeight(height);
+    let height: '0' | '100%';
+    if (
+      (noticeRef.current?.clientHeight || 0) <
+      document.body.clientHeight - 20 - 79
+    ) {
+      top = 0;
+      height = '0';
+    } else {
+      height = '100%';
+    }
+    setNoticeHeight({ top, height });
   }, [newLoad, vaneLoad, authorLoad, topicLoad]);
 
   return (
     <div
-      style={{ marginLeft: '17px', top: `${noticeHeight}px`, height: '100%' }}
+      style={{
+        marginLeft: '17px',
+        top: `${noticeHeight.top}px`,
+        height: `${noticeHeight.height}`,
+      }}
       className={'position_sticky'}
       ref={noticeRef}
     >
@@ -160,7 +177,13 @@ export const NoticeList = ({
           <div className={'author'}>
             {authorRecommend?.data.map((author, index) => {
               return (
-                <div className={'author_item'} key={index}>
+                <div
+                  className={'author_item'}
+                  key={index}
+                  onClick={() =>
+                    router.push('/books', { [authorPenName]: author.pen_name })
+                  }
+                >
                   <img
                     className={'author_item_photo'}
                     src={author.user_image}

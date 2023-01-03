@@ -6,33 +6,36 @@ import { useAuth } from '@/hook/useAuth';
 import { useDispatch, useSelector } from 'umi';
 import { ConnectState } from '@/models/modelConnect';
 import { globalState } from '@/models/global';
+import { BookId } from '@/constants/url';
+import router from '@/hook/url';
+import { useMounted } from '@/hook';
 
+const slideList = [
+  { key: 1, label: '大热榜', subTitle: '根据七天内阅读人气进行排行' },
+  { key: 2, label: '免费榜', subTitle: '根据七天内阅读人气进行排行' },
+  {
+    key: 3,
+    label: '完本榜',
+    subTitle: '根据七天内的点赞，收藏，人气进行综合排行',
+  },
+  {
+    key: 4,
+    label: '高赞榜',
+    subTitle: '根据七天内点赞人气进行排行',
+  },
+  {
+    key: 5,
+    label: '热评榜',
+    subTitle: '根据七天内评论最多的进行排行',
+  },
+];
 export default () => {
   const dispatch = useDispatch();
   const globalState = useSelector(
     (state: ConnectState) => state.global,
   ) as globalState;
-  const slideList = [
-    { key: 1, label: '大热榜', subTitle: '根据七天内阅读人气进行排行' },
-    { key: 2, label: '免费榜', subTitle: '根据七天内阅读人气进行排行' },
-    {
-      key: 3,
-      label: '完本榜',
-      subTitle: '根据七天内的点赞，收藏，人气进行综合排行',
-    },
-    {
-      key: 4,
-      label: '高赞榜',
-      subTitle: '根据七天内点赞人气进行排行',
-    },
-    {
-      key: 5,
-      label: '热评榜',
-      subTitle: '根据七天内评论最多的进行排行',
-    },
-  ];
   const { userInfo, setLoadingModel } = useAuth();
-  const [sideIndex, setSide] = useState(globalState.bookRankIndex);
+  const [sideIndex, setSide] = useState(globalState.bookRank.rankIndex);
   const { data: rankBookData, isLoading } = useGetBookRank(
     () => setLoadingModel(false),
     {
@@ -42,9 +45,30 @@ export default () => {
     },
     userInfo,
   );
+
+  const setDispatch = (index?: number, scroll?: number) => {
+    dispatch({
+      type: 'global/setBookRank',
+      payload: {
+        rankIndex: index ? index : sideIndex,
+        scroll: scroll ? scroll : globalState.bookRank.scroll,
+      },
+    });
+  };
+  const toRead = (id: number) => {
+    router.push('/read', { [BookId]: id });
+    setDispatch(
+      sideIndex,
+      (document.querySelector('.webContainer') as HTMLElement).scrollTop,
+    );
+  };
   useEffect(() => {
     if (isLoading) setLoadingModel(isLoading);
   }, [sideIndex]);
+  useMounted(() => {
+    (document.querySelector('.webContainer') as HTMLElement).scrollTop =
+      globalState.bookRank.scroll;
+  });
   return (
     <div className={'bookRank'}>
       {/*侧边栏*/}
@@ -57,7 +81,7 @@ export default () => {
               key={item.key}
               onClick={() => {
                 setSide(index);
-                dispatch({ type: 'global/setNookRankIndex', payload: index });
+                setDispatch(index);
               }}
             >
               {item.label}
@@ -77,7 +101,7 @@ export default () => {
           </span>
         </div>
         {/*  书籍  */}
-        <BookBox bookList={rankBookData} />
+        <BookBox bookList={rankBookData} toRead={toRead} />
       </div>
     </div>
   );

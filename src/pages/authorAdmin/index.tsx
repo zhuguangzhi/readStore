@@ -4,6 +4,10 @@ import router, { useGetUrlPath } from '@/hook/url';
 import { Outlet } from 'react-router';
 import { useAuth } from '@/hook/useAuth';
 import { Properties } from 'csstype';
+import { useAsync } from '@/hook/useAsync';
+import { ErrorCheck, PersonalCenter } from '@/common/api';
+import { ResponseData } from '@/common/http';
+import { authorInfoProps } from '@/type/user';
 
 type operationProps = {
   label: string;
@@ -25,7 +29,8 @@ const adminOperationList: operationProps[] = [
 export default () => {
   const routerInfo = useGetUrlPath();
   // 用户信息
-  const { userInfo } = useAuth();
+  const { userInfo, setAuthorInfo } = useAuth();
+  const { run } = useAsync<ResponseData<authorInfoProps>>();
 
   const [currentOperate, setOperate] = useState('home');
 
@@ -38,6 +43,13 @@ export default () => {
   useEffect(() => {
     if (routerInfo.length > 0) setOperate(routerInfo[2]);
   }, [routerInfo.length]);
+  useEffect(() => {
+    if (!userInfo) return;
+    run(PersonalCenter.getAuthorInfo({ id: userInfo.id })).then((res) => {
+      if (!ErrorCheck(res)) return;
+      setAuthorInfo(res?.data || null);
+    });
+  }, [userInfo]);
 
   // 首页缩放为1980
   // style={{

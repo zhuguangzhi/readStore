@@ -48,6 +48,11 @@ const useHeaderRouter = {
           title: '系统通知',
           component: '@/pages/personalCenter/systemMessage',
         },
+        {
+          path: 'password',
+          title: '修改密码',
+          component: '@/pages/personalCenter/editPassword',
+        },
       ],
     },
     {

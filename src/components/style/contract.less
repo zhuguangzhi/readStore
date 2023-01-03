@@ -1,0 +1,46 @@
+.contract {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 38px;
+  font-size: 14px;
+  &_item {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 10px;
+    &_contract_item_label {
+      margin-right: 26px;
+    }
+    &_info {
+      &_detail {
+        display: flex;
+        align-items: flex-start;
+        margin: 36px 0;
+        p {
+          width: 60px;
+          text-align: right;
+          margin-right: 46px;
+          font-size: 14px;
+          color: #999999;
+        }
+        img {
+          width: 106px;
+          height: 141px;
+        }
+      }
+    }
+  }
+  &_tip {
+    color: #959595;
+  }
+  &_btn,
+  &_btn:hover,
+  &_btn:focus {
+    width: 270px;
+    height: 50px;
+    background: var(--adminTheme);
+    border-radius: 5px;
+    margin: 28px auto 64px auto;
+    color: white;
+  }
+}

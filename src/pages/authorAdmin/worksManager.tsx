@@ -12,6 +12,8 @@ import { Popover } from 'antd';
 import { bookInfoProps } from '@/type/book';
 import ReadPopup from '@/components/module/ReadPopup';
 import { UseNode } from '@/components/UseNode';
+import { ReadModel } from '@/components/module/ReadModel';
+import { Contract } from '@/components/contract';
 
 const SubIcon = () => (
   <IconFont width={'37px'} height={'44px'} icon={'bookShelf'} />
@@ -22,6 +24,10 @@ export default () => {
     title: '',
     id: 0,
     open: false,
+  });
+  const [contractModel, setContractModel] = useState({
+    open: false,
+    info: null as bookInfoProps | null,
   });
   //  获取作品列表
   const { data: worksList, isLoading: worksLoading } = useGetWorks({
@@ -209,7 +215,14 @@ export default () => {
                           </span>
                         </div>
                         <UseNode rIf={item.is_signing === 2}>
-                          <div>
+                          <div
+                            onClick={() => {
+                              setContractModel({
+                                open: true,
+                                info: item,
+                              });
+                            }}
+                          >
                             <IconFont
                               width={'20px'}
                               height={'22px'}
@@ -276,6 +289,20 @@ export default () => {
       >
         <p>删除后该作品无法恢复，谨慎操作！</p>
       </ReadPopup>
+      {/*  签约*/}
+      <ReadModel
+        useTitle={false}
+        width={'639px'}
+        open={contractModel.open}
+        onCancel={() =>
+          setContractModel({
+            open: false,
+            info: null,
+          })
+        }
+      >
+        <Contract bookInfo={contractModel.info} />
+      </ReadModel>
     </div>
   );
 };

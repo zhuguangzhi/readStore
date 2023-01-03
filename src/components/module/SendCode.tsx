@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Button, ButtonProps } from 'antd';
+import { Button, ButtonProps, message } from 'antd';
 import { useAsync } from '@/hook/useAsync';
 import { ErrorCheck, User } from '@/common/api';
 import { ResponseData } from '@/common/http';
@@ -35,11 +35,14 @@ export const SendCode = ({
   // 获取验证码
   const getCode = useCallback(
     async (num: string | number) => {
+      if (!num) {
+        message.error('请输入手机号码');
+        return;
+      }
       const sendCodeRes = (await run(
         User.sendCode({ mobile: num }),
       )) as ResponseData<sendCodeResultProps>;
       if (!ErrorCheck(sendCodeRes)) return false;
-      console.log('sendCodeRes');
       setCaptchaKey?.(sendCodeRes.data.captcha_key);
       setCount(60);
       timerRef.current = setInterval(() => {

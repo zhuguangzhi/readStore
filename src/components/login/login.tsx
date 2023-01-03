@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './index.less';
-import { Button, Form, Input, message } from 'antd';
+import { Button, Form, FormInstance, Input, message } from 'antd';
 import { SendCode } from '@/components/module/SendCode';
 import { Values } from 'async-validator';
 import { connect } from 'umi';
@@ -16,41 +16,14 @@ import { ErrorCheck, User } from '@/common/api';
 import { ResponseData } from '@/common/http';
 import { IconFont } from '@/components/IconFont';
 
-const Login = () => {
-  const { setToken, setUserInfo, setLoginPopup } = useAuth();
-  const { run, isLoading } =
-    useAsync<ResponseData<loginResultProps | authorProps>>();
-  // 是否验证码登录
-  const [isCode, setIsCode] = useState(true);
-  const [formValue] = Form.useForm();
-
-  // 用户登陆
-  const onLogin = async (value: Values) => {
-    if (
-      (value.mobile === undefined && value.account === undefined) ||
-      (value.password === undefined && value.captcha_code === undefined)
-    ) {
-      message.error('登陆信息不完整');
-      return false;
-    }
-    const api = isCode ? User.phoneLogin : User.accountLogin;
-    const loginRes = (await run(
-      api(value as accountLoginProps & phoneLoginProps),
-    )) as ResponseData<loginResultProps>;
-    if (!ErrorCheck(loginRes)) return false;
-    // 设置token
-    setToken(loginRes.data.access_token);
-    // 获取用户信息
-    const userInfo = (await run(
-      User.getUserInfo(),
-    )) as ResponseData<authorProps>;
-    if (!ErrorCheck(userInfo)) return false;
-    setUserInfo(userInfo.data);
-    //   关闭弹窗
-    setLoginPopup(false);
-  };
-
-  const PhoneInput = () => {
+const PhoneInput = React.memo(
+  ({
+    formValue,
+    setCaptchaKey,
+  }: {
+    formValue: FormInstance;
+    setCaptchaKey: (val: string) => void;
+  }) => {
     // const [mobile, setMobile] = useState<string>('');
     // const inputOnchange = (val: React.ChangeEvent<HTMLInputElement>) => {
     //   setMobile(val.target.value);
@@ -63,6 +36,8 @@ const Login = () => {
           <Input
             className={'login_form_input'}
             placeholder={'请输入手机号码'}
+            maxLength={11}
+            minLength={11}
             // onChange={inputOnchange}
             autoComplete={'off'}
             prefix={<IconFont icon={'user'} color={'#999999'} />}
@@ -77,34 +52,76 @@ const Login = () => {
               prefix={<IconFont icon={'lock'} color={'#999999'} />}
             />
           </Form.Item>
-          <SendCode className={'login_form_sendCode_btn'} mobile={mobile} />
+          <SendCode
+            className={'login_form_sendCode_btn'}
+            mobile={mobile}
+            setCaptchaKey={setCaptchaKey}
+          />
         </div>
       </>
     );
+  },
+);
+const AccountInput = React.memo(() => {
+  return (
+    <>
+      <Form.Item name={'account'}>
+        <Input
+          className={'login_form_input'}
+          placeholder={'请输入手机号码'}
+          autoComplete={'off'}
+          prefix={<IconFont icon={'user'} color={'#999999'} />}
+        />
+      </Form.Item>
+      <Form.Item name={'password'}>
+        <Input
+          className={'login_form_input login_form_sendCode'}
+          placeholder={'请输入密码'}
+          autoComplete={'false'}
+          type={'password'}
+          prefix={<IconFont icon={'lock'} color={'#999999'} />}
+        />
+      </Form.Item>
+    </>
+  );
+});
+const Login = () => {
+  const { setToken, setUserInfo, setLoginPopup } = useAuth();
+  const { run, isLoading } =
+    useAsync<ResponseData<loginResultProps | authorProps>>();
+  // 是否验证码登录
+  const [isCode, setIsCode] = useState(true);
+  const [formValue] = Form.useForm();
+  // 发送验证码的回执
+  const [captchaKey, setCaptchaKey] = useState('');
+
+  // 用户登陆
+  const onLogin = async (value: Values) => {
+    if (
+      (value.mobile === undefined && value.account === undefined) ||
+      (value.password === undefined && value.captcha_code === undefined)
+    ) {
+      message.error('登陆信息不完整');
+      return false;
+    }
+    const api = isCode ? User.phoneLogin : User.accountLogin;
+    const loginRes = (await run(
+      api({ ...value, captcha_key: captchaKey } as accountLoginProps &
+        phoneLoginProps),
+    )) as ResponseData<loginResultProps>;
+    if (!ErrorCheck(loginRes)) return false;
+    // 设置token
+    setToken(loginRes.data.access_token);
+    // 获取用户信息
+    const userInfo = (await run(
+      User.getUserInfo(),
+    )) as ResponseData<authorProps>;
+    if (!ErrorCheck(userInfo)) return false;
+    setUserInfo(userInfo.data);
+    //   关闭弹窗
+    setLoginPopup(false);
   };
-  const AccountInput = () => {
-    return (
-      <>
-        <Form.Item name={'account'}>
-          <Input
-            className={'login_form_input'}
-            placeholder={'请输入手机号码'}
-            autoComplete={'off'}
-            prefix={<IconFont icon={'user'} color={'#999999'} />}
-          />
-        </Form.Item>
-        <Form.Item name={'password'}>
-          <Input
-            className={'login_form_input login_form_sendCode'}
-            placeholder={'请输入密码'}
-            autoComplete={'false'}
-            type={'password'}
-            prefix={<IconFont icon={'lock'} color={'#999999'} />}
-          />
-        </Form.Item>
-      </>
-    );
-  };
+
   return (
     <div className={'login'}>
       {/*滑块*/}
@@ -131,7 +148,11 @@ const Login = () => {
         onFinish={onLogin}
         key={'Form_mobile'}
       >
-        {isCode ? <PhoneInput /> : <AccountInput />}
+        {isCode ? (
+          <PhoneInput formValue={formValue} setCaptchaKey={setCaptchaKey} />
+        ) : (
+          <AccountInput />
+        )}
         <Form.Item>
           <Button
             className={'login_form_btn'}

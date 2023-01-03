@@ -4,7 +4,7 @@ import { ConnectState } from '@/models/modelConnect';
 import { userState } from '@/models/user';
 import { getStorage, removeStorage, setStorage } from '@/common/publicFn';
 import { Bus_ClearUserInfo, TOKEN, UserInfo } from '@/constants';
-import { authorProps } from '@/type/user';
+import { authorInfoProps, authorProps } from '@/type/user';
 import EventBus from '@/common/EventBus';
 
 export const useAuth = () => {
@@ -23,6 +23,16 @@ export const useAuth = () => {
     (p: authorProps | null) => {
       dispatch({
         type: 'userModel/setUserInfo',
+        payload: p,
+      });
+      setStorage(UserInfo, p);
+    },
+    [dispatch],
+  );
+  const setAuthorInfo = useCallback(
+    (p: authorInfoProps | null) => {
+      dispatch({
+        type: 'userModel/setAuthorInfo',
         payload: p,
       });
       setStorage(UserInfo, p);
@@ -56,6 +66,7 @@ export const useAuth = () => {
     ...userModel,
     setToken,
     setUserInfo,
+    setAuthorInfo,
     setLoginPopup,
     setLoadingModel,
   };

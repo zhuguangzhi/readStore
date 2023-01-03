@@ -9,7 +9,10 @@ export type globalState = {
     scroll: number;
     tab: tabProps;
   }; //首页tab信息
-  bookRankIndex: number; //排行榜索引
+  bookRank: {
+    rankIndex: number; //排行榜索引
+    scroll: number;
+  };
   bookLibraryConfig: {
     readKey: 0 | 1 | 2; //选中读者key
     subThemeId: booksThemeProps['id'] | null; //选中二级主题id
@@ -17,7 +20,8 @@ export type globalState = {
       bookState: 0 | 1 | 2; //书的连载状态
       slot: 3 | 4; //排序状态
     }; //选中状态key
-    textKey: 0; //选中字数key
+    textKey: number; //选中字数key
+    scroll: number; //滚动
   }; //书库配置信息
   openCommentBox: boolean; //是否打开评论框
 };
@@ -28,7 +32,7 @@ type globalModelPopup = {
     openLoading: Effect;
     closeLoading: Effect;
     setHomeTab: Effect;
-    setNookRankIndex: Effect;
+    setBookRank: Effect;
     setBookLibrary: Effect;
     setCommentBox: Effect;
   };
@@ -44,7 +48,10 @@ export default {
       scroll: 0,
       tab: tabBarList[0],
     },
-    bookRankIndex: 0,
+    bookRank: {
+      rankIndex: 0,
+      scroll: 0,
+    },
     bookLibraryConfig: {
       readKey: 0,
       subThemeId: null,
@@ -53,6 +60,7 @@ export default {
         slot: 3,
       }, //选中状态key
       textKey: 0,
+      scroll: 0,
     },
     openCommentBox: false,
   },
@@ -83,11 +91,11 @@ export default {
         },
       });
     },
-    *setNookRankIndex({ payload }, { put }) {
+    *setBookRank({ payload }, { put }) {
       yield put({
         type: 'save',
         payload: {
-          bookRankIndex: payload,
+          bookRank: payload,
         },
       });
     },

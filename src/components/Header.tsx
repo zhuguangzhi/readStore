@@ -48,7 +48,7 @@ const Header = () => {
       <Input
         className={'searchInput'}
         autoComplete="off"
-        placeholder="搜索"
+        placeholder="按下回车进行搜索"
         suffix={<SearchIcon />}
         onChange={onSearch}
       />

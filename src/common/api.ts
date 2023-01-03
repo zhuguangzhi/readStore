@@ -36,6 +36,7 @@ import {
   reportProps,
   sendCodeProps,
   sendCodeResultProps,
+  editPasswordProps,
 } from '@/type/user';
 import { clearToken } from '@/hook/useAuth';
 import { cleanObject } from '@/common/publicFn';
@@ -186,6 +187,9 @@ export const User = {
   // 注册
   register: (p: registerProps) =>
     http.post<ResponseData<loginResultProps>>(`${apiUrl}/auth/register`, p),
+  // 修改密码
+  changePassword: (p: editPasswordProps) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/auth/setPassword`, p),
   // 退出登陆
   logout: () => http.post<ResponseData<{}>>(`${apiUrl}/auth/logout`, {}),
   //  获取举报配置

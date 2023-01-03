@@ -1,6 +1,6 @@
-//用户信息
 import { bookInfoProps, pageProps } from '@/type/book';
 
+//用户信息
 export type authorProps = {
   id: number; //主键ID
   name: string; //名称
@@ -34,6 +34,13 @@ export type editInfoProps = {
   description: string; //描述
   user_image: string; //头像
 };
+// 修改密码
+export type editPasswordProps = {
+  password: string; //用户密码
+  password_confirmation: string; //确认密码
+  unlock_key: string; //手机验证码成功KEY值
+  mobile: string; //手机号
+};
 
 // 账号密码登陆
 export type accountLoginProps = {
@@ -48,8 +55,11 @@ export type phoneLoginProps = {
 };
 // 登陆返回结果
 export type loginResultProps = { access_token: string };
-// 验证码返回结果
-export type sendCodeResultProps = { captcha_key: string };
+// 验证码返回结果 verify_key（发送检验）和captcha_key（接口获取）是同一个值，后端不一致导致
+export type sendCodeResultProps = {
+  captcha_key: string;
+  verify_key: string;
+};
 //发送验证码
 export type sendCodeProps = Omit<
   phoneLoginProps,
