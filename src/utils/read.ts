@@ -96,7 +96,7 @@ export const useReply = () => {
   });
 };
 // 发表评论
-export const useCommentStore = () => {
+export const useCommentStore = (call?: Function) => {
   const queryClient = useQueryClient();
   return useMutation(
     'commentStore',
@@ -106,6 +106,7 @@ export const useCommentStore = () => {
         if (!ErrorCheck(val)) return;
         message.success('发表成功');
         await queryClient.invalidateQueries('readComment');
+        call?.();
       },
     },
   );

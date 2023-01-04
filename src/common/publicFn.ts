@@ -71,9 +71,11 @@ export const scrollToBottom = (distance: number = 0, call?: Function) => {
 export const setArrayForId = (arr: { id: number }[]) => {
   let map = new Map();
   for (let item of arr) {
-    if (!map.has(item.id)) {
-      map.set(item.id, item);
-    }
+    // if (map.has(item.id)) {
+    //   //  数组中存在 覆盖原有内容
+    //   map.delete(item.id)
+    // }
+    map.set(item.id, item);
   }
   return [...map.values()];
 };

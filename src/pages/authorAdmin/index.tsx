@@ -93,7 +93,7 @@ export default () => {
             <p className={'font_16'}>
               {userInfo?.pen_name || userInfo?.nickname || userInfo?.name}
             </p>
-            <p className={'font_14'}>ID: {userInfo?.id}</p>
+            {/*<p className={'font_14'}>ID: {userInfo?.id}</p>*/}
           </div>
           {/*    侧边栏*/}
           <div className={'author_admin_side_box'}>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   useAttentionUser,
   useGetBookContainer,
@@ -68,7 +68,7 @@ export default () => {
     comment_sort_type: commentSlotType,
   });
   // 上拉加载
-  const uploadGetMore = useCallback(() => {
+  const uploadGetMore = () => {
     if (
       !commentLoading &&
       commentData &&
@@ -76,7 +76,7 @@ export default () => {
     ) {
       setCommentPage((val) => ++val);
     }
-  }, [commentLoading]);
+  };
   // 设置喜欢
   const onApprovalChange = () => {
     setApproval({
@@ -92,6 +92,11 @@ export default () => {
       is_attention: bookInfo.is_attention === 1 ? 2 : 1,
     });
   };
+  // 重置评论列表
+  const initCommentList = () => {
+    setCommentPage(1);
+    setCommentList(undefined);
+  };
 
   // 监听 触发loading 只有首次获取时才会触发，避免乐观更新时触发
   useEffect(() => {
@@ -105,10 +110,12 @@ export default () => {
       oldSlotType.current = commentSlotType;
       return;
     }
+    console.log('commentData', commentData, commentList);
     if (!commentData || commentData.data.length === 0) return;
     let list = commentList
       ? { ...commentList }
       : { page_info: commentData.page_info, data: [] };
+    // console.log('list.data',list.data,commentData.data)
     list.data = setArrayForId([...list.data, ...commentData.data]);
     list.page_info = commentData.page_info;
     setCommentList(list);
@@ -129,7 +136,7 @@ export default () => {
         setOperationTab(true);
       else setOperationTab(false);
     };
-  }, [commentLoading]);
+  }, [commentPage, commentLoading, commentData, commentList]);
   // useMounted(() => {
   //   // document.documentElement.scrollTop = 0;
   //   // document.documentElement.style.scrollBehavior = 'smooth';
@@ -233,10 +240,10 @@ export default () => {
             commentData={commentList}
             setSlotType={(num) => {
               setCommentSlotType(num);
-              setCommentPage(1);
+              initCommentList();
             }}
             slotType={commentSlotType}
-            getMoreComment={uploadGetMore}
+            sendCommentCallBack={initCommentList}
           />
         </div>
       </UseNode>
@@ -260,6 +267,7 @@ export default () => {
           }}
           slotType={commentSlotType}
           getMoreComment={uploadGetMore}
+          sendCommentCallBack={initCommentList}
         />
       </ReadModel>
     </div>

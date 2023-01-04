@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import 'moment/locale/zh-cn';
 import { Calendar, Popover } from 'antd';
 import locale from 'antd/es/date-picker/locale/zh_CN';
@@ -7,26 +7,53 @@ import { AdminHeader } from '@/pages/authorAdmin/components/adminHeader';
 import './style/home.less';
 import { ContainerBox } from '@/pages/authorAdmin/components/containerBox';
 import { testBookData } from '@/assets/testData';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 import { IconFont } from '@/components/IconFont';
 import { ChartsColum } from '@/pages/authorAdmin/components/chartsColum';
 import { ChartsPie } from '@/pages/authorAdmin/components/chartsPie';
+import {
+  useGetCodeCalendar,
+  useGetDataStatistics,
+} from '@/utils/authorAdmin/home';
+import { translateNumber } from '@/utils/format';
+import { useAuth } from '@/hook/useAuth';
 
 export default () => {
+  // 码字日历月份
+  const [codeDate, setCodeDate] = useState(moment().format('YYYY-MM'));
+  // 获取更新日历
+  const { data: codeCalendarList, isLoading: codeLoading } = useGetCodeCalendar(
+    { date: codeDate },
+  );
+  // 数据统计
+  const { data: dataStatistics, isLoading: statisticsLoading } =
+    useGetDataStatistics();
   //设置日历颜色
-  const renderTimeStyle = (moment: Moment) => {
-    return (
-      <div className={'adminHome_time_autoStyle'}>
-        <span style={{ backgroundColor: '#FF9999' }}>{moment.date()}</span>
-      </div>
-    );
-  };
+  const renderTimeStyle = useCallback(
+    (date: Moment) => {
+      const list = codeCalendarList ? codeCalendarList.data : [];
+      let color = '';
+      const codeData = list.find(
+        (item) => item.date === moment(date).format('YYYY-MM-DD'),
+      );
+      if (codeData) {
+        color = codeData.word_count !== 0 ? '#C3D4FF' : '#FF9999';
+      }
+      return (
+        <div className={'adminHome_time_autoStyle'}>
+          <span style={{ backgroundColor: color }}>{date.date()}</span>
+        </div>
+      );
+    },
+    [codeCalendarList],
+  );
   //年份列表
   const [yearList] = useState([2020, 2021, 2022, 2023, 2024, 2025]);
   //柱状图数据
   const [columnData] = useState([
     6870, 7654, 5982, 8979, 12213, 7950, 9740, 8950, 11209, 15980, 12745, 7543,
   ]);
+  const { setLoadingModel } = useAuth();
 
   const YearPopoverContent = () => {
     return (
@@ -37,6 +64,10 @@ export default () => {
       </div>
     );
   };
+
+  useEffect(() => {
+    setLoadingModel(codeLoading || statisticsLoading);
+  }, [codeLoading, statisticsLoading]);
 
   return (
     <div className={'adminHome'}>
@@ -101,13 +132,18 @@ export default () => {
         <ContainerBox title={'码字日历'}>
           <div className={'adminHome_time'}>
             <Calendar
+              value={moment(codeDate)}
               className={'time_calendar'}
               locale={locale}
               dateFullCellRender={(moment) => renderTimeStyle(moment)}
               fullscreen={false}
+              onChange={(value) => setCodeDate(moment(value).format('YYYY-MM'))}
             />
             <div className={'adminHome_time_tip'}>
-              <span>本月更新12123字</span>
+              <span>
+                本月更新
+                {translateNumber(codeCalendarList?.total.month_word_count || 0)}
+              </span>
               <div className={'adminHome_time_tip_status'}>
                 <i style={{ backgroundColor: '#FF9999' }}></i>
                 <span>断更</span>
@@ -122,19 +158,19 @@ export default () => {
       <div className={'adminHome_data'}>
         <div className={'adminHome_data_item'}>
           <p>阅读人数</p>
-          <p>2300</p>
+          <p>{dataStatistics?.reader_count || 0}</p>
         </div>
         <div className={'adminHome_data_item'}>
           <p>昨日新增阅读</p>
-          <p>2300</p>
+          <p>{dataStatistics?.yesterday_read_count || 0}</p>
         </div>
         <div className={'adminHome_data_item'}>
           <p>作品点赞</p>
-          <p>2300</p>
+          <p>{dataStatistics?.approval_count || 0}</p>
         </div>
         <div className={'adminHome_data_item'}>
           <p>加入书架</p>
-          <p>2300</p>
+          <p>{dataStatistics?.collection_count || 0}</p>
         </div>
       </div>
       {/*    图表面板*/}

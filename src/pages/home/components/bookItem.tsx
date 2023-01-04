@@ -5,6 +5,7 @@ import './style/bookItem.less';
 import { UseNode } from '@/components/UseNode';
 import { homeChartProps } from '@/type/home';
 import { stopProp } from '@/common/publicFn';
+import { translateNumber } from '@/utils/format';
 
 type BookItemProps = {
   bookList: homeChartProps['data'] | null;
@@ -17,18 +18,18 @@ type BookItemProps = {
 export const BookItem = ({
   bookList,
   onClick,
-  onComment,
-  onApprove,
+  // onComment,
+  // onApprove,
   onAddBookCase,
   clickTitle,
 }: BookItemProps) => {
-  const setApprove = (book: bookInfoProps) => {
-    const param: approvalProps = {
-      book_id: book.id,
-      is_approval: book.is_user_approval === 1 ? 2 : 1,
-    };
-    onApprove?.(param);
-  };
+  // const setApprove = (book: bookInfoProps) => {
+  //   const param: approvalProps = {
+  //     book_id: book.id,
+  //     is_approval: book.is_user_approval === 1 ? 2 : 1,
+  //   };
+  //   onApprove?.(param);
+  // };
 
   return (
     <>
@@ -86,23 +87,41 @@ export const BookItem = ({
                   </div>
                 </UseNode>
                 <div className={'book_right_options'}>
-                  <div className={'operation'} onClick={() => setApprove(book)}>
+                  <div
+                    className={'operation'}
+                    // onClick={() => setApprove(book)}
+                  >
                     <IconFont
                       width={'16px'}
                       height={'16px'}
-                      icon={book.is_user_approval === 1 ? 'support' : 'xihuan'}
+                      // icon={book.is_user_approval === 1 ? 'support' : 'xihuan'}
+                      icon={'xihuan'}
                     />
-                    <span>喜欢</span>
+                    <span>
+                      喜欢 （
+                      {translateNumber(
+                        book.book_extension?.all_approval || 0,
+                        false,
+                      )}
+                      ）
+                    </span>
                   </div>
                   <div
                     className={'operation'}
-                    style={{ marginRight: '60px' }}
-                    onClick={() => onComment?.(book)}
+                    style={{ marginRight: '42px' }}
+                    // onClick={() => onComment?.(book)}
                   >
                     <IconFont width={'16px'} height={'16px'} icon={'pinglun'} />
-                    <span>评论（{book.book_extension?.all_comments}）</span>
+                    <span>
+                      评论（
+                      {translateNumber(
+                        book.book_extension?.all_comments || 0,
+                        false,
+                      )}
+                      ）
+                    </span>
                   </div>
-                  <div className={'operation'}>
+                  <div className={'operation cursor'}>
                     <IconFont width={'16px'} height={'16px'} icon={'zhuanfa'} />
                     <span>转发</span>
                   </div>

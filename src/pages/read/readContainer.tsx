@@ -92,6 +92,7 @@ export const ReadContainer = ({
       currentLine = pEl.children.length;
     } else {
       progress = Math.ceil((Number(pEl.id) / allCount) * 100);
+      console.log('progress', progress, allCount);
       currentLine = Number(pEl.id);
     }
     timerRef.current = setTimeout(() => {

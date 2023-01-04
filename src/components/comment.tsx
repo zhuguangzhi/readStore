@@ -18,8 +18,9 @@ type CommentProps = {
   slotType: 1 | 2;
   setSlotType: (num: 1 | 2) => void;
   commentPage: number;
-  getMoreComment: Function;
+  getMoreComment?: Function;
   usePullLoad?: boolean;
+  sendCommentCallBack?: Function;
 };
 export const Comment = ({
   commentData,
@@ -32,13 +33,14 @@ export const Comment = ({
   ...props
 }: CommentProps) => {
   const { page_size, total } = commentData?.page_info || {
-    page: 0,
     page_size: 0,
     total: 0,
   };
   // 在评论哪条评论的id
   const [commentReplyId, setReplyId] = useState<null | number>(null);
-  const { mutate: commentStore, isLoading: commentLoading } = useCommentStore();
+  const { mutate: commentStore, isLoading: commentLoading } = useCommentStore(
+    () => props.sendCommentCallBack?.(),
+  );
   const { setLoadingModel } = useAuth();
   const [formValue] = Form.useForm();
   // 发表评论
@@ -110,7 +112,7 @@ export const Comment = ({
               pageSize={page_size}
               usePullLoad={props.usePullLoad}
               bottomHeight={560}
-              onBottom={() => props.getMoreComment()}
+              onBottom={() => props.getMoreComment?.()}
             >
               <>
                 {commentData?.data.map((comment) => {

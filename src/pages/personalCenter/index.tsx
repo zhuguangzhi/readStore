@@ -54,7 +54,7 @@ export const PersonalCenter = () => {
             alt=""
           />
           <p className={'user_info_name'}>{userInfo?.nickname}</p>
-          <p>ID：{userInfo?.id}</p>
+          {/*<p>ID：{userInfo?.id}</p>*/}
           <p>手机：{userInfo?.mobile}</p>
         </div>
         {/*    菜单项*/}

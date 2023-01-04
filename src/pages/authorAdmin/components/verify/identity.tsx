@@ -1,15 +1,15 @@
 //身份信息
 
 import { Form, FormInstance, Input, Select } from 'antd';
-import React, { useState } from 'react';
+import React from 'react';
 import '../../style/formCommon.less';
 import './style/identity.less';
 import { UploadImg } from '@/components/module/UploadImg';
 
-type cityProps = {
-  n: string; //名称
-  y: string; //首个拼音
-};
+// type cityProps = {
+//   n: string; //名称
+//   y: string; //首个拼音
+// };
 interface IdentityProps extends FormInstance {
   idFace?: string; //身份证正面
   idBack?: string; //身份证反面
@@ -22,12 +22,12 @@ export const Identity = ({
   form?: IdentityProps;
   isFinish: boolean;
 }) => {
-  //省级数据
-  const [provinceData] = useState<cityProps[]>([]);
-  //市级数据
-  const [cityData] = useState<cityProps[]>([]);
-  //区级数据
-  const [areaData] = useState<cityProps[]>([]);
+  // //省级数据
+  // const [provinceData] = useState<cityProps[]>([]);
+  // //市级数据
+  // const [cityData] = useState<cityProps[]>([]);
+  // //区级数据
+  // const [areaData] = useState<cityProps[]>([]);
 
   return (
     <Form
@@ -51,45 +51,45 @@ export const Identity = ({
           </Form.Item>
         </div>
       </Form.Item>
-      <Form.Item label={'身份地址'}>
-        <div className={'justify_between'} style={{ height: '41px' }}>
-          <Form.Item name={'province'}>
-            <Select
-              defaultValue={provinceData[0]}
-              style={{ width: 121 }}
-              options={provinceData.map((province) => ({
-                label: province.n,
-                value: province.y,
-              }))}
-            />
-          </Form.Item>
-          <Form.Item name={'city'}>
-            <Select
-              disabled={cityData.length === 0}
-              defaultValue={cityData[0]}
-              style={{ width: 121 }}
-              options={cityData.map((province) => ({
-                label: province.n,
-                value: province.y,
-              }))}
-            />
-          </Form.Item>
-          <Form.Item name={'area'}>
-            <Select
-              disabled={areaData.length === 0}
-              defaultValue={areaData[0]}
-              style={{ width: 121 }}
-              options={areaData.map((province) => ({
-                label: province.n,
-                value: province.y,
-              }))}
-            />
-          </Form.Item>
-        </div>
-      </Form.Item>
-      <Form.Item label={'详细地址'} name={'address'}>
-        <Input placeholder={'请输入详细地址'} />
-      </Form.Item>
+      {/*<Form.Item label={'身份地址'}>*/}
+      {/*  <div className={'justify_between'} style={{ height: '41px' }}>*/}
+      {/*    <Form.Item name={'province'}>*/}
+      {/*      <Select*/}
+      {/*        defaultValue={provinceData[0]}*/}
+      {/*        style={{ width: 121 }}*/}
+      {/*        options={provinceData.map((province) => ({*/}
+      {/*          label: province.n,*/}
+      {/*          value: province.y,*/}
+      {/*        }))}*/}
+      {/*      />*/}
+      {/*    </Form.Item>*/}
+      {/*    <Form.Item name={'city'}>*/}
+      {/*      <Select*/}
+      {/*        disabled={cityData.length === 0}*/}
+      {/*        defaultValue={cityData[0]}*/}
+      {/*        style={{ width: 121 }}*/}
+      {/*        options={cityData.map((province) => ({*/}
+      {/*          label: province.n,*/}
+      {/*          value: province.y,*/}
+      {/*        }))}*/}
+      {/*      />*/}
+      {/*    </Form.Item>*/}
+      {/*    <Form.Item name={'area'}>*/}
+      {/*      <Select*/}
+      {/*        disabled={areaData.length === 0}*/}
+      {/*        defaultValue={areaData[0]}*/}
+      {/*        style={{ width: 121 }}*/}
+      {/*        options={areaData.map((province) => ({*/}
+      {/*          label: province.n,*/}
+      {/*          value: province.y,*/}
+      {/*        }))}*/}
+      {/*      />*/}
+      {/*    </Form.Item>*/}
+      {/*  </div>*/}
+      {/*</Form.Item>*/}
+      {/*<Form.Item label={'详细地址'} name={'address'}>*/}
+      {/*  <Input placeholder={'请输入详细地址'} />*/}
+      {/*</Form.Item>*/}
       <div className={'identity_box'}>
         <p>
           证件照片：上传后系统自动添加水印，仅限作品签约使用仅支持上传2M以内的jpg/png

@@ -61,6 +61,10 @@ import {
   worksListProps,
 } from '@/type/authorAdmin/worksManager';
 import { adminCommentRequestProps } from '@/type/authorAdmin/commentManager';
+import {
+  codewordCalendarProps,
+  dataStatisticsProps,
+} from '@/type/authorAdmin/home';
 
 export const ErrorCheck = <T>(val: ResponseData<T> | null) => {
   if (val?.status_code === 200) return true;
@@ -313,3 +317,18 @@ export const AuthorComment = {
       p,
     ),
 };
+export const AuthorHome = {
+  //  码字日历
+  codewordCalendar: (p: { date: string }) =>
+    http.post<ResponseData<codewordCalendarProps>>(
+      `${apiUrl}/author/codewordCalendar`,
+      p,
+    ),
+  //  数据统计
+  dataStatistics: () =>
+    http.post<ResponseData<dataStatisticsProps>>(
+      `${apiUrl}/author/statistics`,
+      {},
+    ),
+};
+// --------------------------作者后台end-------------------------------------------------

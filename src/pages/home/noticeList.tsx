@@ -74,13 +74,13 @@ export const NoticeList = ({
     if (newLoad || vaneLoad || authorLoad || topicLoad) return;
     let top =
       document.body.clientHeight - (noticeRef.current?.clientHeight || 0) - 12;
-    let height: '0' | '100%';
+    let height: 'auto' | '100%';
     if (
       (noticeRef.current?.clientHeight || 0) <
       document.body.clientHeight - 20 - 79
     ) {
       top = 0;
-      height = '0';
+      height = 'auto';
     } else {
       height = '100%';
     }
