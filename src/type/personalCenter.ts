@@ -39,3 +39,22 @@ export type myBookListProps = {
   data: myBookProps[];
   page_info: pageProps;
 };
+// 消息链接
+type messageLinkProps = {
+  title: string; //链接标题
+  target_page: number | string; //链接跳转页面
+};
+// 消息列表
+export type messageListProps = {
+  id: number; //主键ID
+  title: string; //标题
+  content: string; //内容
+  is_read: 1 | 2; //是否阅读( 1：是  2：否 ）
+  link: messageLinkProps[]; //链接信息
+  create_time: string;
+};
+// 个人中心消息列表
+export type personalMessageProps = {
+  page_info: pageProps;
+  data: messageListProps[];
+};

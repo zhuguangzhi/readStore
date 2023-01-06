@@ -34,7 +34,7 @@ export const useGetBookContainer = (p: { book_id: number }) => {
 };
 // 获取书本详情
 export const useGetBookInfo = (p: { id: number }) => {
-  return useQuery<readBookInfoProps, Error>(['readBookInfo', p.id], () =>
+  return useQuery<readBookInfoProps, Error>([`readBookInfo${p.id}`, p.id], () =>
     Book.getBookInfo(p).then((value) => {
       ErrorCheck(value);
       return value.data;

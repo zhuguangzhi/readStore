@@ -10,6 +10,7 @@ export type globalState = {
     tab: tabProps;
   }; //首页tab信息
   bookRank: {
+    channelType: 1 | 2; //频道类型( 1：男频  2：女频 ）
     rankIndex: number; //排行榜索引
     scroll: number;
   };
@@ -49,6 +50,7 @@ export default {
       tab: tabBarList[0],
     },
     bookRank: {
+      channelType: 1, //频道类型( 1：男频  2：女频 ）
       rankIndex: 0,
       scroll: 0,
     },

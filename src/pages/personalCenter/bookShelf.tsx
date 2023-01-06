@@ -58,7 +58,7 @@ export default () => {
   };
   // 继续阅读
   const goToRead = (book: myBookProps) => {
-    router.push('/read', { [BookId]: book.book_id });
+    router.push('/read', { [BookId]: book.book_id }, true);
   };
 
   //edit为false时清空delPopup.id
@@ -159,7 +159,9 @@ export default () => {
           onBottom={getMore}
         >
           <>
-            <UseNode rIf={currentTab === tabBars[0].key}>
+            <UseNode
+              rIf={currentTab === tabBars[0].key && topBookList.length !== 0}
+            >
               {/*书架顶部两条数据*/}
               <div className={'myBookShelf_recentlyBox'}>
                 {topBookList.map((list) => {

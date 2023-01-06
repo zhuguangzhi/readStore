@@ -108,6 +108,7 @@ export interface approvalProps {
 }
 // 排行参数
 export interface rankParamProps extends pageRequestProps {
+  channel_type: 1 | 2; //频道类型( 1：男频  2：女频 ）
   rank_type: number; //榜单类型 1：阅读榜    2：免费榜     3：推荐榜     4：评论榜     5：完结榜     6：连载榜
 }
 // 排行书本信息

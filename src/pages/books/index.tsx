@@ -130,7 +130,7 @@ const Books = () => {
       payload: { ...state, scroll: webContainerRef.scrollTop },
     });
     setBookShelfData([]);
-    router.push('/read', { [BookId]: book.id });
+    router.push('/read', { [BookId]: book.id }, true);
   };
 
   // 触发滚动

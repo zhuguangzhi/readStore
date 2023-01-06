@@ -74,6 +74,7 @@ class router {
   protected params: urlType['params'] = {};
   protected step: number = 0;
   protected callback: Function | null = null;
+  protected blank: boolean = false; //是否在新标签中打开
 
   static instance() {
     return this.routerInstance;
@@ -98,9 +99,10 @@ class router {
     this.next()();
   }
 
-  push(url: urlType['url'], params?: urlType['params']) {
+  push(url: urlType['url'], params?: urlType['params'], blank?: boolean) {
     this.url = url;
     this.params = params || {};
+    this.blank = blank ? blank : false;
     this.beforeEach();
   }
 
@@ -119,6 +121,7 @@ class router {
     const formatParam = qs.stringify(cleanObject(params || {}));
     return () => {
       if (step < 0) history.go(step);
+      else if (this.blank) window.open(url + '?' + formatParam);
       else history.push(url + '?' + formatParam);
       this.url = '';
       this.params = {};

@@ -4,9 +4,13 @@ import { Popover } from 'antd';
 import './style/readOperation.less';
 import { ReadModel } from '@/components/module/ReadModel';
 import { Report } from '@/components/report';
+import { copy } from '@/common/publicFn';
+import { netUrl } from '../../public/config';
+import { BookId } from '@/constants/url';
 
 type ReadOperationTabProps = {
   bookId: number | undefined;
+  bookName: string | undefined;
   chapterId: number | undefined;
   isApproval: 1 | 2;
   commentChange: Function;
@@ -49,7 +53,13 @@ export const ReadOperationTab = ({
         <IconFont icon={'comment2'} width={'26px'} height={'26px'} />
         <span>评论</span>
       </p>
-      <p>
+      <p
+        onClick={() =>
+          copy(
+            `【${props.bookName}】 ${netUrl}/read?${[BookId]}=${props.bookId}`,
+          )
+        }
+      >
         <IconFont icon={'forward'} width={'24px'} height={'24px'} />
         <span>分享</span>
       </p>

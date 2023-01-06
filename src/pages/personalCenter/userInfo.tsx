@@ -49,7 +49,7 @@ export default () => {
   });
   // 继续阅读
   const goToRead = (book: myBookProps) => {
-    router.push('/read', { [BookId]: book.book_id });
+    router.push('/read', { [BookId]: book.book_id }, true);
   };
 
   useEffect(() => {
@@ -164,7 +164,6 @@ export default () => {
             {userInfo?.description || '该用户很懒，什么都没留下'}
           </p>
         </div>
-        {/*TODO:用户资料数据待完善*/}
         <div className={'userInfo_box_data'}>
           <div
             className={'userInfo_box_data_item'}
@@ -175,7 +174,7 @@ export default () => {
               })
             }
           >
-            <p>21</p>
+            <p>{userInfo?.follows}</p>
             <div
               className={
                 'flex_align justify_between userInfo_box_data_item_desc'
@@ -194,7 +193,7 @@ export default () => {
               })
             }
           >
-            <p>21</p>
+            <p>{userInfo?.fans}</p>
             <div
               className={
                 'flex_align justify_between userInfo_box_data_item_desc'
@@ -213,7 +212,7 @@ export default () => {
               })
             }
           >
-            <p>21</p>
+            <p>{userInfo?.approvals}</p>
             <div
               className={
                 'flex_align justify_between userInfo_box_data_item_desc'

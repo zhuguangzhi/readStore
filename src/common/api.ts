@@ -44,6 +44,7 @@ import {
   delCommentProps,
   myBookListProps,
   myCommentProps,
+  personalMessageProps,
 } from '@/type/personalCenter';
 import { newsProps } from '@/type/home';
 import {
@@ -249,6 +250,18 @@ export const PersonalCenter = {
       `${apiUrl}/users/getApprovalList`,
       p,
     ),
+  //  获取消息列表
+  getSystemMessage: (p: pageRequestProps & { message_type: number }) =>
+    http.post<ResponseData<personalMessageProps>>(
+      `${apiUrl}/users/messages`,
+      p,
+    ),
+  //  单个消息已读
+  readMessageForId: (p: { id: number }) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/users/messages/read/${p.id}`, {}),
+  //  所有消息已读
+  readAllMessage: () =>
+    http.post<ResponseData<{}>>(`${apiUrl}/users/messages/read`, {}),
 };
 export const Topic = {
   // 话题书架

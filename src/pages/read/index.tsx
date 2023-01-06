@@ -44,11 +44,13 @@ export default () => {
   const oldSlotType = useRef(commentSlotType);
   // 是否使用阅读底部信息框
   const [useOperationTab, setOperationTab] = useState(true);
+  // 默认内容
+  const [noData, setNoData] = useState(false);
   // 获取内容
   const { data: bookContainer, isLoading: containerLoading } =
     useGetBookContainer({ book_id: parseInt(bookId) });
   // 获取详情
-  const { data: bookInfo, isLoading: infoLogin } = useGetBookInfo({
+  const { data: bookInfo, isLoading: infoLoading } = useGetBookInfo({
     id: parseInt(bookId),
   });
   const { setLoadingModel, userInfo } = useAuth();
@@ -100,8 +102,8 @@ export default () => {
 
   // 监听 触发loading 只有首次获取时才会触发，避免乐观更新时触发
   useEffect(() => {
-    setLoadingModel(containerLoading && infoLogin);
-  }, [containerLoading, infoLogin]);
+    setLoadingModel(containerLoading && infoLoading);
+  }, [containerLoading, infoLoading]);
   //上拉新增
   useEffect(() => {
     // 排序改变直接赋值
@@ -110,8 +112,9 @@ export default () => {
       oldSlotType.current = commentSlotType;
       return;
     }
-    console.log('commentData', commentData, commentList);
-    if (!commentData || commentData.data.length === 0) return;
+    if (!commentData) return;
+    if (commentData.page_info.total === 0) setNoData(true);
+    else setNoData(false);
     let list = commentList
       ? { ...commentList }
       : { page_info: commentData.page_info, data: [] };
@@ -141,24 +144,24 @@ export default () => {
   //   // document.documentElement.scrollTop = 0;
   //   // document.documentElement.style.scrollBehavior = 'smooth';
   //   // 路由跳转拦截
-  //   // return () => {
+  //   return () => {
   //   //   document.documentElement.style.scrollBehavior = 'initial';
-  //   // };
+  //   };
   // });
 
   return (
     <div className={'readBook'}>
       <div className={'readBook_box'}>
         <p className={'readBook_guid'} onClick={() => router.back()}>
-          <span>{netName}</span>&nbsp;-&nbsp;
+          <span>{netName}</span>&nbsp;{'>'}&nbsp;
           <span>{bookInfo?.name}</span>
         </p>
         <p className={'readBook_title font_24 font_bold'}>{bookInfo?.name}</p>
         <div className={'readBook_bookInfo'}>
           <span>类型：{bookInfo?.category_name}</span>
-          <span>字数：{translateNumber(bookInfo?.word_count as number)}</span>
+          <span>字数：{translateNumber(bookInfo?.word_count || 0)}</span>
           <span>[{isFinish(bookInfo?.is_finish || 2)}]</span>
-          <span>阅读：{bookInfo?.book_extension?.all_read}</span>
+          <span>阅读：{bookInfo?.book_extension?.all_read || 0}</span>
           <span>更新：{bookInfo?.last_update_chapter_time}</span>
         </div>
         {/*作者信息*/}
@@ -213,6 +216,7 @@ export default () => {
           <div className={'readOperationBox'}>
             <ReadOperationTab
               bookId={bookInfo?.id}
+              bookName={bookInfo?.name}
               chapterId={bookInfo?.chapter_id}
               isApproval={bookInfo?.is_user_approval || 2}
               commentChange={() => {
@@ -240,8 +244,9 @@ export default () => {
             commentData={commentList}
             setSlotType={(num) => {
               setCommentSlotType(num);
-              initCommentList();
+              setCommentPage(1);
             }}
+            noData={noData}
             slotType={commentSlotType}
             sendCommentCallBack={initCommentList}
           />
@@ -266,6 +271,7 @@ export default () => {
             setCommentPage(1);
           }}
           slotType={commentSlotType}
+          noData={noData}
           getMoreComment={uploadGetMore}
           sendCommentCallBack={initCommentList}
         />

@@ -35,11 +35,7 @@ export default () => {
     };
   }, [topicListLoading]);
   useEffect(() => {
-    if (
-      !topicListData ||
-      (topicList && topicListData.data.toString() === topicList.toString())
-    )
-      return;
+    if (!topicListData) return;
 
     let arr = [...(topicList || []), ...topicListData.data];
     if (

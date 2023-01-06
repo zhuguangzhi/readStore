@@ -11,11 +11,13 @@ export default defineConfig({
   },
   layout: false,
   npmClient: 'yarn',
+  hash: true,
   history: {
-    type: 'hash',
+    type: 'browser',
   },
   scripts: [
     '//at.alicdn.com/t/c/font_3753867_zouhnz3ju7f.js', //阿里图标库
+    './public/config.ts',
   ],
   // proxy: {
   //   '/proxy': {

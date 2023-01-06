@@ -43,7 +43,7 @@ const BookList = () => {
         tab: tabBarList[index],
       },
     });
-    router.push('/read', { [BookId]: bookId });
+    router.push('/read', { [BookId]: bookId }, true);
   };
   // 加入书架
   const { mutate: addBookCase } = useAddBookCase('home', currentTabIndex);

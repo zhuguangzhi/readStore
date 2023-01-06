@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { commentStoreRequestProps, readComponentProps } from '@/type/book';
 import { PullLoad } from '@/components/module/PullLoad';
 import './style/comment.less';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import { CommentItem } from '@/components/commentItem';
 import { Values } from 'async-validator';
 import { useCommentStore } from '@/utils/read';
@@ -21,6 +21,7 @@ type CommentProps = {
   getMoreComment?: Function;
   usePullLoad?: boolean;
   sendCommentCallBack?: Function;
+  noData: boolean;
 };
 export const Comment = ({
   commentData,
@@ -45,6 +46,10 @@ export const Comment = ({
   const [formValue] = Form.useForm();
   // 发表评论
   const sendComment = (value: Values) => {
+    if (!value.commentContainer) {
+      message.error('请输入评论内容');
+      return;
+    }
     const param: commentStoreRequestProps = {
       book_id: bookId,
       content: value.commentContainer,
@@ -105,7 +110,7 @@ export const Comment = ({
           </Form>
         </div>
         <div className={'comment_pullLoadBox'}>
-          {commentData && commentData?.data.length !== 0 ? (
+          {!props.noData ? (
             <PullLoad
               page={props.commentPage}
               total={total}

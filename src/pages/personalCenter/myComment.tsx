@@ -68,11 +68,11 @@ const MyComment = () => {
     setLoadingModel(commentLoading);
   }, [commentLoading]);
   useEffect(() => {
-    if (!commentData || commentData.data.toString() === commentList.toString())
-      return;
+    if (!commentData) return;
     if (commentData.data.length === 0 && commentList.length === 0)
       setNullData(true);
     else setNullData(false);
+
     let arr = [...commentList, ...commentData.data];
     //根据id去重
     arr = setArrayForId(arr);

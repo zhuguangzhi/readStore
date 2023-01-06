@@ -63,11 +63,7 @@ export default () => {
     // (document.getElementsByClassName('webContainer') as HTMLElement ).onscroll= ()=>{}
   }, [listLoading, detailLoading]);
   useEffect(() => {
-    if (
-      !topicListData ||
-      topicListData.data.toString() === topicBooks.toString()
-    )
-      return;
+    if (!topicListData) return;
     let arr = setArrayForId([...topicBooks, ...topicListData.data]);
     setTopicBooks(arr);
   }, [topicListData]);

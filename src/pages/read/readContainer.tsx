@@ -1,8 +1,12 @@
 import React, { useEffect, useRef } from 'react';
-import { rankBook } from '@/type/book';
+import { rankBook, readBookInfoProps } from '@/type/book';
 import { useSaveReadHistory } from '@/utils/read';
-import { getToken } from '@/hook/useAuth';
+import { getToken, useAuth } from '@/hook/useAuth';
 import { targetColumnArray } from '@/common/publicFn';
+import { useQueryClient } from 'react-query';
+import './index.less';
+import { IconFont } from '@/components/IconFont';
+import { UseNode } from '@/components/UseNode';
 
 type ReadContainerProps = {
   container: string;
@@ -18,15 +22,16 @@ export const ReadContainer = ({
   scrollTop,
   allCount,
 }: ReadContainerProps) => {
+  const queryClient = useQueryClient();
   // 保存阅读记录
   const { mutate: saveHistory } = useSaveReadHistory();
   const timerRef = useRef<NodeJS.Timer | null>(null);
   const readBox = useRef<HTMLDivElement>(null);
   const token = getToken();
-  // 展示列表数据 默认只显示showDataNum行
-  // const [bookData, setBookData] = useState<string[]>([]);
+  const { userInfo } = useAuth();
   //滚动到记录的行数
   const toScroll = () => {
+    console.log('read_line', bookInfo?.read_line);
     const y =
       readBox.current?.children[
         (bookInfo?.read_line || 1) - 1
@@ -36,6 +41,21 @@ export const ReadContainer = ({
       behavior: 'smooth',
     });
   };
+
+  //修改阅读行数缓存
+  const setReadLineCache = (bookId: number, readLine: number) => {
+    queryClient.setQueriesData(
+      [`readBookInfo${bookId}`],
+      (old?: readBookInfoProps) => {
+        if (!old) return {} as readBookInfoProps;
+        return {
+          ...old,
+          read_line: readLine,
+        };
+      },
+    );
+  };
+
   useEffect(() => {
     if (
       !container ||
@@ -49,6 +69,7 @@ export const ReadContainer = ({
     while (regExp.exec(container) !== null) {
       arr.push(RegExp.$1 + '\n');
     }
+    // 每帧加载的标签数
     let once = 120;
     let bookData = targetColumnArray(arr, once);
     let countRender = 0;
@@ -92,16 +113,16 @@ export const ReadContainer = ({
       currentLine = pEl.children.length;
     } else {
       progress = Math.ceil((Number(pEl.id) / allCount) * 100);
-      console.log('progress', progress, allCount);
       currentLine = Number(pEl.id);
     }
     timerRef.current = setTimeout(() => {
       saveHistory({
-        book_id: Number(bookInfo.id),
+        book_id: bookInfo.id,
         chapter_id: bookInfo.chapter_id,
         read_progress: progress,
         read_line: currentLine,
       });
+      setReadLineCache(bookInfo.id, currentLine);
     }, 2000);
   }, [scrollTop]);
 
@@ -110,16 +131,26 @@ export const ReadContainer = ({
   }, [readBox.current]);
 
   return (
-    <div ref={readBox}>
-      {/*{bookData.map((data, index) => {*/}
-      {/*  return (*/}
-      {/*    <p*/}
-      {/*      key={index}*/}
-      {/*      id={(index + 1).toString()}*/}
-      {/*      dangerouslySetInnerHTML={{ __html: data }}*/}
-      {/*    ></p>*/}
-      {/*  );*/}
-      {/*})}*/}
-    </div>
+    <>
+      <div ref={readBox}>
+        {/*{bookData.map((data, index) => {*/}
+        {/*  return (*/}
+        {/*    <p*/}
+        {/*      key={index}*/}
+        {/*      id={(index + 1).toString()}*/}
+        {/*      dangerouslySetInnerHTML={{ __html: data }}*/}
+        {/*    ></p>*/}
+        {/*  );*/}
+        {/*})}*/}
+      </div>
+      <UseNode rIf={userInfo?.is_vip === 2 && bookInfo?.is_vip === 1}>
+        <div className={'readBook_vipTip'}>
+          <IconFont width={'20px'} height={'20px'} icon={'password'} />
+          <span className={'SYMedium'}>
+            开通会员 即可畅游故事，点击开通会员
+          </span>
+        </div>
+      </UseNode>
+    </>
   );
 };

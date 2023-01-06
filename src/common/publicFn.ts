@@ -1,5 +1,6 @@
 import React from 'react';
 import { RcFile } from 'antd/es/upload';
+import { message } from 'antd';
 
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 export const isVoid = (val: unknown) =>
@@ -103,4 +104,10 @@ export const imgToBase64 = (img: RcFile, callback: (url: string) => void) => {
   const reader = new FileReader();
   reader.addEventListener('load', () => callback(reader.result as string));
   reader.readAsDataURL(img);
+};
+//复制文字
+export const copy = (context: string) => {
+  navigator.clipboard.writeText(context).then(() => {
+    message.success('复制成功');
+  });
 };

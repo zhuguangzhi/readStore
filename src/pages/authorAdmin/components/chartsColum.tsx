@@ -1,7 +1,7 @@
 import { ColumnConfig } from '@ant-design/plots/es/components/column';
 import { homeZoom } from '@/pages/authorAdmin';
 import { Column } from '@ant-design/charts';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 export interface columProps extends ColumnConfig {
   data: { type: string; value: unknown }[];
@@ -48,5 +48,8 @@ export const ChartsColum = ({
     },
     props,
   );
+  useEffect(() => {
+    console.log('重绘');
+  }, []);
   return <Column style={{ zoom: 1 / homeZoom }} {...colConfig} />;
 };

@@ -46,11 +46,10 @@ export const CommentItem = ({
       {/*    title*/}
       <div className={'personalComment_header'}>
         <div>
-          {/*TODO：用户头像*/}
           <img
             className={'personalComment_header_photo'}
-            src={require('@/assets/test/personPhoto.png')}
-            alt={'photo'}
+            src={comment.reply_user_image_url}
+            alt={''}
           />
           {/*回复*/}
           <UseNode rIf={comment.is_comment === 2}>

@@ -50,7 +50,7 @@ export const PersonalCenter = () => {
         <div className={'user_info'}>
           <img
             className={'user_info_photo'}
-            src={require('../../assets/test/personPhoto.png')}
+            src={userInfo?.user_image_url}
             alt=""
           />
           <p className={'user_info_name'}>{userInfo?.nickname}</p>

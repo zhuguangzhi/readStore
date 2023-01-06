@@ -51,7 +51,9 @@ export const AuthorBook = ({ bookList }: AuthorBookProps) => {
               )}
               <p
                 className={'authorBook_item_right_btn'}
-                onClick={() => router.push('/read', { [BookId]: book.id })}
+                onClick={() =>
+                  router.push('/read', { [BookId]: book.id }, true)
+                }
               >
                 书籍详情
               </p>

@@ -5,6 +5,7 @@ import {
   delCommentProps,
   myBookListProps,
   myCommentProps,
+  personalMessageProps,
 } from '@/type/personalCenter';
 import { topCaseProps } from '@/type/topic';
 import {
@@ -190,5 +191,88 @@ export const useGetFansModalList = (p: getFansModalListProps) => {
   }
   return useQuery<resProps, Error>([queryKey, p], () =>
     PersonalCenter[url](p).then((value) => value.data),
+  );
+};
+
+// 获取消息列表 message_type 消息类型( 0：全部  1：系统通知  2：审核通知  3：签约通知  4：收入通知  5：活动通知 ）
+export const useGetSystemMessage = (
+  p: pageRequestProps & { message_type: number },
+) => {
+  return useQuery<personalMessageProps, Error>(['getPersonalMessage', p], () =>
+    PersonalCenter.getSystemMessage(p).then((value) => {
+      ErrorCheck(value);
+      return value.data;
+    }),
+  );
+};
+// 消息已读
+export const useReadMessage = () => {
+  const queryClient = useQueryClient();
+  const queryKey = ['getPersonalMessage'];
+  return useMutation(
+    ['readMessage'],
+    (p: { id: number }) => PersonalCenter.readMessageForId(p),
+    // (p:{id:number})=> User.getUserInfo(),
+    {
+      onSuccess(val) {
+        ErrorCheck(val);
+        queryClient.invalidateQueries(queryKey);
+      },
+      onMutate(target) {
+        let previousItems;
+        queryClient.setQueriesData(queryKey, (old?: personalMessageProps) => {
+          previousItems = old;
+          if (!old) return {} as personalMessageProps;
+          const data = old.data.map((item) => {
+            if (item.id === target.id) item.is_read = 1;
+            return item;
+          });
+          return {
+            ...old,
+            data,
+          };
+        });
+        return { previousItems };
+      },
+      //错误回滚
+      onError(error, newItem, context) {
+        queryClient.setQueriesData(queryKey, context?.previousItems);
+      },
+    },
+  );
+};
+// 已读全部消息
+export const useReadAllMessage = () => {
+  const queryClient = useQueryClient();
+  const queryKey = ['getPersonalMessage'];
+  return useMutation(
+    ['readAllMessage'],
+    () => PersonalCenter.readAllMessage(),
+    {
+      onSuccess(val) {
+        ErrorCheck(val);
+        queryClient.invalidateQueries(queryKey);
+      },
+      onMutate() {
+        let previousItems;
+        queryClient.setQueriesData(queryKey, (old?: personalMessageProps) => {
+          previousItems = old;
+          if (!old) return {} as personalMessageProps;
+          const data = old.data.map((item) => {
+            item.is_read = 1;
+            return item;
+          });
+          return {
+            ...old,
+            data,
+          };
+        });
+        return { previousItems };
+      },
+      //错误回滚
+      onError(error, newItem, context) {
+        queryClient.setQueriesData(queryKey, context?.previousItems);
+      },
+    },
   );
 };

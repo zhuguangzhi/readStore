@@ -94,7 +94,6 @@ export const BookLayer = ({ bookList, ...props }: BookLayerProps) => {
                           </div>
                         </BookFace>
                         <div className={'bookInfo font_14'}>
-                          {/*TODO:需要将话题字段动态*/}
                           <div
                             className={'textOverflow_2'}
                             style={{ width: '100%' }}

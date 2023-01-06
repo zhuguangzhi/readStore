@@ -7,7 +7,12 @@
   padding: 34px 0;
   &_side {
     width: 141px;
+    height: 334px;
+    overflow-y: auto;
     border-right: var(--border);
+    -ms-overflow-style: none; //ie
+    scrollbar-width: none; // 火狐scroll
+
     p {
       position: relative;
       width: 100%;
@@ -18,13 +23,19 @@
       margin: 6px 0;
       cursor: pointer;
     }
-    & > p:first-child {
+    & div > p:first-child {
       color: #333333 !important;
       cursor: default;
     }
     p:hover {
       color: #e78140;
     }
+  }
+  ::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+    opacity: 0;
   }
   &_container {
     flex: 1;

@@ -25,6 +25,9 @@ export type authorProps = {
   user_status_desc: string; //用户状态描述
   chart_description: string; //推荐语
   is_vip: 1 | 2; //是否是vip(1：是 2：否)
+  fans: number; //粉丝数
+  follows: number; //关注数
+  approvals: number; //获赞数
 };
 // 修改个人信息
 export type editInfoProps = {

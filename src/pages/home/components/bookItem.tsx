@@ -4,8 +4,10 @@ import { IconFont } from '@/components/IconFont';
 import './style/bookItem.less';
 import { UseNode } from '@/components/UseNode';
 import { homeChartProps } from '@/type/home';
-import { stopProp } from '@/common/publicFn';
+import { copy, stopProp } from '@/common/publicFn';
 import { translateNumber } from '@/utils/format';
+import { netUrl } from '../../../../public/config';
+import { BookId } from '@/constants/url';
 
 type BookItemProps = {
   bookList: homeChartProps['data'] | null;
@@ -121,7 +123,16 @@ export const BookItem = ({
                       ）
                     </span>
                   </div>
-                  <div className={'operation cursor'}>
+                  <div
+                    className={'operation cursor'}
+                    onClick={() =>
+                      copy(
+                        `【${book.name}】 ${netUrl}/read?${[BookId]}=${
+                          book.id
+                        }`,
+                      )
+                    }
+                  >
                     <IconFont width={'16px'} height={'16px'} icon={'zhuanfa'} />
                     <span>转发</span>
                   </div>
