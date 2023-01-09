@@ -96,7 +96,7 @@ export type attentionUserProps = {
   is_attention: 1 | 2; //是否关注( 1：是  2：否 ）
 };
 
-// 作者信息
+// 作者书籍信息
 export interface authorInfoProps {
   id: number; //主键ID
   pen_name: string; //笔名
@@ -109,6 +109,20 @@ export interface authorInfoProps {
   continue_books: bookInfoProps[]; //连载书籍
   books: bookInfoProps[]; //全部书籍
 }
+// 作者个人信息
+export type authorPersonalProps = {
+  id: number; //主键ID
+  real_name: string; //真实姓名
+  qq: number; //QQ号
+  email: string; //邮箱
+  address: string; //地址
+  id_card: string; //身份证号
+  id_card_status: 1 | 3; //身份认证状态(1：否 3 完成 ）
+  bank_card: string; //银行卡号
+  bank_card_status: 1 | 2; //银行卡认证状态(1 否， 2 认证完成 ）
+  mobile: string; //手机号
+  is_password_set: 1 | 2; //密码是否设置( 1：是  2：否 ）
+};
 // 粉丝和关注信息
 export type fansListProp = {
   id: number; //主键ID

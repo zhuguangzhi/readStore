@@ -37,6 +37,7 @@ import {
   sendCodeProps,
   sendCodeResultProps,
   editPasswordProps,
+  authorPersonalProps,
 } from '@/type/user';
 import { clearToken } from '@/hook/useAuth';
 import { cleanObject } from '@/common/publicFn';
@@ -343,5 +344,10 @@ export const AuthorHome = {
       `${apiUrl}/author/statistics`,
       {},
     ),
+};
+export const AuthorPersonal = {
+  // 获取作者个人信息
+  getPersonalInfo: () =>
+    http.post<ResponseData<authorPersonalProps>>(`${apiUrl}/author/info`, {}),
 };
 // --------------------------作者后台end-------------------------------------------------

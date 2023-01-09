@@ -4,7 +4,7 @@ export const swiperDuration = 5; //首页swiper切换时间 单位 s
 // export const imgBaseUrl = 'http://qingjuoss.datzww.com/fz/'; //图片路径
 // export const baseApiUrl = 'http://localhost:8000/proxy/api';
 export const baseApiUrl = 'http://apipost.datangzww.com/api';
-// TODO：更新网站地址 后面不需要/
+// TODO：更新网站地址 后面不需要"/"
 export const netUrl = 'http://qingjuoss.datzww.com/fz'; //网站地址
 export const uploadImgUrl = baseApiUrl + '/upload/header'; //图片上传地址
 export const uploadImageUrl =

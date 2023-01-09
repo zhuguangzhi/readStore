@@ -13,7 +13,7 @@ import { bookInfoProps } from '@/type/book';
 import ReadPopup from '@/components/module/ReadPopup';
 import { UseNode } from '@/components/UseNode';
 import { ReadModel } from '@/components/module/ReadModel';
-import { Contract } from '@/components/contract';
+import { ContractManager } from '@/pages/authorAdmin/components/contractManager';
 
 const SubIcon = () => (
   <IconFont width={'37px'} height={'44px'} icon={'bookShelf'} />
@@ -301,7 +301,10 @@ export default () => {
           })
         }
       >
-        <Contract bookInfo={contractModel.info} />
+        <ContractManager
+          bookInfo={contractModel.info}
+          closeModel={() => setContractModel({ open: false, info: null })}
+        />
       </ReadModel>
     </div>
   );

@@ -11,24 +11,27 @@ import { PasswordVerify } from '@/pages/authorAdmin/components/verify/passwordVe
 export type modalTypes =
   | 'qq'
   | 'email'
-  | 'identity'
-  | 'bankCard'
-  | 'password'
-  | 'modifyMobile';
+  | 'id_card'
+  | 'bank_card'
+  | 'is_password_set'
+  | 'address'
+  | 'mobile';
 
 interface ModifyInfoProps extends ModalProps {
   isFinish: boolean;
   onCancel: () => void;
   type: modalTypes; //弹窗类型
+  defaultValue: unknown;
 }
 //弹窗标题
 const titleList: { [key in modalTypes]: string } = {
   qq: 'QQ',
   email: '邮箱',
-  identity: '身份信息',
-  bankCard: '银行卡信息',
-  password: '密码',
-  modifyMobile: '手机号',
+  address: '地址',
+  id_card: '身份信息',
+  bank_card: '银行卡信息',
+  is_password_set: '密码',
+  mobile: '手机号',
 };
 // 银行卡认证 身份证认证使用的button的文案
 const identityText = ['下一步', '实名认证', '关闭'];
@@ -60,6 +63,15 @@ export const ModifyInfo = ({
     {
       label: '填写邮箱地址',
       stepElement: <BindInput label={'邮箱地址'} form={stepTwoForm} />,
+    },
+    { label: '填写完成', stepElement: <span></span> },
+  ];
+  // address
+  const addressItems: stepItemsProps[] = [
+    { label: '手机号码验证', stepElement: <MobileVerify form={stepOneForm} /> },
+    {
+      label: '填写地址',
+      stepElement: <BindInput label={'详细地址'} form={stepTwoForm} />,
     },
     { label: '填写完成', stepElement: <span></span> },
   ];
@@ -100,10 +112,11 @@ export const ModifyInfo = ({
   const allTypeStep: { [key in modalTypes]: stepItemsProps[] } = {
     qq: qqItems,
     email: emailItems,
-    identity: identityItems,
-    bankCard: bankCardItems,
-    password: passwordItems,
-    modifyMobile: modifyMobileItems,
+    address: addressItems,
+    id_card: identityItems,
+    bank_card: bankCardItems,
+    is_password_set: passwordItems,
+    mobile: modifyMobileItems,
   };
 
   const [currentStep, setStep] = useState<number>(1);
@@ -122,8 +135,11 @@ export const ModifyInfo = ({
   }, [type]);
 
   const onConfirm = () => {
-    if (currentStep < allTypeStep[type].length) setStep(currentStep + 1);
-    else modalClose(2);
+    if (currentStep >= allTypeStep[type].length) {
+      modalClose(2);
+      return;
+    }
+    setStep(currentStep + 1);
   };
 
   return (

@@ -16,8 +16,7 @@ export default defineConfig({
     type: 'browser',
   },
   scripts: [
-    '//at.alicdn.com/t/c/font_3753867_zouhnz3ju7f.js', //阿里图标库
-    './public/config.ts',
+    '//at.alicdn.com/t/c/font_3753867_fcthh0yfjp4.js', //阿里图标库
   ],
   // proxy: {
   //   '/proxy': {

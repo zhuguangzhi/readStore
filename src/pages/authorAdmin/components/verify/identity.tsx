@@ -37,7 +37,7 @@ export const Identity = ({
       disabled={isFinish}
     >
       <Form.Item label={'真实姓名'} name={'name'}>
-        <Input placeholder={'请输入您的真实姓名'} />
+        <Input placeholder={'请输入您的真实姓名'} autoComplete={'off'} />
       </Form.Item>
       <Form.Item label={'身份证号'}>
         <div className={'justify_between'} style={{ height: '41px' }}>
@@ -47,7 +47,11 @@ export const Identity = ({
             disabled={true}
           />
           <Form.Item name={'idNumber'}>
-            <Input maxLength={18} style={{ width: '256px' }} />
+            <Input
+              maxLength={18}
+              style={{ width: '256px' }}
+              autoComplete={'off'}
+            />
           </Form.Item>
         </div>
       </Form.Item>

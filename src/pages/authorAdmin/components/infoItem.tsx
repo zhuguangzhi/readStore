@@ -5,7 +5,7 @@ import './styles/infoItem.less';
 export type InfoItemListProps = {
   label: string;
   isFinish: boolean; //是否完成
-  value?: string; //值
+  value?: string | number; //值
   btnChild?: React.ReactElement; //按钮插槽
 };
 type InfoItemProps = {

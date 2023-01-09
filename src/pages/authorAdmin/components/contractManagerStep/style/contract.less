@@ -2,20 +2,23 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 0 38px;
   font-size: 14px;
   &_item {
     display: flex;
     align-items: flex-start;
-    margin-top: 10px;
-    &_contract_item_label {
+    margin-left: 126px;
+    //margin-top: 10px;
+    &_label {
       margin-right: 26px;
     }
     &_info {
+      & &_detail:first-child {
+        margin-top: 36px;
+      }
       &_detail {
         display: flex;
         align-items: flex-start;
-        margin: 36px 0;
+        margin: 20px 0;
         p {
           width: 60px;
           text-align: right;
@@ -30,7 +33,30 @@
       }
     }
   }
+  &_desc {
+    display: flex;
+    align-items: flex-start;
+    font-size: 14px;
+    margin-bottom: 70px;
+    &_item {
+      margin-left: 28px;
+      p {
+        display: flex;
+        align-items: center;
+      }
+      p::before {
+        content: '';
+        display: inline-block;
+        width: 4px;
+        height: 4px;
+        background-color: #ff0000;
+        border-radius: 4px;
+        margin-right: 8px;
+      }
+    }
+  }
   &_tip {
+    margin-left: 126px;
     color: #959595;
   }
   &_btn,
@@ -42,5 +68,8 @@
     border-radius: 5px;
     margin: 28px auto 64px auto;
     color: white;
+  }
+  &_disabledBtn {
+    background: rgba(#3464e0, 0.6) !important;
   }
 }

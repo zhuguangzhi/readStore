@@ -3,7 +3,7 @@ import { authorInfoProps, authorProps } from '@/type/user';
 
 export type userState = {
   userInfo: authorProps | null; //用户信息
-  authorInfo: authorInfoProps | null; //作者信息
+  authorInfo: authorInfoProps | null; //作者书籍信息
   token: string | null; //token
   loginPopup: boolean; //是否打开登陆弹窗
 };

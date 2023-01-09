@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AdminHeader } from '@/pages/authorAdmin/components/adminHeader';
 import { IconFont } from '@/components/IconFont';
 import {
   InfoItem,
   InfoItemListProps,
 } from '@/pages/authorAdmin/components/infoItem';
-import { useMounted } from '@/hook';
 import {
   modalTypes,
   ModifyInfo,
 } from '@/pages/authorAdmin/components/modifyInfo';
+import { useGetPersonalInfo } from '@/utils/authorAdmin/personalInfo';
+import { useAuth } from '@/hook/useAuth';
+import { authorPersonalProps } from '@/type/user';
 
 const SubIcon = () => (
   <IconFont width={'37px'} height={'42px'} icon={'personal'} />
@@ -21,31 +23,52 @@ export default () => {
   const [approveInfoList, setApproveInfo] = useState<InfoItemListProps[]>([]);
   //账号安全
   const [accountSafeList, setAccountSafe] = useState<InfoItemListProps[]>([]);
-  // 信息初始化 TODO:对接时参数修改，这里为测试
-  const initInfo = (finish: boolean) => {
+  // 信息初始化
+  const initInfo = () => {
+    const {
+      address,
+      real_name,
+      qq,
+      email,
+      id_card,
+      id_card_status,
+      bank_card,
+      mobile,
+      is_password_set,
+    } = personalInfo as authorPersonalProps;
     setBaseInfo([
       {
         label: '真实姓名',
-        isFinish: false,
-        value: '待完善',
+        isFinish: !!real_name,
+        value: real_name || '待完善',
       },
       {
         label: 'QQ号码',
-        isFinish: false,
-        value: '待完善',
+        isFinish: !!qq,
+        value: qq || '待完善',
         btnChild: (
           <span onClick={() => changeModal('qq')}>
-            {finish ? '立即修改' : '立即绑定'}
+            {!!qq ? '立即修改' : '立即绑定'}
           </span>
         ),
       },
       {
         label: '电子邮箱',
-        isFinish: false,
-        value: '待完善',
+        isFinish: !!email,
+        value: email || '待完善',
         btnChild: (
           <span onClick={() => changeModal('email')}>
-            {finish ? '立即修改' : '立即填写'}
+            {!!email ? '立即修改' : '立即填写'}
+          </span>
+        ),
+      },
+      {
+        label: '联系地址',
+        isFinish: !!address,
+        value: '待完善',
+        btnChild: (
+          <span onClick={() => changeModal('address')}>
+            {!!address ? '立即修改' : '立即填写'}
           </span>
         ),
       },
@@ -53,29 +76,27 @@ export default () => {
     setApproveInfo([
       {
         label: '身份证号',
-        isFinish: false,
-        value: '待完善',
+        isFinish: !!id_card,
+        value: id_card || '待完善',
       },
       {
         label: '身份信息',
-        isFinish: false,
-        value: '待完善',
-        btnChild: !finish ? (
-          <span onClick={() => changeModal('identity')}>立即绑定</span>
-        ) : (
-          <>
-            <span>查看信息</span>
-            <span>前往修改</span>
-          </>
-        ),
+        isFinish: id_card_status === 3,
+        value: id_card_status === 3 ? '已完善' : '待完善',
+        btnChild:
+          id_card_status !== 3 ? (
+            <span onClick={() => changeModal('id_card')}>立即绑定</span>
+          ) : (
+            <></>
+          ),
       },
       {
         label: '银行卡信息',
-        isFinish: false,
-        value: '待完善',
+        isFinish: !!bank_card,
+        value: bank_card || '待完善',
         btnChild: (
-          <span onClick={() => changeModal('bankCard')}>
-            {finish ? '立即修改' : '前往认证'}
+          <span onClick={() => changeModal('bank_card')}>
+            {!!bank_card ? '立即修改' : '前往认证'}
           </span>
         ),
       },
@@ -83,21 +104,21 @@ export default () => {
     setAccountSafe([
       {
         label: '登陆密码',
-        isFinish: false,
-        value: '待完善',
+        isFinish: is_password_set === 1,
+        value: is_password_set === 1 ? '已绑定' : '待完善',
         btnChild: (
-          <span onClick={() => changeModal('password')}>
-            {finish ? '立即设置' : '前往修改'}
+          <span onClick={() => changeModal('is_password_set')}>
+            {is_password_set !== 1 ? '立即设置' : '前往修改'}
           </span>
         ),
       },
       {
         label: '手机号码',
-        isFinish: false,
-        value: '待完善',
+        isFinish: !!mobile,
+        value: !!mobile ? '已绑定' : '待完善',
         btnChild: (
-          <span onClick={() => changeModal('modifyMobile')}>
-            {finish ? '立即修改' : '立即绑定'}
+          <span onClick={() => changeModal('mobile')}>
+            {!!mobile ? '' : '立即绑定'}
           </span>
         ),
       },
@@ -107,6 +128,10 @@ export default () => {
   const [modalType, setModalType] = useState<modalTypes>('qq');
   //展示弹窗
   const [openModal, setOpen] = useState(false);
+  // 获取个人信息
+  const { data: personalInfo, isLoading: personalLoading } =
+    useGetPersonalInfo();
+  const { setLoadingModel } = useAuth();
 
   //打开弹窗
   const changeModal = (val: modalTypes) => {
@@ -114,9 +139,13 @@ export default () => {
     setModalType(val);
   };
 
-  useMounted(() => {
-    initInfo(false);
-  });
+  useEffect(() => {
+    if (!personalInfo) return;
+    initInfo();
+  }, [personalInfo]);
+  useEffect(() => {
+    setLoadingModel(personalLoading);
+  }, [personalLoading]);
   return (
     <div>
       <div style={{ paddingRight: '69px' }}>
@@ -131,8 +160,9 @@ export default () => {
       <ModifyInfo
         open={openModal}
         onCancel={() => setOpen(false)}
-        isFinish={false}
+        isFinish={!!(personalInfo?.[modalType] || false)}
         type={modalType}
+        defaultValue={personalInfo?.[modalType] || ''}
       />
     </div>
   );
