@@ -203,16 +203,11 @@ export default () => {
             </div>
           </Popover>
           {/*    柱状图*/}
-          <ChartsColum
-            data={columnData.map((item, index) => ({
-              type: `${index + 1}月`,
-              value: item,
-            }))}
-          />
+          <ChartsColum data={columnData} />
         </div>
         {/*    收益分成*/}
         <ContainerBox title={'本月收益分成'}>
-          <div style={{ height: '238px' }}>
+          <div style={{ height: '238px', overflow: 'hidden' }}>
             <ChartsPie />
           </div>
         </ContainerBox>

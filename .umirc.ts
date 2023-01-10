@@ -3,7 +3,7 @@ import { resolve } from 'path';
 import { routes } from './src/router';
 
 export default defineConfig({
-  title: '读点小故事',
+  title: '看点小故事',
   antd: {},
   dva: {},
   alias: {

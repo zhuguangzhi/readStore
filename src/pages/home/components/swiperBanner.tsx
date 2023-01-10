@@ -105,7 +105,7 @@ export const SwiperBanner = ({ swiperBookInfo, className }: SliderProps) => {
                 renderTimer(index % (swiperOptions.slidesToScroll as number));
               }}
               src={book.cover_url}
-              onClick={() => router.push('/read', { [BookId]: book.id })}
+              onClick={() => router.push('/read', { [BookId]: book.id }, true)}
               alt={book.name}
             />
           );

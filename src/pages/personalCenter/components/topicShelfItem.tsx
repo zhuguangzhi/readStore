@@ -26,7 +26,9 @@ export const TopicShelfItem = ({
             </p>
             <div
               className={'topicShelfItem_box_container textOverflow_3 cursor'}
-              onClick={() => router.push('/read', { [BookId]: topic.book_id })}
+              onClick={() =>
+                router.push('/read', { [BookId]: topic.book_id }, true)
+              }
             >
               {topic.tags.map((tag) => {
                 return (

@@ -11,7 +11,7 @@ export const useGetBookRank = (
   userInfo: authorProps | null,
 ) => {
   return useQuery<rankBookInfoProps, Error>(
-    ['rank', p.rank_type, userInfo?.id],
+    ['rank', p.rank_type, p.channel_type, userInfo?.id],
     () =>
       Book.rank(p).then((value) => {
         call();

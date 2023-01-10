@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { Button, DatePicker, Form, Input, Select } from 'antd';
 import './style/searchInCome.less';
-import {
-  areaProps,
-  ChartsArea,
-} from '@/pages/authorAdmin/components/chartsArea';
-import { EChartsPie } from '@/pages/authorAdmin/components/eChartsPie';
+import { ChartsArea } from '@/pages/authorAdmin/components/chartsArea';
+import { EChartsRadiusPie } from '@/pages/authorAdmin/components/eChartsRaduisPie';
 import {
   TableData,
   TableDataType,
@@ -19,19 +16,8 @@ const DeleteIcon = () => <IconFont className={'inCome_icon'} icon={'delete'} />;
 
 export default () => {
   //面积图数据
-  const [areaData] = useState<areaProps['data']>([
-    { type: '1月', value: 7654 },
-    { type: '2月', value: 5982 },
-    { type: '3月', value: 8979 },
-    { type: '4月', value: 12213 },
-    { type: '5月', value: 7950 },
-    { type: '6月', value: 9740 },
-    { type: '7月', value: 8950 },
-    { type: '8月', value: 11209 },
-    { type: '9月', value: 15980 },
-    { type: '10月', value: 6870 },
-    { type: '11月', value: 12745 },
-    { type: '12月', value: 7543 },
+  const [areaData] = useState<number[]>([
+    7654, 5982, 8979, 12213, 7950, 9740, 8950, 11209, 15980, 6870, 12745, 7543,
   ]);
   //表格数据
   const [tableData] = useState<TableDataType[]>([
@@ -204,7 +190,7 @@ export default () => {
           </div>
           {/*    内容*/}
           <div className={'inCome_charts_container'}>
-            <EChartsPie />
+            <EChartsRadiusPie />
           </div>
         </div>
       </div>

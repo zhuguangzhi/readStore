@@ -4,7 +4,7 @@ import { homeZoom } from '@/pages/authorAdmin';
 import React, { useRef } from 'react';
 import { useMounted } from '@/hook';
 import { EChartsOption, EChartsType } from 'echarts';
-export const EChartsPie = () => {
+export const EChartsRadiusPie = () => {
   const chartsRef = useRef<EChartsType | null>(null);
   const option: EChartsOption = {
     tooltip: {
@@ -15,7 +15,6 @@ export const EChartsPie = () => {
     },
     legend: {
       bottom: '0',
-      width: 440 * homeZoom,
       left: 'center',
       itemWidth: 25 * homeZoom,
       itemHeight: 14 * homeZoom,
@@ -26,7 +25,7 @@ export const EChartsPie = () => {
     series: [
       {
         type: 'pie',
-        radius: ['40%', '70%'],
+        radius: ['45%', '75%'],
         avoidLabelOverlap: false,
         top: -60 * homeZoom,
         left: 'center',

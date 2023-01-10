@@ -1,93 +1,81 @@
-import React from 'react';
-import { G2, Pie, PieConfig } from '@ant-design/plots';
+// 该组件使用的是echart组件库
+import * as echarts from 'echarts';
 import { homeZoom } from '@/pages/authorAdmin';
-
-export interface chartsPie extends PieConfig {
-  data: { type: string; value: unknown }[];
-}
+import React, { useRef } from 'react';
+import { useMounted } from '@/hook';
+import { EChartsOption, EChartsType } from 'echarts';
 export const ChartsPie = () => {
-  const G = G2.getEngine('canvas');
+  const chartsRef = useRef<EChartsType | null>(null);
   const data = [
     {
-      type: '渠道收益',
+      name: '渠道收益',
       value: 23,
     },
     {
-      type: 'VIP分成',
+      name: 'VIP分成',
       value: 37,
     },
     {
-      type: '其他收益',
+      name: '其他收益',
       value: 40,
     },
   ];
-  const config: PieConfig = {
-    appendPadding: 10,
-    data,
-    angleField: 'value',
-    colorField: 'type',
+  const option: EChartsOption = {
+    tooltip: {
+      trigger: 'item',
+      valueFormatter: (value) => value + '%',
+    },
     color: ['#00B3F9', '#CE95F1', '#E0E0EC'],
-    radius: 1,
-    innerRadius: 0.6,
-    height: 238 * homeZoom,
-    legend: false,
-    padding: 'auto',
-    meta: {
-      value: {
-        formatter: (value) => value + '%',
-      },
-    },
-    pieStyle: {
-      shadowColor: '#daf1fa',
-      shadowBlur: 8,
-    },
-    label: {
-      type: 'spider',
-      labelHeight: 40,
-      formatter: (data, mappingData) => {
-        const group = new G.Group({});
-        group.addShape({
-          type: 'text',
-          attrs: {
-            x: 10,
-            y: 15,
-            text: `${data.type}`,
-            fill: mappingData.color,
+    series: [
+      {
+        type: 'pie',
+        radius: ['50%', '80%'],
+        center: ['50%', '50%'],
+        selectedMode: 'single',
+        data: data,
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)',
           },
-        });
-        group.addShape({
-          type: 'text',
-          attrs: {
-            x: 10,
-            y: 0,
-            text: `${data.percent * 100}%`,
-            fill: 'rgba(0, 0, 0, 0.65)',
-          },
-        });
-        return group;
-      },
-    },
-    statistic: {
-      title: false,
-      content: {
-        style: {
-          whiteSpace: 'pre-wrap',
-          fontSize: '18px',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
         },
-        content: '2000篇',
-      },
-    },
-
-    interactions: [
-      {
-        type: 'element-selected',
-      },
-      {
-        type: 'element-active',
+        label: {
+          show: true,
+          formatter: ['{d}%', '{b}'].join('\n'),
+          rich: {
+            d: {
+              align: 'left',
+            },
+          },
+          fontSize: 14 * homeZoom,
+        },
+        labelLine: {
+          length: 12 * homeZoom,
+          length2: 12 * homeZoom,
+        },
       },
     ],
+    title: {
+      text: '2000篇',
+      left: 'center',
+      top: 'center',
+      textStyle: {
+        fontSize: 20 * homeZoom,
+      },
+    },
   };
-  return <Pie style={{ zoom: 1 / homeZoom }} {...config} />;
+
+  useMounted(() => {
+    chartsRef.current = echarts.init(
+      document.getElementById('echartsPie') as HTMLElement,
+    );
+    chartsRef.current.setOption(option);
+  });
+  return (
+    <div
+      style={{ zoom: 1 / homeZoom, width: '100%', height: '100%' }}
+      id={'echartsPie'}
+    ></div>
+  );
 };

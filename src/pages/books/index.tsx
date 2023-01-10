@@ -116,7 +116,11 @@ const Books = () => {
     changeKey('subThemeId', null);
   };
   // 选中键修改
-  const changeKey = (type: string, val: unknown) => {
+  const changeKey = (
+    type: keyof globalState['bookLibraryConfig'],
+    val: unknown,
+  ) => {
+    if (JSON.stringify(state[type]) === JSON.stringify(val)) return;
     changeState({ [type]: val });
     setBookShelfData([]);
   };
@@ -347,7 +351,7 @@ const Books = () => {
       {noData ? (
         <DefaultNoData type={'noData'} className={'bookShelf_noData'} />
       ) : (
-        <div>
+        <div className={'bookShelf_box_book'}>
           <BookLibrary
             bookList={bookShelfData}
             onClick={(book) => toRead(book)}

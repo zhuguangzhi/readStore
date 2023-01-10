@@ -1,55 +1,77 @@
-import { ColumnConfig } from '@ant-design/plots/es/components/column';
 import { homeZoom } from '@/pages/authorAdmin';
-import { Column } from '@ant-design/charts';
-import React, { useEffect } from 'react';
+import React, { useRef } from 'react';
+import * as echarts from 'echarts';
+import { EChartsOption, EChartsType } from 'echarts';
+import { useMounted } from '@/hook';
 
-export interface columProps extends ColumnConfig {
-  data: { type: string; value: unknown }[];
+export interface columProps extends EChartsOption {
+  data: number[];
 }
 
-export const ChartsColum = ({
-  data,
-  ...props
-}: Omit<columProps, 'xField' | 'yField'>) => {
-  const colConfig: ColumnConfig = Object.assign(
+export const ChartsColum = ({ data, ...props }: columProps) => {
+  const chartsRef = useRef<EChartsType | null>(null);
+  const colConfig: EChartsOption = Object.assign(
     {
-      data: data,
-      xField: 'type',
-      yField: 'value',
-      seriesField: '',
-      legend: false,
       color: '#00B3F9',
-      height: 280 * homeZoom,
-      pixelRatio: 2,
-      autoFit: false,
-      yAxis: {
-        grid: null,
-        title: null,
-        label: null,
+      height: 260 * homeZoom,
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
+        valueFormatter: (value) => '稿费 ' + value + ' 元',
+      },
+      grid: {
+        left: '0',
+        top: 0,
+        right: '0',
+        containLabel: false,
       },
       xAxis: {
-        grid: null,
-        line: {
-          style: {
-            stroke: '#3464E0',
-            lineWidth: 2,
-          },
+        type: 'category',
+        data: [
+          '1月',
+          '2月',
+          '3月',
+          '4月',
+          '5月',
+          '6月',
+          '7月',
+          '8月',
+          '9月',
+          '10月',
+          '11月',
+          '12月',
+        ],
+      },
+      yAxis: {
+        type: 'value',
+        axisLabel: {
+          show: false,
         },
-        label: {
-          autoHide: true,
-          autoRotate: false,
+        splitLine: {
+          show: false,
         },
       },
-      meta: {
-        value: {
-          alias: '稿费',
+      series: [
+        {
+          data,
+          type: 'bar',
         },
-      },
-    },
+      ],
+    } as EChartsOption,
     props,
   );
-  useEffect(() => {
-    console.log('重绘');
-  }, []);
-  return <Column style={{ zoom: 1 / homeZoom }} {...colConfig} />;
+  useMounted(() => {
+    chartsRef.current = echarts.init(
+      document.getElementById('echartsColumn') as HTMLElement,
+    );
+    chartsRef.current.setOption(colConfig);
+  });
+  return (
+    <div
+      style={{ zoom: 1 / homeZoom, width: '100%', height: '100%' }}
+      id={'echartsColumn'}
+    ></div>
+  );
 };
