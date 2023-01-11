@@ -60,6 +60,7 @@ import { baseApiUrl } from '../../public/config';
 import {
   chapterDetailsProps,
   creatChapterProps,
+  signProcessProps,
   worksListProps,
 } from '@/type/authorAdmin/worksManager';
 import { adminCommentRequestProps } from '@/type/authorAdmin/commentManager';
@@ -344,6 +345,23 @@ export const AuthorHome = {
       `${apiUrl}/author/statistics`,
       {},
     ),
+};
+export const AuthorContract = {
+  // 作者申请签约
+  signApply: (p: signProcessProps) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/author/sign/signapply`, p),
+  //  作者申请下一步
+  signApplyStep: (p: signProcessProps) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/author/sign/signapplystep`, p),
+  //  信息确认提交审核
+  authorInfoAudit: (p: signProcessProps) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/author/sign/authorinfoapply`, p),
+  //   信息确认下一步
+  authorInfoStep: (p: signProcessProps) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/author/sign/authorinfoapplystep`, p),
+  //  合同申请
+  contractApply: (p: signProcessProps) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/author/sign/contractapply`, p),
 };
 export const AuthorPersonal = {
   // 获取作者个人信息

@@ -18,3 +18,4 @@ export const tipLinks = [
   { name: '橙瓜网文', href: 'https://www.chenggua.com/' },
   { name: '爆侃网文', href: 'http://www.baokan.tv/' },
 ]; //友情链接
+export const contractLeastNumber = 3000; //签约最少字数

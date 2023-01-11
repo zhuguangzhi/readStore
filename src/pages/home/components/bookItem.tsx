@@ -110,7 +110,6 @@ export const BookItem = ({
                   </div>
                   <div
                     className={'operation'}
-                    style={{ marginRight: '42px' }}
                     // onClick={() => onComment?.(book)}
                   >
                     <IconFont width={'16px'} height={'16px'} icon={'pinglun'} />

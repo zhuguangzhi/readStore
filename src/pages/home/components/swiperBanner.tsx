@@ -19,7 +19,6 @@ const SampleNextArrow = (props: any) => {
     />
   );
 };
-/* eslint-disable  @typescript-eslint/no-explicit-any */
 const SamplePrevArrow = (props: any) => {
   return (
     <IconFont
@@ -81,6 +80,11 @@ export const SwiperBanner = ({ swiperBookInfo, className }: SliderProps) => {
   });
   return (
     <div className={className}>
+      <img
+        className={'home_banner'}
+        alt={''}
+        src={require('@/assets/image/home/banner.png')}
+      />
       <div className={'home_carousel_desc'}>
         <p className={'font_24 font_500 SYMedium'}>
           {swiperBookInfo?.[currentSwiperIndex].name}

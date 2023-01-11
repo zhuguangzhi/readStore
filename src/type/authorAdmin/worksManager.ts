@@ -26,3 +26,7 @@ export type chapterDetailsProps = {
   content: string; //内容
   reject_reason: string; //驳回原因
 };
+// 签约流程
+export type signProcessProps = {
+  book_id: number;
+};

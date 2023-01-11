@@ -201,7 +201,7 @@ export default () => {
         </Form>
         {noData ? (
           <DefaultNoData
-            type={'noData'}
+            type={'authorNoData'}
             text={'暂无评论'}
             className={'authorNoData'}
           />

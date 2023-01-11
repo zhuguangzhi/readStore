@@ -37,7 +37,7 @@ export const BookLibrary = ({ bookList, onClick }: BookLibraryProps) => {
               <p className={'textOverflow_2'} style={{ marginBottom: '6px' }}>
                 {book.description}
               </p>
-              <p>发布时间：{book.create_time}</p>
+              <p>发布时间：{book.last_update_chapter_time}</p>
             </div>
           </div>
         );

@@ -65,7 +65,7 @@ export default () => {
       {
         label: '联系地址',
         isFinish: !!address,
-        value: '待完善',
+        value: address || '待完善',
         btnChild: (
           <span onClick={() => changeModal('address')}>
             {!!address ? '立即修改' : '立即填写'}
@@ -115,7 +115,7 @@ export default () => {
       {
         label: '手机号码',
         isFinish: !!mobile,
-        value: !!mobile ? '已绑定' : '待完善',
+        value: !!mobile ? mobile : '待完善',
         btnChild: (
           <span onClick={() => changeModal('mobile')}>
             {!!mobile ? '' : '立即绑定'}

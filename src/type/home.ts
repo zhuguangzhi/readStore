@@ -10,6 +10,7 @@ type homeProps = {
   amount: number; //显示数量
   chart_sort: number; //推荐位排序
   chart_form: 1 | 2 | 3; //推荐位推荐形式 1：书籍 2：书单 3：作者
+  banner_image_url: string; //背景图
 };
 export interface homeChartProps extends homeProps {
   data: bookInfoProps[];

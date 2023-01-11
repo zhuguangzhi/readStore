@@ -2,7 +2,7 @@
 import { authorProps } from '@/type/user';
 import { topicProps } from '@/type/topic';
 
-// 书的信息
+// 书的信息(所有接口书籍信息汇总)
 export type bookInfoProps = {
   id: number; //主键ID
   cover: string; //封面相对路径
@@ -43,9 +43,15 @@ export type bookInfoProps = {
   book_status: -4 | -3 | -2 | -1 | 0 | 1 | 2 | 3 | 4; //书籍状态( 0：待审  1：审核通过  -1：审核未通过  2：申请签约  -2：签约未通过  3：已签约  -3：删除  4：签约申请通过  -4：草稿 ）
   book_status_text: string; //审核状态
   keyword: string; //关键字,号隔开
-  chapter_status: -7 | -6 | -5 | -3 | -2 | -1 | 0 | 1 | 4; //章节状态( 1:已发布 0: 待审 -1: 驳回 -2: 存稿 -3: 定时发布4:删除 -5: 复审-6: 隐藏 -7: 草稿 )
+  chapter_status: -7 | -6 | -5 | -3 | -2 | -1 | 0 | 1 | -4; //章节状态( 1:已发布 0: 待审 -1: 驳回 -2: 存稿 -3: 定时发布 -4:删除 -5: 复审-6: 隐藏 -7: 草稿 )
   audit_content: string; //审核内容
   empowers: empowerProps[]; // 上架渠道信息
+  signing_flow: signingFlowProps; //签约流程
+};
+// 签约流程
+export type signingFlowProps = {
+  flow: 1 | 2 | 3 | 4; //签约流程( 1：签约申请  2：信息确认 3：签署合同 4：完成 ）
+  flow_status: 1 | 2 | 3 | 4 | 5 | 6 | 7; //签约流程状态( 1：待审核  2：审核中 3：已通过  4：已驳回  5：合同待签署  6：合同签署中  7：合同签署完成 ）
 };
 // 上架渠道信息
 export type empowerProps = {
@@ -253,4 +259,5 @@ export type createBooksProps = {
   category_id: number; //二级分类id
   keyword?: string; //关键字
   description: string; //描述
+  topic_id: number; //话题
 };

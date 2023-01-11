@@ -13,6 +13,7 @@ import {
 import { useAuth } from '@/hook/useAuth';
 import { useGetBookCategory } from '@/utils/bookShelf';
 import { bookCategoryProps, createBooksProps } from '@/type/book';
+import { useGetTopicList } from '@/utils/topic';
 
 const formItemLayout = {
   labelCol: {
@@ -36,6 +37,8 @@ export const worksInfo = () => {
   );
   // 获取分类
   const { data: cateGoryData } = useGetBookCategory({});
+  // 获取话题列表
+  const { data: topicLIst } = useGetTopicList({ page: 1, page_size: 99999 });
   const [formValues] = Form.useForm();
   // 监听频道的改变
   const channelType = Form.useWatch('channel_type', formValues) as 1 | 2;
@@ -54,12 +57,14 @@ export const worksInfo = () => {
     setLoadingModel(detailsLoading || creatLoading || modifyLoading);
   }, [detailsLoading, creatLoading, modifyLoading]);
 
+  // 初始时格式化标签
   useEffect(() => {
     if (!worksInfo) return;
     setRouterParam({ [WorksChapterId]: worksInfo.chapter_id });
     const key = worksInfo.keyword ? worksInfo.keyword.split(',') : [];
     formValues.setFieldsValue({ ...worksInfo, keyword: key });
   }, [worksInfo]);
+  // 设置分类
   useEffect(() => {
     if (!cateGoryData || !channelType) return;
     setParentCategory(cateGoryData[channelType - 1].child);
@@ -123,6 +128,7 @@ export const worksInfo = () => {
           labelAlign={'right'}
           layout="horizontal"
           colon={false}
+          disabled={(worksInfo?.book_status || 0) >= 1}
           {...formItemLayout}
           onFinish={onSubmit}
           initialValues={worksId ? {} : { channel_type: 1 }}
@@ -209,6 +215,28 @@ export const worksInfo = () => {
               {/*</Select>*/}
             </div>
           </Form.Item>
+          <Form.Item
+            label="话题"
+            name={'topic_id'}
+            rules={[{ required: true, message: '请选择话题' }]}
+          >
+            <Select
+              showSearch
+              optionFilterProp="children"
+              getPopupContainer={() =>
+                document.getElementById('formItemSelect') as HTMLDivElement
+              }
+              filterOption={(input, option) =>
+                (option?.label ?? '')
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
+              options={topicLIst?.data.map((topic) => ({
+                value: topic.id,
+                label: topic.title,
+              }))}
+            />
+          </Form.Item>
           <Form.Item label="作品标签">
             <Form.Item name={'keyword'}>
               <Select
@@ -255,10 +283,11 @@ export const worksInfo = () => {
               {worksId ? '确定修改' : '创建'}
             </Button>
             <Button
+              disabled={false}
               className={'worksInfo_right_button'}
               type="default"
               shape="round"
-              onClick={() => router.back()}
+              onClick={() => router.push('/admin/works')}
             >
               取消
             </Button>

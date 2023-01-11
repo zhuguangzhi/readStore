@@ -94,7 +94,7 @@ export const ModifyInfo = ({
   const passwordItems: stepItemsProps[] = [
     { label: '手机号码验证', stepElement: <MobileVerify form={stepOneForm} /> },
     {
-      label: '填写身份证信息',
+      label: '填写密码',
       stepElement: <PasswordVerify form={stepTwoForm} />,
     },
     { label: '填写完成', stepElement: <span></span> },

@@ -14,7 +14,20 @@ import ReadPopup from '@/components/module/ReadPopup';
 import { UseNode } from '@/components/UseNode';
 import { ReadModel } from '@/components/module/ReadModel';
 import { ContractManager } from '@/pages/authorAdmin/components/contractManager';
+import { contractLeastNumber } from '../../../public/config';
 
+// 审核描述
+const auditDesc = {
+  '1': '已发布',
+  '0': '待审',
+  '-1': '驳回',
+  '-2': '存稿',
+  '-3': '定时发布',
+  '-4': '删除',
+  '-5': '复审',
+  '-6': '隐藏',
+  '-7': '草稿',
+};
 const SubIcon = () => (
   <IconFont width={'37px'} height={'44px'} icon={'bookShelf'} />
 );
@@ -27,7 +40,7 @@ export default () => {
   });
   const [contractModel, setContractModel] = useState({
     open: false,
-    info: null as bookInfoProps | null,
+    bookIndex: 0 as number,
   });
   //  获取作品列表
   const { data: worksList, isLoading: worksLoading } = useGetWorks({
@@ -80,13 +93,13 @@ export default () => {
         {/*作品列表*/}
         {!worksLoading && worksList && worksList.data.length === 0 ? (
           <DefaultNoData
-            type={'noData'}
+            type={'authorNoData'}
             text={'您暂时还没有创建作品哦~'}
             className={'authorNoData'}
           />
         ) : (
           <div className={'worksManager_list'}>
-            {worksList?.data.map((item) => {
+            {worksList?.data.map((item, index) => {
               return (
                 <div key={item.id} className={'worksManager_list_item'}>
                   <UseNode rIf={item.cover_url}>
@@ -154,7 +167,7 @@ export default () => {
                     <p
                       className={`worksManager_list_item_container_audit worksManager_chapterStatus${item.chapter_status}`}
                     >
-                      {item.audit_content}
+                      {auditDesc[item.chapter_status]}
                       {/*{item.audit_num > 0*/}
                       {/*  ? `共 ${item.audit_num} 章节正在审核`*/}
                       {/*  : '暂无审核内容'}*/}
@@ -214,12 +227,18 @@ export default () => {
                               : '上传内容'}
                           </span>
                         </div>
-                        <UseNode rIf={item.is_signing === 2}>
+                        <UseNode
+                          rIf={
+                            item.is_signing === 2 &&
+                            item.word_count >= contractLeastNumber &&
+                            item.book_status === 1
+                          }
+                        >
                           <div
                             onClick={() => {
                               setContractModel({
                                 open: true,
-                                info: item,
+                                bookIndex: index,
                               });
                             }}
                           >
@@ -228,7 +247,7 @@ export default () => {
                               height={'22px'}
                               icon={'qianyue'}
                             />
-                            <span>申请签约</span>
+                            <span>签约管理</span>
                           </div>
                         </UseNode>
                         <div
@@ -297,13 +316,13 @@ export default () => {
         onCancel={() =>
           setContractModel({
             open: false,
-            info: null,
+            bookIndex: 0,
           })
         }
       >
         <ContractManager
-          bookInfo={contractModel.info}
-          closeModel={() => setContractModel({ open: false, info: null })}
+          bookInfo={worksList?.data[contractModel.bookIndex]}
+          closeModel={() => setContractModel({ open: false, bookIndex: 0 })}
         />
       </ReadModel>
     </div>

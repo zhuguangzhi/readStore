@@ -4,7 +4,7 @@ import './style/defaultNoData.less';
 type DefaultNoDataProps = {
   className?: string;
   style?: React.CSSProperties;
-  type: 'noData' | '404' | 'noNet' | 'check';
+  type: 'noData' | 'authorNoData' | '404' | 'noNet' | 'check';
   text?: string;
 };
 export const DefaultNoData = ({
@@ -18,6 +18,7 @@ export const DefaultNoData = ({
     '404': require('../assets/image/404.png'),
     noNet: require('../assets/image/noNet.png'),
     check: require('../assets/image/check.png'),
+    authorNoData: require('../assets/image/authorNoData.png'),
   };
   return (
     <div className={'defaultData ' + className} style={style}>

@@ -33,8 +33,8 @@ const BookList = () => {
     userInfo,
   );
 
-  // 阅读
-  const readBook = (bookId: number, index: number) => {
+  // 去话题
+  const toTopic = (topicId: number, index: number) => {
     disPatch({
       type: 'global/setHomeTab',
       payload: {
@@ -43,7 +43,7 @@ const BookList = () => {
         tab: tabBarList[index],
       },
     });
-    router.push('/read', { [BookId]: bookId }, true);
+    router.push('/topicInfo', { [TopicId]: topicId });
   };
   // 加入书架
   const { mutate: addBookCase } = useAddBookCase('home', currentTabIndex);
@@ -85,13 +85,9 @@ const BookList = () => {
       <BookItem
         bookList={bookList?.data || null}
         onApprove={(param) => setApproval(param)}
-        onClick={(book) => readBook(book.id, currentTabIndex)}
-        onComment={(book) => {
-          readBook(book.id, currentTabIndex);
-          disPatch({ type: 'global/setCommentBox', payload: true });
-        }}
+        onClick={(book) => router.push('/read', { [BookId]: book.id }, true)}
         clickTitle={(topicId) =>
-          topicId ? router.push('/topicInfo', { [TopicId]: topicId }) : ''
+          topicId ? toTopic(topicId, currentTabIndex) : ''
         }
         onAddBookCase={(bookId) => addBookCase({ book_id: bookId })}
       />

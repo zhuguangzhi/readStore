@@ -2,11 +2,12 @@
 import React from 'react';
 import { bookInfoProps } from '@/type/book';
 import { useAuth } from '@/hook/useAuth';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import './style/contract.less';
+import { useApplySign, useSignStep } from '@/utils/authorAdmin/signApply';
 
 type contractProps = {
-  bookInfo: bookInfoProps | null;
+  bookInfo: bookInfoProps | undefined;
   contractStatus: 1 | 2 | 3; //1未申请 2申请中 3完成
   setStep: Function;
 };
@@ -16,6 +17,28 @@ export const Contract = ({
   setStep,
 }: contractProps) => {
   const { authorInfo } = useAuth();
+  const { mutate: applySign, isLoading: applyLoading } = useApplySign();
+  // 下一步
+  const { mutate: stepSign } = useSignStep();
+  // 申请签约
+  const onApply = () => {
+    if (!authorInfo || !bookInfo) {
+      message.error('请稍后重试');
+      return;
+    }
+    applySign({ book_id: bookInfo.id });
+  };
+  const onStepSign = () => {
+    if (!authorInfo || !bookInfo) {
+      message.error('请稍后重试');
+      return;
+    }
+    setStep();
+    stepSign({
+      book_id: bookInfo.id,
+    });
+  };
+
   return (
     <div className={'contract'}>
       <div className={'contract_item'}>
@@ -63,13 +86,19 @@ export const Contract = ({
         若信息有误，或者填写中有疑问，请及时联系平台工作人员
       </p>
       {contractStatus === 1 ? (
-        <Button className={'contract_btn'}>提交申请</Button>
+        <Button
+          className={'contract_btn'}
+          loading={applyLoading}
+          onClick={onApply}
+        >
+          提交申请
+        </Button>
       ) : contractStatus === 2 ? (
         <Button className={'contract_btn contract_disabledBtn'}>
           申请中...
         </Button>
       ) : (
-        <Button className={'contract_btn'} onClick={() => setStep()}>
+        <Button className={'contract_btn'} onClick={onStepSign}>
           下一步
         </Button>
       )}
