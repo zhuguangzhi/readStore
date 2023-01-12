@@ -34,8 +34,13 @@ const SamplePrevArrow = (props: any) => {
 type SliderProps = {
   swiperBookInfo: bookInfoProps[] | null;
   className?: string;
+  swiperBannerUrl: string | undefined;
 };
-export const SwiperBanner = ({ swiperBookInfo, className }: SliderProps) => {
+export const SwiperBanner = ({
+  swiperBookInfo,
+  className,
+  swiperBannerUrl,
+}: SliderProps) => {
   //swiper 当前scroll的索引
   const [currentSwiperIndex, setScrollIndex] = useState<number>(0);
   //setInterval实例
@@ -80,11 +85,7 @@ export const SwiperBanner = ({ swiperBookInfo, className }: SliderProps) => {
   });
   return (
     <div className={className}>
-      <img
-        className={'home_banner'}
-        alt={''}
-        src={require('@/assets/image/home/banner.png')}
-      />
+      <img className={'home_banner'} alt={''} src={swiperBannerUrl} />
       <div className={'home_carousel_desc'}>
         <p className={'font_24 font_500 SYMedium'}>
           {swiperBookInfo?.[currentSwiperIndex].name}

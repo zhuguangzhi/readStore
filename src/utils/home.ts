@@ -12,11 +12,10 @@ import { authorProps } from '@/type/user';
 import { setApprovalMutate } from '@/utils/mutate/setApproval';
 
 // 获取书本推荐
-export const useHomeChart = (call: Function, userInfo: authorProps | null) => {
+export const useHomeChart = (userInfo: authorProps | null) => {
   return useQuery<homeChartProps[], Error>(['home', userInfo?.id], () => {
     return Home.getHomeBook<ResponseData<homeChartProps[]>>().then((value) => {
       ErrorCheck(value);
-      call();
       return value.data;
     });
   });

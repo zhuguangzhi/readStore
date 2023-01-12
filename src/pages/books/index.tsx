@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './style/index.less';
-import { bookCategoryProps, rankBook } from '@/type/book';
+import { bookCategoryProps, booksThemeProps, rankBook } from '@/type/book';
 import { UseNode } from '@/components/UseNode';
 import { useSetState } from '@/hook';
 import { useGetBookCategory, useGetBookLibrary } from '@/utils/bookShelf';
@@ -13,9 +13,6 @@ import { useAuth } from '@/hook/useAuth';
 import { BookLibrary } from '@/pages/books/bookLibrary';
 import router, { useSearchParam } from '@/hook/url';
 import { authorPenName, BookId, SearchKey } from '@/constants/url';
-import { useDispatch, useSelector } from 'umi';
-import { ConnectState } from '@/models/modelConnect';
-import { globalState } from '@/models/global';
 import { DefaultNoData } from '@/components/defaultNoData';
 
 const readType = [
@@ -42,7 +39,16 @@ const textNum = [
   { key: 4, label: '100万—200万' },
   { key: 5, label: '200万以上' },
 ];
-
+//书库配置信息
+type bookLibraryConfig = {
+  readKey: 0 | 1 | 2; //选中读者key
+  subThemeId: booksThemeProps['id'] | null; //选中二级主题id
+  status: {
+    bookState: 0 | 1 | 2; //书的连载状态
+    slot: 3 | 4; //排序状态
+  }; //选中状态key
+  textKey: number; //选中字数key
+};
 type ThemeComponentProps = {
   themes: bookCategoryProps[];
   index: number;
@@ -50,10 +56,6 @@ type ThemeComponentProps = {
 };
 
 const Books = () => {
-  const globalState = useSelector(
-    (state: ConnectState) => state.global,
-  ) as globalState;
-  const dispatch = useDispatch();
   const [{ [SearchKey]: searchKey, [authorPenName]: penName }] = useSearchParam(
     [SearchKey, authorPenName],
   );
@@ -70,7 +72,15 @@ const Books = () => {
     type: null as 'men' | 'women' | null,
   });
   const [libraryPage, setPage] = useState(1);
-  const [state, setState] = useState({ ...globalState.bookLibraryConfig });
+  const [state, setState] = useState<bookLibraryConfig>({
+    readKey: 0,
+    subThemeId: null,
+    status: {
+      bookState: 0,
+      slot: 3,
+    }, //选中状态key
+    textKey: 0,
+  });
   const changeState = useSetState(state, setState);
   const [bookShelfData, setBookShelfData] = useState<rankBook[]>([]);
   const { data: bookShelf, isLoading: shelfLoading } = useGetBookLibrary({
@@ -116,24 +126,13 @@ const Books = () => {
     changeKey('subThemeId', null);
   };
   // 选中键修改
-  const changeKey = (
-    type: keyof globalState['bookLibraryConfig'],
-    val: unknown,
-  ) => {
+  const changeKey = (type: keyof bookLibraryConfig, val: unknown) => {
     if (JSON.stringify(state[type]) === JSON.stringify(val)) return;
     changeState({ [type]: val });
     setBookShelfData([]);
   };
   // 去阅读
   const toRead = (book: rankBook) => {
-    const webContainerRef = document.querySelector(
-      '.webContainer',
-    ) as HTMLElement;
-    dispatch({
-      type: 'global/setBookLibrary',
-      payload: { ...state, scroll: webContainerRef.scrollTop },
-    });
-    setBookShelfData([]);
     router.push('/read', { [BookId]: book.id }, true);
   };
 
@@ -149,6 +148,7 @@ const Books = () => {
         setPage(libraryPage + 1);
       });
     };
+    // 数据处理
     if (!bookShelf)
       // bookShelfData.toString() === bookShelf.data.toString()
       return;
@@ -179,17 +179,7 @@ const Books = () => {
     if (searchKey === null) return;
     setBookShelfData([]);
   }, [searchKey]);
-  // 滚动到记录位置
-  useEffect(() => {
-    if (bookShelfData.length === 0) return;
-    const webContainerRef = document.querySelector(
-      '.webContainer',
-    ) as HTMLElement;
-    webContainerRef.scrollTop = globalState.bookLibraryConfig.scroll;
-    return () => {
-      webContainerRef.removeEventListener('onscroll', () => {});
-    };
-  }, [bookShelfData]);
+
   const ThemeComponent = ({ themes, index, type }: ThemeComponentProps) => {
     return (
       <div className={'bookShelf_box_theme_layer'}>

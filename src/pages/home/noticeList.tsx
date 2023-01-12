@@ -12,6 +12,9 @@ import {
   useGetVane,
 } from '@/utils/home';
 import { authorPenName, BookId, NewsId, TopicId } from '@/constants/url';
+import { ConnectState } from '@/models/modelConnect';
+import { globalState } from '@/models/global';
+import { useDispatch, useSelector } from 'umi';
 
 const NewsIcon = () => (
   <IconFont
@@ -46,6 +49,7 @@ type NoticeListProps = {
   notUseTopic?: boolean;
   notUseAuthor?: boolean;
   notUseWebInfo?: boolean;
+  saveScroll?: (disPatchParam?: { [key: string]: unknown }) => void;
 };
 export const NoticeList = ({
   notUseNews,
@@ -53,11 +57,15 @@ export const NoticeList = ({
   notUseTopic,
   notUseAuthor,
   notUseWebInfo,
+  saveScroll,
 }: NoticeListProps) => {
+  const disPatch = useDispatch();
+  const globalState = useSelector(
+    (state: ConnectState) => state.global,
+  ) as globalState;
   const noticeRef = useRef<HTMLDivElement>(null);
   const [noticeHeight, setNoticeHeight] = useState({
-    top: 0,
-    height: '',
+    ...globalState.homeTab.noticeList,
   });
   //新闻公告列表
   const { data: newList, isLoading: newLoad } = useGetNews();
@@ -85,6 +93,12 @@ export const NoticeList = ({
       height = '100%';
     }
     setNoticeHeight({ top, height });
+    disPatch({
+      type: 'global/setHomeTab',
+      payload: {
+        noticeList: { top, height },
+      },
+    });
   }, [newLoad, vaneLoad, authorLoad, topicLoad]);
 
   return (
@@ -105,9 +119,10 @@ export const NoticeList = ({
                 <p
                   className={'news_item textOverflow'}
                   key={news.id}
-                  onClick={() =>
-                    router.push('/home/news', { [NewsId]: news.id })
-                  }
+                  onClick={() => {
+                    router.push('/home/news', { [NewsId]: news.id });
+                    saveScroll?.();
+                  }}
                 >
                   <span className={'font_500 SYMedium'}>【公告】</span>
                   <span>{news.title}</span>
@@ -126,7 +141,9 @@ export const NoticeList = ({
                   key={index}
                   className={'flex vane_item'}
                   onMouseOver={() => setVaneIndex(index)}
-                  onClick={() => router.push('/read', { [BookId]: vane.id })}
+                  onClick={() =>
+                    router.push('/read', { [BookId]: vane.id }, true)
+                  }
                 >
                   {/*    排名*/}
                   <span className={'font_18 vane_rank'}>{index + 1}</span>
@@ -180,9 +197,10 @@ export const NoticeList = ({
                 <div
                   className={'author_item'}
                   key={index}
-                  onClick={() =>
-                    router.push('/books', { [authorPenName]: author.pen_name })
-                  }
+                  onClick={() => {
+                    router.push('/books', { [authorPenName]: author.pen_name });
+                    saveScroll?.();
+                  }}
                 >
                   <img
                     className={'author_item_photo'}
@@ -212,9 +230,10 @@ export const NoticeList = ({
                 <p
                   key={index}
                   className={'news_item textOverflow'}
-                  onClick={() =>
-                    router.push('/topicInfo', { [TopicId]: topic.topic_id })
-                  }
+                  onClick={() => {
+                    router.push('/topicInfo', { [TopicId]: topic.topic_id });
+                    saveScroll?.();
+                  }}
                 >
                   <span className={'font_500 SYMedium'}>【话题】</span>
                   <span>{topic.title}</span>

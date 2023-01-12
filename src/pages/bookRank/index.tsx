@@ -3,12 +3,8 @@ import './style/index.less';
 import { BookBox } from '@/pages/bookRank/bookBox';
 import { useGetBookRank } from '@/utils/rank';
 import { useAuth } from '@/hook/useAuth';
-import { useDispatch, useSelector } from 'umi';
-import { ConnectState } from '@/models/modelConnect';
-import { globalState } from '@/models/global';
 import { BookId } from '@/constants/url';
 import router from '@/hook/url';
-import { useMounted } from '@/hook';
 
 const slideList = [
   { key: 1, label: '大热榜', subTitle: '根据七天内阅读人气进行排行' },
@@ -30,12 +26,11 @@ const slideList = [
   },
 ];
 export default () => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(
-    (state: ConnectState) => state.global,
-  ) as globalState;
   const { userInfo, setLoadingModel } = useAuth();
-  const [sideOption, setSide] = useState(globalState.bookRank);
+  const [sideOption, setSide] = useState({
+    channelType: 1 as 1 | 2, //频道类型( 1：男频  2：女频 ）
+    rankIndex: 0,
+  });
   const { data: rankBookData, isLoading } = useGetBookRank(
     () => setLoadingModel(false),
     {
@@ -47,36 +42,12 @@ export default () => {
     userInfo,
   );
 
-  const setDispatch = (p: {
-    index?: number;
-    scroll?: number;
-    channelType?: 1 | 2;
-  }) => {
-    dispatch({
-      type: 'global/setBookRank',
-      payload: {
-        rankIndex: p.index ? p.index : sideOption.rankIndex,
-        scroll: p.scroll ? p.scroll : globalState.bookRank.scroll,
-        channelType: p.channelType
-          ? p.channelType
-          : globalState.bookRank.channelType,
-      },
-    });
-  };
   const toRead = (id: number) => {
-    setDispatch({
-      scroll: (document.querySelector('.webContainer') as HTMLElement)
-        .scrollTop,
-    });
     router.push('/read', { [BookId]: id }, true);
   };
   useEffect(() => {
     if (isLoading) setLoadingModel(isLoading);
   }, [sideOption.rankIndex]);
-  useMounted(() => {
-    (document.querySelector('.webContainer') as HTMLElement).scrollTop =
-      globalState.bookRank.scroll;
-  });
   return (
     <div className={'bookRank'}>
       {/*侧边栏*/}
@@ -99,7 +70,6 @@ export default () => {
                     channelType: 1,
                     rankIndex: index,
                   }));
-                  setDispatch({ index, channelType: 1 });
                 }}
               >
                 {item.label}
@@ -125,7 +95,6 @@ export default () => {
                     channelType: 2,
                     rankIndex: index,
                   }));
-                  setDispatch({ index, channelType: 2 });
                 }}
               >
                 {item.label}

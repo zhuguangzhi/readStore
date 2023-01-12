@@ -1,29 +1,19 @@
 import { Effect, Reducer } from 'umi';
 import { tabProps } from '@/components/module/tabBar';
 import { tabBarList } from '@/pages/home/bookList';
-import { booksThemeProps } from '@/type/book';
+import { homeChartProps } from '@/type/home';
 
 export type globalState = {
   loading: boolean; //加载
   homeTab: {
     scroll: number;
     tab: tabProps;
+    bookList: homeChartProps | null;
+    noticeList: {
+      top: number;
+      height: string;
+    };
   }; //首页tab信息
-  bookRank: {
-    channelType: 1 | 2; //频道类型( 1：男频  2：女频 ）
-    rankIndex: number; //排行榜索引
-    scroll: number;
-  };
-  bookLibraryConfig: {
-    readKey: 0 | 1 | 2; //选中读者key
-    subThemeId: booksThemeProps['id'] | null; //选中二级主题id
-    status: {
-      bookState: 0 | 1 | 2; //书的连载状态
-      slot: 3 | 4; //排序状态
-    }; //选中状态key
-    textKey: number; //选中字数key
-    scroll: number; //滚动
-  }; //书库配置信息
   openCommentBox: boolean; //是否打开评论框
 };
 type globalModelPopup = {
@@ -33,8 +23,6 @@ type globalModelPopup = {
     openLoading: Effect;
     closeLoading: Effect;
     setHomeTab: Effect;
-    setBookRank: Effect;
-    setBookLibrary: Effect;
     setCommentBox: Effect;
   };
   reducers: {
@@ -48,21 +36,11 @@ export default {
     homeTab: {
       scroll: 0,
       tab: tabBarList[0],
-    },
-    bookRank: {
-      channelType: 1, //频道类型( 1：男频  2：女频 ）
-      rankIndex: 0,
-      scroll: 0,
-    },
-    bookLibraryConfig: {
-      readKey: 0,
-      subThemeId: null,
-      status: {
-        bookState: 0,
-        slot: 3,
-      }, //选中状态key
-      textKey: 0,
-      scroll: 0,
+      bookList: null,
+      noticeList: {
+        top: 0,
+        height: '',
+      },
     },
     openCommentBox: false,
   },
@@ -85,27 +63,16 @@ export default {
         },
       });
     },
-    *setHomeTab({ payload }, { put }) {
+    *setHomeTab({ payload }, { put, select }) {
+      // @ts-ignore
+      const homeTabState = yield select((state) => state.global.homeTab);
       yield put({
         type: 'save',
         payload: {
-          homeTab: payload,
-        },
-      });
-    },
-    *setBookRank({ payload }, { put }) {
-      yield put({
-        type: 'save',
-        payload: {
-          bookRank: payload,
-        },
-      });
-    },
-    *setBookLibrary({ payload }, { put }) {
-      yield put({
-        type: 'save',
-        payload: {
-          bookLibraryConfig: payload,
+          homeTab: {
+            ...homeTabState,
+            ...payload,
+          },
         },
       });
     },
