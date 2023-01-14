@@ -14,6 +14,7 @@ import { UseNode } from '@/components/UseNode';
 import moment from 'moment';
 import { useMounted } from '@/hook';
 import { DefaultNoData } from '@/components/defaultNoData';
+import { LoadingOutlined } from '@ant-design/icons';
 
 export default () => {
   // 条数
@@ -31,7 +32,8 @@ export default () => {
   // 单个已读
   const { mutate: readMessage } = useReadMessage();
   // 全部
-  const { mutate: readAllMessage } = useReadAllMessage();
+  const { mutate: readAllMessage, isLoading: allReadLoading } =
+    useReadAllMessage();
   const { setLoadingModel } = useAuth();
   // 控制消息显隐
   const controlMessage = (id: number, isRead: 1 | 2) => {
@@ -77,12 +79,16 @@ export default () => {
           className={'flex flex_align cursor'}
           onClick={() => readAllMessage()}
         >
-          <IconFont
-            icon={'clear'}
-            marginRight={'9px'}
-            width={'18px'}
-            height={'21px'}
-          />
+          {allReadLoading ? (
+            <LoadingOutlined style={{ marginRight: '9px' }} />
+          ) : (
+            <IconFont
+              icon={'clear'}
+              marginRight={'9px'}
+              width={'18px'}
+              height={'21px'}
+            />
+          )}
           <span className={'font_14'}>全部已读</span>
         </div>
       </div>

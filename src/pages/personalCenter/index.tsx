@@ -6,7 +6,7 @@ import { netName } from '../../../public/config';
 import { useSetState } from '@/hook';
 import { Outlet } from 'react-router';
 import router, { useGetUrlPath } from '@/hook/url';
-import { useAuth } from '@/hook/useAuth';
+import { getToken, useAuth } from '@/hook/useAuth';
 
 export const PersonalCenter = () => {
   //获取当前路由信息
@@ -29,6 +29,9 @@ export const PersonalCenter = () => {
     router.push('/personal/' + menu.key);
   };
 
+  useEffect(() => {
+    if (!getToken()) router.push('/home');
+  }, [userInfo]);
   useEffect(() => {
     if (routeInfo) changeState({ currentMenuKey: routeInfo[2] });
   }, [routeInfo[2]]);

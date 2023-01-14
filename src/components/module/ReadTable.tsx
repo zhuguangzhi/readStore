@@ -1,10 +1,14 @@
 import { BaseTable, BaseTableProps } from 'ali-react-table';
 import React from 'react';
 import './style/table.less';
+import { DefaultNoData } from '@/components/defaultNoData';
 
 interface ReadTableProps extends BaseTableProps {
   maxHeight?: string;
 }
+const NoData = () => {
+  return <DefaultNoData className={'readTable_nodata'} type={'authorNoData'} />;
+};
 export const ReadTable = ({
   columns,
   dataSource,
@@ -13,12 +17,12 @@ export const ReadTable = ({
 }: ReadTableProps) => {
   return (
     <BaseTable
-      className={'ReadTable'}
+      className={'readTable'}
       columns={columns}
       dataSource={dataSource}
       {...props}
-      style={{ overflow: 'auto', maxHeight: maxHeight }}
-      components={{ EmptyContent: () => <h1>数据为空~~</h1> }}
+      style={{ overflow: 'auto', maxHeight: maxHeight, minHeight: '400px' }}
+      components={{ EmptyContent: () => <NoData /> }}
     />
   );
 };

@@ -11,6 +11,7 @@ import { PullLoad } from '@/components/module/PullLoad';
 import { myCommentDataProps } from '@/type/personalCenter';
 import { DefaultNoData } from '@/components/defaultNoData';
 import { setArrayForId } from '@/common/publicFn';
+import { useMounted } from '@/hook';
 
 const tabBars = [
   { key: 'all', label: '全部评论' },
@@ -63,12 +64,9 @@ const MyComment = () => {
     setPopupOption((val) => ({ ...val, open: false }));
     setPage(1);
   };
-
-  useEffect(() => {
-    setLoadingModel(commentLoading);
-  }, [commentLoading]);
   useEffect(() => {
     if (!commentData) return;
+    setLoadingModel(false);
     if (commentData.data.length === 0 && commentList.length === 0)
       setNullData(true);
     else setNullData(false);
@@ -79,6 +77,9 @@ const MyComment = () => {
     arr.sort((a, b) => Date.parse(b.create_time) - Date.parse(a.create_time));
     setCommentList(arr);
   }, [commentData]);
+  useMounted(() => {
+    setLoadingModel(commentLoading);
+  });
 
   return (
     <div>

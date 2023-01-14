@@ -1,5 +1,5 @@
 import React from 'react';
-import { rankBookInfoProps } from '@/type/book';
+import { rankBook, rankBookInfoProps } from '@/type/book';
 import { isFinish, translateNumber } from '@/utils/format';
 import './style/bookBox.less';
 import { UseNode } from '@/components/UseNode';
@@ -7,7 +7,7 @@ import { useAddBookCase } from '@/utils/rank';
 
 type BookBoxProps = {
   bookList: rankBookInfoProps | undefined;
-  toRead: (id: number) => void;
+  toRead: (book: rankBook) => void;
 };
 export const BookBox = ({ bookList, toRead }: BookBoxProps) => {
   const { mutate: addBookCase } = useAddBookCase('rank');
@@ -46,7 +46,7 @@ export const BookBox = ({ bookList, toRead }: BookBoxProps) => {
               <div style={{ width: '124px' }}>
                 <button
                   className={'bookBox_item_right_btn readBtn'}
-                  onClick={() => toRead(book.id)}
+                  onClick={() => toRead(book)}
                 >
                   立即阅读
                 </button>

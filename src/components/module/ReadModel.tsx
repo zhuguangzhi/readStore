@@ -6,11 +6,15 @@ interface ReadModelProps extends ModalProps {
   useTitle: boolean;
   children: React.ReactElement;
 }
-export const ReadModel = ({ useTitle, ...props }: ReadModelProps) => {
+export const ReadModel = ({
+  useTitle,
+  closable = true,
+  ...props
+}: ReadModelProps) => {
   return (
     <Modal
       className={'readModal'}
-      closable={false}
+      closable={closable}
       {...props}
       title={useTitle ? props.title : ''}
     />

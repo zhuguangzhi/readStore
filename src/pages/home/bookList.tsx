@@ -7,11 +7,12 @@ import { homeChartProps } from '@/type/home';
 import { useAuth } from '@/hook/useAuth';
 import { useMounted } from '@/hook';
 import router from '@/hook/url';
-import { BookId, TopicId } from '@/constants/url';
+import { TopicId } from '@/constants/url';
 import { useDispatch, useSelector } from 'umi';
 import { ConnectState } from '@/models/modelConnect';
 import { globalState } from '@/models/global';
 import { useAddBookCase } from '@/utils/rank';
+import { toRead } from '@/common/publicFn';
 
 export const tabBarList = [
   { label: '推荐', key: 'recommend' },
@@ -60,15 +61,19 @@ const BookList = ({ saveScroll }: BookListProps) => {
       },
     });
   };
-  useMounted(() => {
-    setLoadingModel(true);
-  });
   useEffect(() => {
+    setLoadingModel(true);
     tabChange(globalState.homeTab.tab);
   }, [chartData]);
   useMounted(() => {
     (document.querySelector('.webContainer') as HTMLElement).scrollTop =
       globalState.homeTab.scroll;
+    disPatch({
+      type: 'global/setHomeTab',
+      payload: {
+        scroll: 0,
+      },
+    });
   });
   return (
     <div className={'book_list'}>
@@ -81,7 +86,7 @@ const BookList = ({ saveScroll }: BookListProps) => {
       <BookItem
         bookList={bookList?.data || null}
         onApprove={(param) => setApproval(param)}
-        onClick={(book) => router.push('/read', { [BookId]: book.id }, true)}
+        onClick={(book) => toRead(book.chapter_id, book.id)}
         clickTitle={(topicId) =>
           topicId ? toTopic(topicId, currentTabIndex) : ''
         }

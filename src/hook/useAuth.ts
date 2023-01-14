@@ -75,7 +75,7 @@ export const useAuth = () => {
 export const getToken = () => getStorage(TOKEN);
 // 清除token
 export const clearToken = () => {
+  EventBus.emit(Bus_ClearUserInfo);
   removeStorage(TOKEN);
   removeStorage(UserInfo);
-  EventBus.emit(Bus_ClearUserInfo);
 };

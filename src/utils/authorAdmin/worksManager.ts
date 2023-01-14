@@ -8,7 +8,6 @@ import {
 } from '@/type/authorAdmin/worksManager';
 import router from '@/hook/url';
 import { message } from 'antd';
-import { WorksChapterId, WorksId } from '@/constants/url';
 
 export const useGetWorks = (p: pageRequestProps) => {
   return useQuery<worksListProps, Error>(['getWorks'], () =>
@@ -41,10 +40,7 @@ export const useCreateAuthorBook = (closeLoad: Function) => {
       async onSuccess(val) {
         ErrorCheck(val);
         await closeLoad();
-        router.push('/admin/works/bookContainer', {
-          [WorksId]: val.data.book_id,
-          [WorksChapterId]: val.data.chapter_id,
-        });
+        router.push('/admin/works');
       },
     },
   );
@@ -64,7 +60,15 @@ export const useModifyAuthorBook = () => {
     },
   );
 };
-
+// 获取标签列表
+export const useGetTageList = () => {
+  return useQuery<{ 1: string[]; 2: string[] }, Error>(['getTagsList'], () =>
+    AuthorBook.getTagsList().then((value) => {
+      ErrorCheck(value);
+      return value.data;
+    }),
+  );
+};
 // 获取章节详情
 export const useGetChapterDetails = (p: {
   book_id: number;

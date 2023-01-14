@@ -4,8 +4,7 @@ import { topCaseProps } from '@/type/topic';
 import './style/topicShelfItem.less';
 import { Checkbox } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
-import router from '@/hook/url';
-import { BookId } from '@/constants/url';
+import { toRead } from '@/common/publicFn';
 
 interface TopicShelfItemProps extends itemCheckProps<topCaseProps['data']> {
   onChangeCheckBox: (e: CheckboxChangeEvent, id: number) => void;
@@ -26,9 +25,7 @@ export const TopicShelfItem = ({
             </p>
             <div
               className={'topicShelfItem_box_container textOverflow_3 cursor'}
-              onClick={() =>
-                router.push('/read', { [BookId]: topic.book_id }, true)
-              }
+              onClick={() => toRead(topic.chapter_id, topic.book_id)}
             >
               {topic.tags.map((tag) => {
                 return (

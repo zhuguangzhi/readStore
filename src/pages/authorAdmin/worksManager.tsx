@@ -214,18 +214,22 @@ export default () => {
                             });
                           }}
                         >
-                          <IconFont
-                            width={'26px'}
-                            height={'26px'}
-                            icon={'upload'}
-                          />
-                          <span>
-                            {item.is_finish === 1
-                              ? '查看内容'
-                              : item.chapter_id !== 0
-                              ? '内容修改'
-                              : '上传内容'}
-                          </span>
+                          <UseNode rIf={item.book_status > 0}>
+                            <>
+                              <IconFont
+                                width={'26px'}
+                                height={'26px'}
+                                icon={'upload'}
+                              />
+                              <span>
+                                {item.is_finish === 1
+                                  ? '查看内容'
+                                  : item.chapter_id !== 0
+                                  ? '内容修改'
+                                  : '上传内容'}
+                              </span>
+                            </>
+                          </UseNode>
                         </div>
                         <UseNode
                           rIf={

@@ -11,10 +11,11 @@ import {
   useGetTopic,
   useGetVane,
 } from '@/utils/home';
-import { authorPenName, BookId, NewsId, TopicId } from '@/constants/url';
+import { authorPenName, NewsId, TopicId } from '@/constants/url';
 import { ConnectState } from '@/models/modelConnect';
 import { globalState } from '@/models/global';
 import { useDispatch, useSelector } from 'umi';
+import { toRead } from '@/common/publicFn';
 
 const NewsIcon = () => (
   <IconFont
@@ -141,9 +142,7 @@ export const NoticeList = ({
                   key={index}
                   className={'flex vane_item'}
                   onMouseOver={() => setVaneIndex(index)}
-                  onClick={() =>
-                    router.push('/read', { [BookId]: vane.id }, true)
-                  }
+                  onClick={() => toRead(vane.chapter_id, vane.id)}
                 >
                   {/*    排名*/}
                   <span className={'font_18 vane_rank'}>{index + 1}</span>

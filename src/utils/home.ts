@@ -77,18 +77,22 @@ export const useModifyApproval = (
     (param: approvalProps) => Book.approval<ResponseData<{}>>(param),
     {
       //请求成功时则刷新，触发home
-      onSuccess: (val) => {
+      onSuccess: (val, target) => {
         queryClient.invalidateQueries(queryKey);
-        ErrorCheck(val);
+        if (ErrorCheck(val)) {
+          // huan
+          setApprovalMutate[type]({ target, queryClient, tabIndex });
+        }
       },
       //    实现乐观更新
       onMutate: function (target) {
         let previousItems = queryClient.getQueryData(type);
-        setApprovalMutate[type](target, queryClient, tabIndex);
+        setApprovalMutate[type]({ target, queryClient, tabIndex });
         return { previousItems };
       },
       //错误回滚
       onError(error, newItem, context) {
+        console.log('error');
         queryClient.setQueriesData(queryKey, context?.previousItems);
       },
     },

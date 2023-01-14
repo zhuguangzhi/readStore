@@ -34,6 +34,7 @@ export type myBookProps = {
   read_progress: string; //阅读进度
   topic_id: number; //话题ID
   topic_title: string; //话题标题
+  chapter_id: number; //章节id
 };
 export type myBookListProps = {
   data: myBookProps[];

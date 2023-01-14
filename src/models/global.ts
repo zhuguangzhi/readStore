@@ -15,6 +15,7 @@ export type globalState = {
     };
   }; //首页tab信息
   openCommentBox: boolean; //是否打开评论框
+  openVipModel: boolean; //vip弹窗
 };
 type globalModelPopup = {
   namespace: 'global';
@@ -24,6 +25,7 @@ type globalModelPopup = {
     closeLoading: Effect;
     setHomeTab: Effect;
     setCommentBox: Effect;
+    setVipModel: Effect;
   };
   reducers: {
     save: Reducer<globalState>;
@@ -43,6 +45,7 @@ export default {
       },
     },
     openCommentBox: false,
+    openVipModel: false,
   },
   effects: {
     //打开loading
@@ -81,6 +84,14 @@ export default {
         type: 'save',
         payload: {
           openCommentBox: payload,
+        },
+      });
+    },
+    *setVipModel({ payload }, { put }) {
+      yield put({
+        type: 'save',
+        payload: {
+          openVipModel: payload,
         },
       });
     },

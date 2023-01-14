@@ -7,6 +7,7 @@ import { useQueryClient } from 'react-query';
 import './index.less';
 import { IconFont } from '@/components/IconFont';
 import { UseNode } from '@/components/UseNode';
+import { useDispatch } from '@@/exports';
 
 type ReadContainerProps = {
   container: string;
@@ -22,6 +23,7 @@ export const ReadContainer = ({
   scrollTop,
   allCount,
 }: ReadContainerProps) => {
+  const dispatch = useDispatch();
   const queryClient = useQueryClient();
   // 保存阅读记录
   const { mutate: saveHistory } = useSaveReadHistory();
@@ -31,7 +33,6 @@ export const ReadContainer = ({
   const { userInfo } = useAuth();
   //滚动到记录的行数
   const toScroll = () => {
-    console.log('read_line', bookInfo?.read_line);
     const y =
       readBox.current?.children[
         (bookInfo?.read_line || 1) - 1
@@ -54,6 +55,13 @@ export const ReadContainer = ({
         };
       },
     );
+  };
+  // 打开vip弹窗
+  const openVipModel = () => {
+    dispatch({
+      type: 'global/setVipModel',
+      payload: true,
+    });
   };
 
   useEffect(() => {
@@ -143,10 +151,12 @@ export const ReadContainer = ({
         {/*  );*/}
         {/*})}*/}
       </div>
-      <UseNode rIf={userInfo?.is_vip === 2 && bookInfo?.is_vip === 1}>
+      <UseNode
+        rIf={(!userInfo || userInfo.is_vip === 2) && bookInfo?.is_vip === 1}
+      >
         <div className={'readBook_vipTip'}>
           <IconFont width={'20px'} height={'20px'} icon={'password'} />
-          <span className={'SYMedium'}>
+          <span className={'SYMedium'} onClick={openVipModel}>
             开通会员 即可畅游故事，点击开通会员
           </span>
         </div>

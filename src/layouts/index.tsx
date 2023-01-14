@@ -12,7 +12,7 @@ import { ConnectState } from '@/models/modelConnect';
 import { globalState } from '@/models/global';
 import EventBus from '@/common/EventBus';
 
-import { Bus_ClearUserInfo, UserInfo } from '@/constants';
+import { Bus_ClearUserInfo, Bus_OpenLogin, UserInfo } from '@/constants';
 import { getStorage } from '@/common/publicFn';
 import { useAsync } from '@/hook/useAsync';
 import { ResponseData } from '@/common/http';
@@ -22,6 +22,7 @@ import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import { ErrorBoundaries } from '@/components/errorBoundaries';
+import { LoginPopup } from '@/components/login';
 
 moment.locale('zh-cn');
 
@@ -34,7 +35,7 @@ const Index = () => {
     (state: ConnectState) => state.global,
   ) as globalState;
   const { run } = useAsync<ResponseData<loginResultProps | authorProps>>();
-  const { setUserInfo, setToken } = useAuth();
+  const { setUserInfo, setToken, setLoginPopup } = useAuth();
 
   const getUserInfo = async () => {
     const oldToken = getToken();
@@ -57,14 +58,18 @@ const Index = () => {
     if (!ErrorCheck(userInfoRes)) return false;
     setUserInfo(userInfoRes.data);
   };
-  const clearUserInfo = () => {
-    setToken(null);
-    setUserInfo(null);
-  };
 
   useMounted(() => {
     //   注册销毁用户信息事件
-    EventBus.on(Bus_ClearUserInfo, clearUserInfo);
+    EventBus.on(Bus_ClearUserInfo, () => {
+      setToken(null);
+      setUserInfo(null);
+    });
+    EventBus.on(Bus_OpenLogin, () => {
+      setLoginPopup(true);
+      setToken(null);
+      setUserInfo(null);
+    });
     getUserInfo();
   });
 
@@ -81,6 +86,7 @@ const Index = () => {
         <ConfigProvider locale={zhCN}>
           <Outlet />
         </ConfigProvider>
+        <LoginPopup />
       </ErrorBoundaries>
     </div>
   );

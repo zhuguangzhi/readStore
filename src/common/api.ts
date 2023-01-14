@@ -38,6 +38,7 @@ import {
   sendCodeResultProps,
   editPasswordProps,
   authorPersonalProps,
+  vipRechargeProps,
 } from '@/type/user';
 import { clearToken } from '@/hook/useAuth';
 import { cleanObject } from '@/common/publicFn';
@@ -68,19 +69,35 @@ import {
   codewordCalendarProps,
   dataStatisticsProps,
 } from '@/type/authorAdmin/home';
+import {
+  contractListProps,
+  requestContractProps,
+} from '@/type/authorAdmin/personalInfo';
+import EventBars from '@/common/EventBus';
+import { Bus_OpenLogin } from '@/constants';
+import { message } from 'antd';
 
 export const ErrorCheck = <T>(val: ResponseData<T> | null) => {
   if (val?.status_code === 200) return true;
+  let msg = val?.error_user_msg || '请求异常';
   // token校验失败
   // API_COMM_011  未登录或登录状态失效
   // API_COMM_012 token不正确
-  if (
-    val?.error_code === 'API_COMM_011' ||
-    val?.error_code === 'API_COMM_012'
-  ) {
-    // 清空token
-    clearToken();
+  // API_COMM_007 系统通知清空未读消息
+  switch (val?.error_code) {
+    case 'API_COMM_011' || 'API_COMM_012': {
+      //  弹出登陆框 清空用户数据
+      EventBars.emit(Bus_OpenLogin);
+      // 清空token
+      clearToken();
+      break;
+    }
+    case 'API_MESSAGE_007': {
+      msg = '暂没有未读消息哦~';
+      break;
+    }
   }
+  message.error(msg);
   return false;
 };
 
@@ -214,6 +231,9 @@ export const User = {
   //  关注
   attentionUser: (p: attentionUserProps) =>
     http.post<ResponseData<{}>>(`${apiUrl}/users/attention`, p),
+  //  申请成为作者
+  applyAuthor: () =>
+    http.post<ResponseData<{}>>(`${apiUrl}/users/applyAuthor`, {}),
 };
 export const PersonalCenter = {
   getAllComment: (p: pageRequestProps) =>
@@ -264,6 +284,9 @@ export const PersonalCenter = {
   //  所有消息已读
   readAllMessage: () =>
     http.post<ResponseData<{}>>(`${apiUrl}/users/messages/read`, {}),
+  //  获取vip金额配置
+  getVipMoneyOption: () =>
+    http.get<ResponseData<vipRechargeProps[]>>(`${apiUrl}/config/recharge`, {}),
 };
 export const Topic = {
   // 话题书架
@@ -324,6 +347,12 @@ export const AuthorBook = {
       `${apiUrl}/author/chapter/detail`,
       p,
     ),
+  //  获取标签分类
+  getTagsList: () =>
+    http.post<ResponseData<{ 1: string[]; 2: string[] }>>(
+      `${apiUrl}/author/book/keyword`,
+      {},
+    ),
 };
 export const AuthorComment = {
   getCommentList: (p: adminCommentRequestProps) =>
@@ -367,5 +396,8 @@ export const AuthorPersonal = {
   // 获取作者个人信息
   getPersonalInfo: () =>
     http.post<ResponseData<authorPersonalProps>>(`${apiUrl}/author/info`, {}),
+  //  合同查询
+  getContractList: (p: requestContractProps) =>
+    http.post<ResponseData<contractListProps>>(`${apiUrl}/author/sign/list`, p),
 };
 // --------------------------作者后台end-------------------------------------------------

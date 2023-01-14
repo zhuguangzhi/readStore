@@ -8,11 +8,12 @@ import {
   scrollToBottom,
   setArrayForId,
   targetColumnArray,
+  toRead,
 } from '@/common/publicFn';
 import { useAuth } from '@/hook/useAuth';
 import { BookLibrary } from '@/pages/books/bookLibrary';
-import router, { useSearchParam } from '@/hook/url';
-import { authorPenName, BookId, SearchKey } from '@/constants/url';
+import { useSearchParam } from '@/hook/url';
+import { authorPenName, SearchKey } from '@/constants/url';
 import { DefaultNoData } from '@/components/defaultNoData';
 
 const readType = [
@@ -130,10 +131,6 @@ const Books = () => {
     if (JSON.stringify(state[type]) === JSON.stringify(val)) return;
     changeState({ [type]: val });
     setBookShelfData([]);
-  };
-  // 去阅读
-  const toRead = (book: rankBook) => {
-    router.push('/read', { [BookId]: book.id }, true);
   };
 
   // 触发滚动
@@ -344,7 +341,7 @@ const Books = () => {
         <div className={'bookShelf_box_book'}>
           <BookLibrary
             bookList={bookShelfData}
-            onClick={(book) => toRead(book)}
+            onClick={(book) => toRead(book.chapter_id, book.id)}
           />
         </div>
       )}

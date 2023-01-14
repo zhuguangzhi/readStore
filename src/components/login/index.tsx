@@ -2,9 +2,7 @@ import { ReadModel } from '@/components/module/ReadModel';
 import React, { useState } from 'react';
 import { ModalProps } from 'antd';
 import Login from '@/components/login/login';
-
 import './index.less';
-import { netName } from '../../../public/config';
 import { Register } from '@/components/login/register';
 import { useAuth } from '@/hook/useAuth';
 
@@ -12,24 +10,24 @@ export const LoginPopup = ({ ...props }: ModalProps) => {
   const { loginPopup, setLoginPopup } = useAuth();
   // true 登录 false 注册
   const [isLogin, setIsLogin] = useState(true);
-  //438
+  //478 730
   return (
     <ReadModel
       useTitle={false}
       open={loginPopup}
       onCancel={() => setLoginPopup(false)}
       {...props}
-      width={730}
+      width={478}
     >
       <div className={'loginIndex'}>
         {/*    扫码*/}
-        <div className={'loginIndex_scan'}>
-          <p className={'font_18'}>扫码登录</p>
-          <div className={'loginIndex_scan_code'}>二维码</div>
-          <p className={'cursor'}>打开看点小故事APP</p>
-          <p className={'cursor'}>扫一扫即可登陆</p>
-          <p className={'font_12 cursor'}>还没有{netName}APP快来下载</p>
-        </div>
+        {/*<div className={'loginIndex_scan'}>*/}
+        {/*  <p className={'font_18'}>扫码登录</p>*/}
+        {/*  <div className={'loginIndex_scan_code'}>二维码</div>*/}
+        {/*  <p className={'cursor'}>打开看点小故事APP</p>*/}
+        {/*  <p className={'cursor'}>扫一扫即可登陆</p>*/}
+        {/*  <p className={'font_12 cursor'}>还没有{netName}APP快来下载</p>*/}
+        {/*</div>*/}
         {/*    登录注册*/}
         <div className={'loginIndex_box'}>
           <p className={'font_28 font_bold'}>

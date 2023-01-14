@@ -8,6 +8,7 @@ import { WorksChapterId, WorksId } from '@/constants/url';
 import {
   uesGetAuthorBookDetails,
   useCreateAuthorBook,
+  useGetTageList,
   useModifyAuthorBook,
 } from '@/utils/authorAdmin/worksManager';
 import { useAuth } from '@/hook/useAuth';
@@ -25,6 +26,10 @@ export const worksInfo = () => {
   const [{ [WorksId]: worksId }] = useSearchParam([WorksId]);
   // 设置路由参数
   const setRouterParam = useSetUrlParams();
+  const [formValues] = Form.useForm();
+  // 监听频道的改变
+  const channelType = Form.useWatch('channel_type', formValues) as 1 | 2;
+  // 作品信息
   const { data: worksInfo, isLoading: detailsLoading } =
     uesGetAuthorBookDetails({ id: Number(worksId) });
   // 分类列表
@@ -37,11 +42,11 @@ export const worksInfo = () => {
   );
   // 获取分类
   const { data: cateGoryData } = useGetBookCategory({});
+  // 获取标签列表
+  const { data: tagsList } = useGetTageList();
   // 获取话题列表
   const { data: topicLIst } = useGetTopicList({ page: 1, page_size: 99999 });
-  const [formValues] = Form.useForm();
-  // 监听频道的改变
-  const channelType = Form.useWatch('channel_type', formValues) as 1 | 2;
+
   const { setLoadingModel } = useAuth();
 
   // 创建作品
@@ -96,11 +101,12 @@ export const worksInfo = () => {
         ?.child || null;
     setCategory(arr);
   };
-  // 清除选中一二级分类
+  // 清除选中一二级分类 清除标签
   const clearCheckCategory = () => {
     formValues.setFieldsValue({
       parent_category_id: '',
       category_id: '',
+      keyword: [],
     });
   };
 
@@ -240,12 +246,23 @@ export const worksInfo = () => {
           <Form.Item label="作品标签">
             <Form.Item name={'keyword'}>
               <Select
-                mode="tags"
                 style={{ width: '100%' }}
                 placeholder="请输入标签(最多五个)"
+                showSearch
+                optionFilterProp="children"
+                mode="multiple"
                 getPopupContainer={() =>
                   document.getElementById('formItemSelect') as HTMLDivElement
                 }
+                filterOption={(input, option) =>
+                  (option?.label ?? '')
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                options={tagsList?.[channelType]?.map((tag) => ({
+                  value: tag,
+                  label: tag,
+                }))}
               />
             </Form.Item>
             {/*<span className={'worksInfo_right_tip'}>*/}

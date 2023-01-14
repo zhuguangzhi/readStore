@@ -129,7 +129,7 @@ const noUseHeaderRouter = {
         {
           path: 'contract',
           name: '我的合同',
-          component: '@/pages/authorAdmin/contract',
+          component: '@/pages/authorAdmin/contractList',
         },
         {
           path: 'personalInfo',
@@ -137,6 +137,11 @@ const noUseHeaderRouter = {
           component: '@/pages/authorAdmin/personalInfo',
         },
       ],
+    },
+    {
+      path: '/authorGuid',
+      component: '@/pages/authorAdmin/authorGuid',
+      name: '作者引导',
     },
   ],
 };
@@ -152,4 +157,9 @@ export const routes = [
   { ...useHeaderRouter },
   //    不使用头部路由
   { ...noUseHeaderRouter },
+  //    404
+  {
+    path: '/*',
+    component: '@/pages/404',
+  },
 ];

@@ -11,14 +11,14 @@ import {
   useGetTopicCase,
 } from '@/utils/personalCenter';
 import { BookLayer } from '@/pages/personalCenter/components/bookLayer';
-import { myBookProps } from '@/type/personalCenter';
-import { BookId, TopicId } from '@/constants/url';
+import { TopicId } from '@/constants/url';
 import { UseNode } from '@/components/UseNode';
 import { Tabs } from 'antd';
 import { DefaultNoData } from '@/components/defaultNoData';
 import { ReadModel } from '@/components/module/ReadModel';
 import { EditUserInfo } from '@/components/editUserInfo';
 import { FansModal } from '@/pages/personalCenter/components/fansModal';
+import { toRead } from '@/common/publicFn';
 
 export default () => {
   const { userInfo, setLoadingModel } = useAuth();
@@ -47,10 +47,6 @@ export default () => {
     page_size: 10,
     type: 'topicShelf',
   });
-  // 继续阅读
-  const goToRead = (book: myBookProps) => {
-    router.push('/read', { [BookId]: book.book_id }, true);
-  };
 
   useEffect(() => {
     setLoadingModel(bookLoading || topicLoading || commentLoading);
@@ -254,7 +250,7 @@ export default () => {
               selectIds={[]}
               onDelete={() => {}}
               onCheckBox={() => {}}
-              goToRead={goToRead}
+              goToRead={(book) => toRead(book.chapter_id, book.book_id)}
             />
           </div>
         </div>

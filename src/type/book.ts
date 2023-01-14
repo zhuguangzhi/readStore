@@ -23,7 +23,7 @@ export type bookInfoProps = {
   create_time: string; //创建时间
   update_time: string; //更新时间
   last_update_chapter_time: string; //最后更新时间
-  chapter_id: number; //最后更新章节ID
+  chapter_id: number; //章节ID
   month_word: number; //月更新字数
   word_count: number; //总字数
   is_finish_text: string; //是否完结描述

@@ -3,12 +3,13 @@ import { approvalProps, readBookInfoProps } from '@/type/book';
 import { homeChartProps } from '@/type/home';
 import { topicBookListProps } from '@/type/topic';
 
+type approvalMutateProps = {
+  target: approvalProps;
+  queryClient: QueryClient;
+  tabIndex?: number;
+};
 export const setApprovalMutate = {
-  home: (
-    target: approvalProps,
-    queryClient: QueryClient,
-    tabIndex?: number,
-  ) => {
+  home: ({ target, queryClient, tabIndex }: approvalMutateProps) => {
     queryClient.setQueriesData(['home'], (old?: homeChartProps[]) => {
       let arr = old ? [...(old as homeChartProps[])] : [];
       if (arr.length > 0 && tabIndex !== undefined) {
@@ -22,14 +23,17 @@ export const setApprovalMutate = {
       return [];
     });
   },
-  readBookInfo: (target: approvalProps, queryClient: QueryClient) => {
-    queryClient.setQueriesData(['readBookInfo'], (old?: readBookInfoProps) => {
-      let arr = old ? old : ({} as readBookInfoProps);
-      arr.is_user_approval = target.is_approval;
-      return arr;
-    });
+  readBookInfo: ({ queryClient, target }: approvalMutateProps) => {
+    queryClient.setQueriesData(
+      [`readBookInfo${target.book_id}`],
+      (old?: readBookInfoProps) => {
+        let arr = old ? old : ({} as readBookInfoProps);
+        arr.is_user_approval = target.is_approval;
+        return arr;
+      },
+    );
   },
-  topicBookList: (target: approvalProps, queryClient: QueryClient) => {
+  topicBookList: ({ queryClient, target }: approvalMutateProps) => {
     queryClient.setQueriesData(
       ['topicBookList'],
       (old?: topicBookListProps) => {

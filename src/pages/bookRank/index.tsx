@@ -3,8 +3,7 @@ import './style/index.less';
 import { BookBox } from '@/pages/bookRank/bookBox';
 import { useGetBookRank } from '@/utils/rank';
 import { useAuth } from '@/hook/useAuth';
-import { BookId } from '@/constants/url';
-import router from '@/hook/url';
+import { toRead } from '@/common/publicFn';
 
 const slideList = [
   { key: 1, label: '大热榜', subTitle: '根据七天内阅读人气进行排行' },
@@ -42,9 +41,6 @@ export default () => {
     userInfo,
   );
 
-  const toRead = (id: number) => {
-    router.push('/read', { [BookId]: id }, true);
-  };
   useEffect(() => {
     if (isLoading) setLoadingModel(isLoading);
   }, [sideOption.rankIndex]);
@@ -115,7 +111,10 @@ export default () => {
           </span>
         </div>
         {/*  书籍  */}
-        <BookBox bookList={rankBookData} toRead={toRead} />
+        <BookBox
+          bookList={rankBookData}
+          toRead={(book) => toRead(book.chapter_id, book.id)}
+        />
       </div>
     </div>
   );

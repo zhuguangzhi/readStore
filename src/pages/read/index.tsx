@@ -57,7 +57,10 @@ export default () => {
   // 点赞
   const { mutate: setApproval } = useModifyApproval('readBookInfo');
   // 关注
-  const { mutate: attentionUser } = useAttentionUser();
+  const { mutate: attentionUser } = useAttentionUser(
+    'readBookInfo',
+    parseInt(bookId),
+  );
 
   const [commentList, setCommentList] = useState<
     readComponentProps | undefined
@@ -100,9 +103,9 @@ export default () => {
     setCommentList(undefined);
   };
 
-  // 监听 触发loading 只有首次获取时才会触发，避免乐观更新时触发
+  // 监听 触发loading
   useEffect(() => {
-    setLoadingModel(containerLoading && infoLoading);
+    setLoadingModel(containerLoading || infoLoading);
   }, [containerLoading, infoLoading]);
   //上拉新增
   useEffect(() => {
@@ -118,7 +121,6 @@ export default () => {
     let list = commentList
       ? { ...commentList }
       : { page_info: commentData.page_info, data: [] };
-    // console.log('list.data',list.data,commentData.data)
     list.data = setArrayForId([...list.data, ...commentData.data]);
     list.page_info = commentData.page_info;
     setCommentList(list);

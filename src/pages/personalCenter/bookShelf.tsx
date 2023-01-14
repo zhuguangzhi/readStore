@@ -9,10 +9,8 @@ import { PullLoad } from '@/components/module/PullLoad';
 import { useDelMyBook, useGetMyBooks } from '@/utils/personalCenter';
 import { useAuth } from '@/hook/useAuth';
 import { myBookProps } from '@/type/personalCenter';
-import { setArrayForId, targetColumnArray } from '@/common/publicFn';
+import { setArrayForId, targetColumnArray, toRead } from '@/common/publicFn';
 import { UseNode } from '@/components/UseNode';
-import router from '@/hook/url';
-import { BookId } from '@/constants/url';
 import { BookFace } from '@/pages/personalCenter/components/bookFace';
 import { BookLayer } from '@/pages/personalCenter/components/bookLayer';
 
@@ -58,7 +56,7 @@ export default () => {
   };
   // 继续阅读
   const goToRead = (book: myBookProps) => {
-    router.push('/read', { [BookId]: book.book_id }, true);
+    toRead(book.chapter_id, book.book_id);
   };
 
   //edit为false时清空delPopup.id

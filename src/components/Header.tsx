@@ -5,14 +5,19 @@ import { IconFont } from '@/components/IconFont';
 import { inputEvent } from '@/type';
 import { logoUrl } from '../../public/config';
 import router, { useGetUrlPath } from '@/hook/url';
-
 import './style/header.less';
-import { LoginPopup } from '@/components/login';
 import { clearToken, useAuth } from '@/hook/useAuth';
 import { SearchKey } from '@/constants/url';
 import { useAsync } from '@/hook/useAsync';
 import { ErrorCheck, User } from '@/common/api';
 import { ResponseData } from '@/common/http';
+import { ReadModel } from '@/components/module/ReadModel';
+import { Membership } from '@/components/Membership';
+import { useDispatch } from 'umi';
+import { useSelector } from '@@/exports';
+import { ConnectState } from '@/models/modelConnect';
+import { globalState } from '@/models/global';
+
 const SearchIcon = () => (
   <IconFont
     width={'13px'}
@@ -25,6 +30,10 @@ const Header = () => {
   const { userInfo, setLoginPopup } = useAuth();
   const { run } = useAsync<ResponseData<{}>>();
   const routerPath = useGetUrlPath();
+  const dispatch = useDispatch();
+  const globalState = useSelector(
+    (state: ConnectState) => state.global,
+  ) as globalState;
   //路由选项跳转
   const optionList = [
     { title: '首页', key: 'home' },
@@ -42,6 +51,29 @@ const Header = () => {
       }
     };
   };
+  // 打开关闭vip弹窗
+  const controlVipModel = (open: boolean) => {
+    dispatch({
+      type: 'global/setVipModel',
+      payload: open,
+    });
+  };
+  // 页面跳转
+  const routerToPush = (key: string) => {
+    if (key !== 'admin/home') {
+      router.push('/' + key);
+      return;
+    }
+    if (!userInfo) {
+      message.error('您还未登陆，请先登陆');
+      return;
+    }
+    if (userInfo.is_author === 1) {
+      router.push('/' + key);
+      return;
+    }
+    router.push('/authorGuid');
+  };
 
   const SearchInput = () => {
     return (
@@ -54,7 +86,6 @@ const Header = () => {
       />
     );
   };
-
   // 用户卡片
   const UserCard = () => {
     const logout = async () => {
@@ -89,9 +120,13 @@ const Header = () => {
           <div className={'header_card_top_vipPay'}>
             <div className={'header_card_top_vipPay_info'}>
               <img src={require('@/assets/image/home/vipSign.png')} alt="" />
+              {/*TODO 会员到期时间*/}
               <span className={'font_12'}>您还不是会员</span>
             </div>
-            <div className={'header_card_top_vipPay_btn'}>
+            <div
+              className={'header_card_top_vipPay_btn'}
+              onClick={() => controlVipModel(true)}
+            >
               {userInfo?.is_vip === 1 ? '立即续费' : '开通会员'}
             </div>
           </div>
@@ -198,9 +233,7 @@ const Header = () => {
               className={`option ${
                 routerPath[1] === item.key ? 'selectOption' : ''
               }`}
-              onClick={() => {
-                router.push('/' + item.key);
-              }}
+              onClick={() => routerToPush(item.key)}
             >
               {item.title}
             </span>
@@ -212,7 +245,15 @@ const Header = () => {
         {/*    用户信息*/}
         {userInfo ? <UserInfoChildren /> : <LoginBoxChildren />}
       </div>
-      <LoginPopup />
+      <ReadModel
+        className={'header_model'}
+        useTitle={false}
+        open={globalState.openVipModel}
+        width={'640px'}
+        onCancel={() => controlVipModel(false)}
+      >
+        <Membership />
+      </ReadModel>
     </div>
   );
 };

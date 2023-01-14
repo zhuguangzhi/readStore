@@ -1,6 +1,8 @@
 import React from 'react';
 import { RcFile } from 'antd/es/upload';
 import { message } from 'antd';
+import router from '@/hook/url';
+import { BookId } from '@/constants/url';
 
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 export const isVoid = (val: unknown) =>
@@ -43,7 +45,7 @@ export const removeStorage = (key: string) => {
 export const clearStorage = () => {
   window.localStorage.clear();
 };
-// 转为指定行数的数组
+// 转为指定列数的数组
 export const targetColumnArray = <T>(value: T[], columnNum: number) => {
   const arr = [...value];
   let columnArray: T[][] = Array.from({
@@ -110,4 +112,12 @@ export const copy = (context: string) => {
   navigator.clipboard.writeText(context).then(() => {
     message.success('复制成功');
   });
+};
+// 阅读
+export const toRead = (chapterId: number, bookId: number) => {
+  if (chapterId === 0) {
+    message.error('该书正在努力上传中~');
+    return;
+  }
+  router.push('/read', { [BookId]: bookId }, true);
 };

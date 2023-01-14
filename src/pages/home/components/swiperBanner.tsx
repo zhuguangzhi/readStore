@@ -4,8 +4,7 @@ import { swiperDuration } from '../../../../public/config';
 import { useMounted } from '@/hook';
 import { IconFont } from '@/components/IconFont';
 import { bookInfoProps } from '@/type/book';
-import router from '@/hook/url';
-import { BookId } from '@/constants/url';
+import { toRead } from '@/common/publicFn';
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 const SampleNextArrow = (props: any) => {
@@ -110,7 +109,7 @@ export const SwiperBanner = ({
                 renderTimer(index % (swiperOptions.slidesToScroll as number));
               }}
               src={book.cover_url}
-              onClick={() => router.push('/read', { [BookId]: book.id }, true)}
+              onClick={() => toRead(book.chapter_id, book.id)}
               alt={book.name}
             />
           );

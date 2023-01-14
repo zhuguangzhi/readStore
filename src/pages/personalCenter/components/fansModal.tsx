@@ -8,7 +8,6 @@ import { approvalListProps, fansListProp } from '@/type/user';
 import { setArrayForId } from '@/common/publicFn';
 import { ApprovalList } from '@/pages/personalCenter/components/approvalList';
 import { FansList } from '@/pages/personalCenter/components/fansList';
-import { useMounted } from '@/hook';
 
 type TabLabelProps = {
   width?: string;
@@ -58,9 +57,9 @@ export const FansModal = ({ choose }: FansModalProps) => {
     arr.sort((a, b) => b.id - a.id);
     setList(arr);
   }, [listData]);
-  useMounted(() => {
-    setLoadingModel(true);
-  });
+  useEffect(() => {
+    if (list.length === 0) setLoadingModel(listLoading);
+  }, [listLoading, list]);
 
   return (
     <div className={'userInfo_comment fans'}>

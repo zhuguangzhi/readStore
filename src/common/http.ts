@@ -42,7 +42,6 @@ async function apiAxios<T>(
         return response;
       }
       // 请求状态不为成功时
-      message.error(response.data.error_user_msg);
       return response;
     },
     (error: AxiosError) => {

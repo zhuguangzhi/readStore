@@ -70,7 +70,6 @@ export const ReadEditor = ({
         id={'textEditor'}
         apiKey={TinyKeyApi}
         onInit={(evt, editor) => onInit(editor)}
-        initialValue="<p>This is the initial content of the editor.</p>"
         init={editorOption}
       />
       <UseNode rIf={editorRef.current}>

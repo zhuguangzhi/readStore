@@ -28,6 +28,7 @@ export type authorProps = {
   fans: number; //粉丝数
   follows: number; //关注数
   approvals: number; //获赞数
+  is_new_user: 1 | 2; //是否是新用户( 1:是  2:否 )
 };
 // 修改个人信息
 export type editInfoProps = {
@@ -147,4 +148,14 @@ export type approvalListProps = {
 export type fansApprovalProps = {
   page_info: pageProps;
   data: approvalListProps[];
+};
+
+// vip充值选项列表
+export type vipRechargeProps = {
+  id: number;
+  title: string; //标题
+  money: string; //金额
+  type: 1 | 2 | 3; //充值类型( 1:月卡 2:季卡 3:年卡 ）
+  is_continuous: 2 | 1; //是否连续( 1:是  2:否 )
+  description: string; //描述
 };

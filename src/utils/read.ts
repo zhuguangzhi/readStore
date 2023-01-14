@@ -176,6 +176,7 @@ export const useReport = () => {
 // 关注
 export const useAttentionUser = (
   type: 'readBookInfo' | 'getFans' = 'readBookInfo',
+  bookId?: number,
 ) => {
   const queryClient = useQueryClient();
   const queryKey = [type];
@@ -189,7 +190,7 @@ export const useAttentionUser = (
       },
       onMutate(target) {
         let previousItems = queryClient.getQueriesData(queryKey);
-        setAttention[type](target, queryClient);
+        setAttention[type](target, queryClient, bookId);
         // queryClient.setQueriesData(queryKey,(old?:readBookInfoProps)=>{
         //     if (!old) return {} as readBookInfoProps
         //     return {...old,is_attention:target.is_attention}

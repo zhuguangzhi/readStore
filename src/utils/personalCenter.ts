@@ -13,6 +13,8 @@ import {
   authorInfoProps,
   editInfoProps,
   fansProps,
+  vipRechargeProps,
+  authorProps,
 } from '@/type/user';
 
 interface getMyCommentProps extends pageRequestProps {
@@ -274,5 +276,15 @@ export const useReadAllMessage = () => {
         queryClient.setQueriesData(queryKey, context?.previousItems);
       },
     },
+  );
+};
+
+// 获取vip金额配置
+export const useGetVipMoneyList = (userInfo: authorProps | null) => {
+  return useQuery<vipRechargeProps[], Error>(['getMoneyList', userInfo], () =>
+    PersonalCenter.getVipMoneyOption().then((value) => {
+      ErrorCheck(value);
+      return value.data;
+    }),
   );
 };

@@ -1,5 +1,6 @@
 // 连载状态
 import { contractType } from '@/type';
+import { contractProps } from '@/type/authorAdmin/personalInfo';
 
 export const isFinish = (val: 1 | 2) => (val === 1 ? '完结' : '连载中');
 //字数转换万
@@ -18,6 +19,16 @@ export const contractTranslate = (val: contractType) => {
     minimum: '保底签约',
     hierarchy: '分成签约',
     buyout: '买断签约',
+  };
+  return list[val];
+};
+// 合同状态
+export const contrastStatus = (val: contractProps['sign_status']) => {
+  const list = {
+    1: '签署中',
+    2: '签署完成',
+    3: '失败',
+    4: '拒签',
   };
   return list[val];
 };

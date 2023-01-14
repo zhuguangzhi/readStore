@@ -35,6 +35,7 @@ export interface topCaseProps {
     author_name: string; //作者笔名
     description: string; //简介
     tags: string[]; //书籍标签
+    chapter_id: number; //章节id
   }[];
 }
 // 话题列表
