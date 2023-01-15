@@ -6,6 +6,7 @@ import { NoticeList } from '@/pages/home/noticeList';
 import { SwiperBanner } from '@/pages/home/components/swiperBanner';
 import { useGetSwiper } from '@/utils/home';
 import { useDispatch } from 'umi';
+import { ReadBackTop } from '@/components/module/ReadBackTop';
 
 const Index = () => {
   const disPatch = useDispatch();
@@ -41,6 +42,7 @@ const Index = () => {
         <BookList saveScroll={saveScroll} />
         <NoticeList saveScroll={saveScroll} />
       </main>
+      <ReadBackTop />
     </div>
   );
 };

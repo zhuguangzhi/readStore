@@ -1,6 +1,7 @@
 .readBook {
   width: 100%;
   user-select: none;
+  margin-bottom: 70px;
 
   &_box,
   &_comment {
@@ -87,6 +88,19 @@
       display: inline-block;
       margin-left: 8px;
       cursor: pointer;
+    }
+  }
+
+  &_model {
+    .ant-modal-body {
+      padding-top: 40px !important;
+      padding-bottom: 0 !important;
+    }
+    .ant-modal-footer {
+      display: none !important;
+    }
+    .ant-modal-close {
+      top: -6px;
     }
   }
 }

@@ -14,7 +14,6 @@ export type globalState = {
       height: string;
     };
   }; //首页tab信息
-  openCommentBox: boolean; //是否打开评论框
   openVipModel: boolean; //vip弹窗
 };
 type globalModelPopup = {
@@ -24,7 +23,6 @@ type globalModelPopup = {
     openLoading: Effect;
     closeLoading: Effect;
     setHomeTab: Effect;
-    setCommentBox: Effect;
     setVipModel: Effect;
   };
   reducers: {
@@ -44,7 +42,6 @@ export default {
         height: '',
       },
     },
-    openCommentBox: false,
     openVipModel: false,
   },
   effects: {
@@ -76,14 +73,6 @@ export default {
             ...homeTabState,
             ...payload,
           },
-        },
-      });
-    },
-    *setCommentBox({ payload }, { put }) {
-      yield put({
-        type: 'save',
-        payload: {
-          openCommentBox: payload,
         },
       });
     },

@@ -5,23 +5,29 @@ import { Tabs } from 'antd';
 import WorksInfo from '@/pages/authorAdmin/works/worksInfo';
 import router, { useSearchParam } from '@/hook/url';
 import { WorksChapterId, WorksId } from '@/constants/url';
-import { useMounted } from '@/hook';
 
 const SubIcon = () => (
   <IconFont width={'37px'} height={'44px'} icon={'bookShelf'} />
 );
 
+export type worksTabListProps = {
+  label: string;
+  key: string;
+  children?: React.ReactElement;
+};
 export default () => {
   const [{ [WorksId]: worksId, [WorksChapterId]: chapterId }] = useSearchParam([
     WorksId,
     WorksChapterId,
   ]);
   // 标签栏
-  const [tabList, setTabList] = useState([
+  const [tabList, setTabList] = useState<worksTabListProps[]>([
     {
       label: '作品信息',
       key: 'worksInfo',
-      children: <WorksInfo />,
+      children: (
+        <WorksInfo setTabList={(val) => setTabList([...tabList, val])} />
+      ),
     },
     // {
     //   label: '章节列表',
@@ -33,17 +39,7 @@ export default () => {
     //   key: 'draftBox',
     //   children: <SectionList type={'draft'} />,
     // },
-    {
-      label: '上传文章',
-      key: 'addSection',
-    },
   ]);
-  useMounted(() => {
-    if (worksId) return;
-    const arr = [...tabList];
-    arr.splice(1, 2);
-    setTabList(arr);
-  });
   return (
     <div className={'works'}>
       <div style={{ paddingRight: '69px' }}>

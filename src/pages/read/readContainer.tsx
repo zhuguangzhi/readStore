@@ -118,7 +118,7 @@ export const ReadContainer = ({
     // pEl不为p标签或者id不为数字，则说明已经看完了所有内容
     if (pEl.tagName !== 'P' || !Number(pEl.id)) {
       progress = 100;
-      currentLine = pEl.children.length;
+      currentLine = readBox.current?.children.length || 0;
     } else {
       progress = Math.ceil((Number(pEl.id) / allCount) * 100);
       currentLine = Number(pEl.id);
@@ -133,10 +133,6 @@ export const ReadContainer = ({
       setReadLineCache(bookInfo.id, currentLine);
     }, 2000);
   }, [scrollTop]);
-
-  useEffect(() => {
-    // console.log('okkk',readBox.current?.children.length)
-  }, [readBox.current]);
 
   return (
     <>

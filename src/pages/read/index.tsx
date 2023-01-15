@@ -6,7 +6,7 @@ import {
   useGetCommentData,
 } from '@/utils/read';
 import { useSearchParam } from '@/hook/url';
-import { AuthorId, BookId } from '@/constants/url';
+import { AuthorId, BookId, OpenComment } from '@/constants/url';
 import { useAuth } from '@/hook/useAuth';
 import { isFinish, translateNumber } from '@/utils/format';
 import { IconFont } from '@/components/IconFont';
@@ -19,31 +19,30 @@ import { ReadModel } from '@/components/module/ReadModel';
 import { Comment } from '@/components/comment';
 import { readComponentProps } from '@/type/book';
 import { ReadContainer } from '@/pages/read/readContainer';
-import { useDispatch, useSelector } from 'umi';
-import { ConnectState } from '@/models/modelConnect';
-import { globalState } from '@/models/global';
 import { setArrayForId } from '@/common/publicFn';
 import { netName } from '../../../public/config';
+import { ReadBackTop } from '@/components/module/ReadBackTop';
 
 export default () => {
   const webContainerRef = document.querySelector(
     '.webContainer',
   ) as HTMLElement;
-  const [{ [BookId]: bookId }] = useSearchParam([BookId]);
+  const [{ [BookId]: bookId, [OpenComment]: openComment }] = useSearchParam([
+    BookId,
+    OpenComment,
+  ]);
   const [scrollTopData, setScrollTop] = useState(0);
-  const globalState = useSelector(
-    (state: ConnectState) => state.global,
-  ) as globalState;
-  const dispatch = useDispatch();
   // 评论框实例
   const readContainerRef = useRef<HTMLDivElement>(null);
   // 评论页数
   const [commentPage, setCommentPage] = useState(1);
   // 评论排序方式
   const [commentSlotType, setCommentSlotType] = useState<1 | 2>(2);
+  // 是否打开评论弹窗
+  const [isCommentModel, setCommentModel] = useState(Number(openComment) === 1);
   const oldSlotType = useRef(commentSlotType);
   // 是否使用阅读底部信息框
-  const [useOperationTab, setOperationTab] = useState(true);
+  // const [useOperationTab, setOperationTab] = useState(true);
   // 默认内容
   const [noData, setNoData] = useState(false);
   // 获取内容
@@ -135,11 +134,12 @@ export default () => {
       if (scrollHeight - (webContainerHeight + scrollTop) < 500) {
         uploadGetMore();
       }
-      const readContainerHeight = readContainerRef.current?.clientHeight || 0;
-      // 设置底部信息框
-      if (scrollTop + webContainerHeight <= readContainerHeight)
-        setOperationTab(true);
-      else setOperationTab(false);
+      // 显影底部信息框
+      // const readContainerHeight = readContainerRef.current?.clientHeight || 0;
+      // // 设置底部信息框
+      // if (scrollTop + webContainerHeight <= readContainerHeight)
+      //   setOperationTab(true);
+      // else setOperationTab(false);
     };
   }, [commentPage, commentLoading, commentData, commentList]);
   // useMounted(() => {
@@ -214,26 +214,22 @@ export default () => {
             allCount={bookContainer?.line_count || 1}
           />
         </div>
-        <UseNode rIf={useOperationTab}>
-          <div className={'readOperationBox'}>
-            <ReadOperationTab
-              bookId={bookInfo?.id}
-              bookName={bookInfo?.name}
-              chapterId={bookInfo?.chapter_id}
-              isApproval={bookInfo?.is_user_approval || 2}
-              commentChange={() => {
-                webContainerRef.scrollTo({
-                  top: readContainerRef.current?.clientHeight || 0,
-                  behavior: 'smooth',
-                });
-              }}
-              onApproval={onApprovalChange}
-              onInput={() =>
-                dispatch({ type: 'global/setCommentBox', payload: true })
-              }
-            />
-          </div>
-        </UseNode>
+        <div className={'readOperationBox'}>
+          <ReadOperationTab
+            bookId={bookInfo?.id}
+            bookName={bookInfo?.name}
+            chapterId={bookInfo?.chapter_id}
+            isApproval={bookInfo?.is_user_approval || 2}
+            commentChange={() => {
+              webContainerRef.scrollTo({
+                top: readContainerRef.current?.clientHeight || 0,
+                behavior: 'smooth',
+              });
+            }}
+            onApproval={onApprovalChange}
+            onInput={() => setCommentModel(true)}
+          />
+        </div>
       </div>
       {/* 评论区*/}
       <UseNode rIf={!containerLoading}>
@@ -257,10 +253,9 @@ export default () => {
       <ReadModel
         width={'947px'}
         useTitle={false}
-        open={globalState.openCommentBox}
-        onCancel={() =>
-          dispatch({ type: 'global/setCommentBox', payload: false })
-        }
+        className={'readBook_model'}
+        open={isCommentModel}
+        onCancel={() => setCommentModel(false)}
       >
         <Comment
           isReverse={true}
@@ -278,6 +273,8 @@ export default () => {
           sendCommentCallBack={initCommentList}
         />
       </ReadModel>
+      {/*  回到顶部*/}
+      <ReadBackTop />
     </div>
   );
 };

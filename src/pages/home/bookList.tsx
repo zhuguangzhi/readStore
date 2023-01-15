@@ -7,7 +7,7 @@ import { homeChartProps } from '@/type/home';
 import { useAuth } from '@/hook/useAuth';
 import { useMounted } from '@/hook';
 import router from '@/hook/url';
-import { TopicId } from '@/constants/url';
+import { OpenComment, TopicId } from '@/constants/url';
 import { useDispatch, useSelector } from 'umi';
 import { ConnectState } from '@/models/modelConnect';
 import { globalState } from '@/models/global';
@@ -90,6 +90,9 @@ const BookList = ({ saveScroll }: BookListProps) => {
         clickTitle={(topicId) =>
           topicId ? toTopic(topicId, currentTabIndex) : ''
         }
+        onComment={(book) => {
+          toRead(book.chapter_id, book.id, { [OpenComment]: 1 });
+        }}
         onAddBookCase={(bookId) => addBookCase({ book_id: bookId })}
       />
     </div>

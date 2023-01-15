@@ -221,28 +221,28 @@ export default () => {
         </div>
       </div>
       {/*    我的书架*/}
-      <UseNode rIf={myBooks && myBooks.data.length > 0}>
-        <div className={'userInfo_bookShelf'}>
-          <div className={'userInfo_bookShelf_title'}>
-            <div>
-              <span>我的书架</span>
-              <span className={'userInfo_bookShelf_title_num'}>
-                {myBooks?.page_info.total}
-              </span>
-            </div>
-            <div
-              className={'userInfo_bookShelf_title_right'}
-              onClick={() => router.push('/personal/bookShelf')}
-            >
-              <span>查看书架</span>
-              <IconFont
-                width={'11px'}
-                height={'11px'}
-                marginLeft={'8px'}
-                icon={'right'}
-              />
-            </div>
+      <div className={'userInfo_bookShelf'}>
+        <div className={'userInfo_bookShelf_title'}>
+          <div>
+            <span>我的书架</span>
+            <span className={'userInfo_bookShelf_title_num'}>
+              {myBooks?.page_info.total}
+            </span>
           </div>
+          <div
+            className={'userInfo_bookShelf_title_right'}
+            onClick={() => router.push('/personal/bookShelf')}
+          >
+            <span>查看书架</span>
+            <IconFont
+              width={'11px'}
+              height={'11px'}
+              marginLeft={'8px'}
+              icon={'right'}
+            />
+          </div>
+        </div>
+        <UseNode rIf={myBooks && myBooks.data.length > 0}>
           <div>
             <BookLayer
               bookList={[myBooks?.data || []]}
@@ -253,8 +253,8 @@ export default () => {
               goToRead={(book) => toRead(book.chapter_id, book.book_id)}
             />
           </div>
-        </div>
-      </UseNode>
+        </UseNode>
+      </div>
       {/*    评论 话题*/}
       <div className={'userInfo_comment'}>
         <Tabs

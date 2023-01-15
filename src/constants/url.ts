@@ -7,3 +7,5 @@ export const authorPenName = 'pn'; // 作者笔名
 export const WorksId = 'awd'; // 作者作品id
 export const WorksChapterId = 'wcd'; // 作品章节id
 export const AuthorId = 'ud'; // 作者id
+
+export const OpenComment = 'cm'; //阅读页面评论框

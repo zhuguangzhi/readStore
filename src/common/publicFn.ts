@@ -114,10 +114,14 @@ export const copy = (context: string) => {
   });
 };
 // 阅读
-export const toRead = (chapterId: number, bookId: number) => {
+export const toRead = (
+  chapterId: number,
+  bookId: number,
+  p?: { [key: string]: unknown },
+) => {
   if (chapterId === 0) {
     message.error('该书正在努力上传中~');
     return;
   }
-  router.push('/read', { [BookId]: bookId }, true);
+  router.push('/read', { [BookId]: bookId, ...p }, true);
 };

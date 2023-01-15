@@ -15,6 +15,7 @@ import { useAuth } from '@/hook/useAuth';
 import { useGetBookCategory } from '@/utils/bookShelf';
 import { bookCategoryProps, createBooksProps } from '@/type/book';
 import { useGetTopicList } from '@/utils/topic';
+import { worksTabListProps } from '@/pages/authorAdmin/works/index';
 
 const formItemLayout = {
   labelCol: {
@@ -22,7 +23,11 @@ const formItemLayout = {
     sm: { span: 3 },
   },
 };
-export const worksInfo = () => {
+export const worksInfo = ({
+  setTabList,
+}: {
+  setTabList: (val: worksTabListProps) => void;
+}) => {
   const [{ [WorksId]: worksId }] = useSearchParam([WorksId]);
   // 设置路由参数
   const setRouterParam = useSetUrlParams();
@@ -65,8 +70,13 @@ export const worksInfo = () => {
   // 初始时格式化标签
   useEffect(() => {
     if (!worksInfo) return;
-    setRouterParam({ [WorksChapterId]: worksInfo.chapter_id });
+    //  书本是否审核通过
+    if (worksInfo.book_status > 0) {
+      setRouterParam({ [WorksChapterId]: worksInfo.chapter_id });
+      setTabList({ label: '上传文章', key: 'addSection' });
+    }
     const key = worksInfo.keyword ? worksInfo.keyword.split(',') : [];
+    // 表单设置默认值
     formValues.setFieldsValue({ ...worksInfo, keyword: key });
   }, [worksInfo]);
   // 设置分类

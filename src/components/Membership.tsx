@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './style/membership.less';
 import { useAuth } from '@/hook/useAuth';
-import { Carousel } from 'antd';
+import { Carousel, Skeleton } from 'antd';
 import { UseNode } from '@/components/UseNode';
 import { IconFont } from '@/components/IconFont';
 import { CarouselRef } from 'antd/es/carousel';
@@ -30,7 +30,6 @@ export const Membership = () => {
   //  获取充值选项
   const { data: vipMoneyList, isLoading: vipLoading } =
     useGetVipMoneyList(userInfo);
-  const { setLoadingModel } = useAuth();
 
   // 切换
   const slickCarousel = () => {
@@ -45,9 +44,6 @@ export const Membership = () => {
     setCurrentOption(vipMoneyList[0]);
     setMoneyList(arr);
   }, [vipMoneyList]);
-  useEffect(() => {
-    setLoadingModel(vipLoading);
-  }, [vipLoading]);
 
   return (
     <div className={'membership'}>
@@ -71,45 +67,50 @@ export const Membership = () => {
       </div>
       {/*    充值选项*/}
       <div className={'membership_money'}>
-        <Carousel dots={false} ref={carouselRef}>
-          {moneyList?.map((list, index) => {
-            return (
-              <div key={index} className={'membership_money_list'}>
-                {list.map((item) => {
-                  return (
-                    <div
-                      key={item.id}
-                      className={`membership_money_list_item ${
-                        currentOption?.id === item.id
-                          ? 'membership_itemSelect'
-                          : ''
-                      }`}
-                      onClick={() => setCurrentOption(item)}
-                    >
-                      <p className={'membership_money_list_item_label'}>
-                        {item.title}
-                      </p>
-                      <p style={{ color: '#764E19' }}>
-                        <span className={'SYBold font_26'}>{item.money}</span>
-                        <span className={'font_14'}>元</span>
-                      </p>
-                      <UseNode
-                        rIf={
-                          item.is_continuous === 2 &&
-                          userInfo?.is_new_user === 1
-                        }
+        {vipLoading ? (
+          <Skeleton active />
+        ) : (
+          <Carousel dots={false} ref={carouselRef}>
+            {moneyList?.map((list, index) => {
+              return (
+                <div key={index} className={'membership_money_list'}>
+                  {list.map((item) => {
+                    return (
+                      <div
+                        key={item.id}
+                        className={`membership_money_list_item ${
+                          currentOption?.id === item.id
+                            ? 'membership_itemSelect'
+                            : ''
+                        }`}
+                        onClick={() => setCurrentOption(item)}
                       >
-                        <span className={'membership_money_list_item_tip'}>
-                          新用户首月优惠
-                        </span>
-                      </UseNode>
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })}
-        </Carousel>
+                        <p className={'membership_money_list_item_label'}>
+                          {item.title}
+                        </p>
+                        <p style={{ color: '#764E19' }}>
+                          <span className={'SYBold font_26'}>{item.money}</span>
+                          <span className={'font_14'}>元</span>
+                        </p>
+                        <UseNode
+                          rIf={
+                            item.is_continuous === 2 &&
+                            userInfo?.is_new_user === 1
+                          }
+                        >
+                          <span className={'membership_money_list_item_tip'}>
+                            新用户首月优惠
+                          </span>
+                        </UseNode>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </Carousel>
+        )}
+
         <div className={'membership_money_control'} onClick={slickCarousel}>
           <IconFont
             icon={carouselPage === 1 ? 'right' : 'left'}

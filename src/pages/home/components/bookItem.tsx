@@ -20,18 +20,18 @@ type BookItemProps = {
 export const BookItem = ({
   bookList,
   onClick,
-  // onComment,
-  // onApprove,
+  onComment,
+  onApprove,
   onAddBookCase,
   clickTitle,
 }: BookItemProps) => {
-  // const setApprove = (book: bookInfoProps) => {
-  //   const param: approvalProps = {
-  //     book_id: book.id,
-  //     is_approval: book.is_user_approval === 1 ? 2 : 1,
-  //   };
-  //   onApprove?.(param);
-  // };
+  const setApprove = (book: bookInfoProps) => {
+    const param: approvalProps = {
+      book_id: book.id,
+      is_approval: book.is_user_approval === 1 ? 2 : 1,
+    };
+    onApprove?.(param);
+  };
 
   return (
     <>
@@ -89,15 +89,11 @@ export const BookItem = ({
                   </div>
                 </UseNode>
                 <div className={'book_right_options'}>
-                  <div
-                    className={'operation'}
-                    // onClick={() => setApprove(book)}
-                  >
+                  <div className={'operation'} onClick={() => setApprove(book)}>
                     <IconFont
                       width={'16px'}
                       height={'16px'}
-                      // icon={book.is_user_approval === 1 ? 'support' : 'xihuan'}
-                      icon={'xihuan'}
+                      icon={book.is_user_approval === 1 ? 'support' : 'xihuan'}
                     />
                     <span>
                       喜欢 （
@@ -110,7 +106,7 @@ export const BookItem = ({
                   </div>
                   <div
                     className={'operation'}
-                    // onClick={() => onComment?.(book)}
+                    onClick={() => onComment?.(book)}
                   >
                     <IconFont width={'16px'} height={'16px'} icon={'pinglun'} />
                     <span>

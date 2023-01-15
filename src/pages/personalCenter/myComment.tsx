@@ -99,7 +99,7 @@ const MyComment = () => {
       />
       <div className={'containerBox'} style={{ height: 'calc(100% - 58px)' }}>
         {showNullData ? (
-          <DefaultNoData type={'noData'} text={'暂无评论'} />
+          <DefaultNoData type={'noData'} className={'containerBox_noData'} />
         ) : (
           <PullLoad
             page={commentPage}

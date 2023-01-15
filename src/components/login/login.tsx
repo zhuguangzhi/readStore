@@ -16,13 +16,16 @@ import { ErrorCheck, User } from '@/common/api';
 import { ResponseData } from '@/common/http';
 import { IconFont } from '@/components/IconFont';
 
+// 手机号登陆
 const PhoneInput = React.memo(
   ({
     formValue,
     setCaptchaKey,
+    isCode,
   }: {
     formValue: FormInstance;
     setCaptchaKey: (val: string) => void;
+    isCode: boolean;
   }) => {
     // const [mobile, setMobile] = useState<string>('');
     // const inputOnchange = (val: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +34,7 @@ const PhoneInput = React.memo(
     const mobile = Form.useWatch('mobile', formValue);
 
     return (
-      <>
+      <div style={{ display: isCode ? 'block' : 'none' }}>
         <Form.Item name={'mobile'}>
           <Input
             className={'login_form_input'}
@@ -58,13 +61,13 @@ const PhoneInput = React.memo(
             setCaptchaKey={setCaptchaKey}
           />
         </div>
-      </>
+      </div>
     );
   },
 );
-const AccountInput = React.memo(() => {
+const AccountInput = React.memo(({ isCode }: { isCode: boolean }) => {
   return (
-    <>
+    <div style={{ display: !isCode ? 'block' : 'none' }}>
       <Form.Item name={'account'}>
         <Input
           className={'login_form_input'}
@@ -82,9 +85,10 @@ const AccountInput = React.memo(() => {
           prefix={<IconFont icon={'lock'} color={'#999999'} />}
         />
       </Form.Item>
-    </>
+    </div>
   );
 });
+
 const Login = () => {
   const { setToken, setUserInfo, setLoginPopup } = useAuth();
   const { run, isLoading } =
@@ -148,11 +152,12 @@ const Login = () => {
         onFinish={onLogin}
         key={'Form_mobile'}
       >
-        {isCode ? (
-          <PhoneInput formValue={formValue} setCaptchaKey={setCaptchaKey} />
-        ) : (
-          <AccountInput />
-        )}
+        <PhoneInput
+          formValue={formValue}
+          setCaptchaKey={setCaptchaKey}
+          isCode={isCode}
+        />
+        <AccountInput isCode={isCode} />
         <Form.Item>
           <Button
             className={'login_form_btn'}

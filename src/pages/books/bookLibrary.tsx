@@ -29,7 +29,7 @@ export const BookLibrary = ({ bookList, onClick }: BookLibraryProps) => {
               >
                 {book.name}
               </p>
-              <p>作者：{book.author.pen_name}</p>
+              <p>作者：{book.author?.pen_name}</p>
               <div className={'bookLibrary_item_container_infoBox'}>
                 <span>{isFinish(book.is_finish)}</span>
                 <span>{translateNumber(book.word_count)}</span>
