@@ -5,7 +5,7 @@ import {
   useGetBookInfo,
   useGetCommentData,
 } from '@/utils/read';
-import { useSearchParam } from '@/hook/url';
+import { useCoverUrlParams, useSearchParam } from '@/hook/url';
 import { AuthorId, BookId, OpenComment } from '@/constants/url';
 import { useAuth } from '@/hook/useAuth';
 import { isFinish, translateNumber } from '@/utils/format';
@@ -22,6 +22,7 @@ import { ReadContainer } from '@/pages/read/readContainer';
 import { setArrayForId } from '@/common/publicFn';
 import { netName } from '../../../public/config';
 import { ReadBackTop } from '@/components/module/ReadBackTop';
+import { useMounted } from '@/hook';
 
 export default () => {
   const webContainerRef = document.querySelector(
@@ -31,6 +32,9 @@ export default () => {
     BookId,
     OpenComment,
   ]);
+  // 覆盖路由 避免刷新再次打开评论框
+  const coverUrl = useCoverUrlParams();
+  // 滚动距离顶部的值
   const [scrollTopData, setScrollTop] = useState(0);
   // 评论框实例
   const readContainerRef = useRef<HTMLDivElement>(null);
@@ -142,14 +146,15 @@ export default () => {
       // else setOperationTab(false);
     };
   }, [commentPage, commentLoading, commentData, commentList]);
-  // useMounted(() => {
-  //   // document.documentElement.scrollTop = 0;
-  //   // document.documentElement.style.scrollBehavior = 'smooth';
-  //   // 路由跳转拦截
-  //   return () => {
-  //   //   document.documentElement.style.scrollBehavior = 'initial';
-  //   };
-  // });
+  useMounted(() => {
+    coverUrl({ [BookId]: bookId });
+    // document.documentElement.scrollTop = 0;
+    // document.documentElement.style.scrollBehavior = 'smooth';
+    // 路由跳转拦截
+    // return () => {
+    //   document.documentElement.style.scrollBehavior = 'initial';
+    // };
+  });
 
   return (
     <div className={'readBook'}>

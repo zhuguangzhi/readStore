@@ -14,6 +14,7 @@ import { DefaultNoData } from '@/components/defaultNoData';
 import { ReadPagination } from '@/components/module/ReadPagination';
 import { UseNode } from '@/components/UseNode';
 import { useReply } from '@/utils/read';
+import { stopProp } from '@/common/publicFn';
 
 const SubIcon = () => (
   <IconFont width={'37px'} height={'44px'} icon={'comment2'} />
@@ -24,7 +25,7 @@ export default () => {
   // 作者书籍列表
   const [worksList, setWorkList] = useState<
     { key: string | number; label: string }[]
-  >([{ key: 0, label: '所有书籍' }]);
+  >([{ key: 0, label: '所有作品' }]);
   //选中的书籍key
   const [selectBookKey, setSelect] = useState(0);
   const [page, setPage] = useState(1);
@@ -85,7 +86,7 @@ export default () => {
   }, [worksLoading, commentLoading]);
   useEffect(() => {
     if (!worksDataList) return;
-    let arr = [{ key: 0, label: '所有书籍' }];
+    let arr = [{ key: 0, label: '所有作品' }];
     worksDataList.data.forEach((works) => {
       arr.push({
         key: works.id,
@@ -102,7 +103,10 @@ export default () => {
 
   const CommentItem = ({ item }: { item: commentProps }) => {
     return (
-      <div className="commentAdmin_box_item">
+      <div
+        className="commentAdmin_box_item"
+        onClick={(e) => stopProp(e, () => {})}
+      >
         <img
           className={'commentAdmin_box_item_img'}
           src={item.user_image_url}
@@ -162,6 +166,7 @@ export default () => {
       <div
         className={'admin_container commentAdmin_container'}
         id={'commentAdmin'}
+        onClick={() => setReply(null)}
       >
         <Form
           layout={'inline'}

@@ -15,8 +15,10 @@ import moment from 'moment';
 import { useMounted } from '@/hook';
 import { DefaultNoData } from '@/components/defaultNoData';
 import { LoadingOutlined } from '@ant-design/icons';
+import { useDispatch } from 'umi';
 
 export default () => {
+  const dispatch = useDispatch();
   // 条数
   const pageSize = 10;
   const [page, setPage] = useState(1);
@@ -56,8 +58,34 @@ export default () => {
     setPage(page + 1);
   };
 
+  // 占位点击
+  const linkClick = (source: 1 | 2 | 3) => {
+    switch (source) {
+      // 打开vip弹窗
+      case 3: {
+        dispatch({
+          type: 'global/setVipModel',
+          payload: true,
+        });
+        break;
+      }
+    }
+  };
+  // 占位符转文字
+  const messageFormat = (value: string, message: messageListProps) => {
+    let text: string = JSON.parse(JSON.stringify(value));
+    message.link.forEach((item) => {
+      text = text.replace(
+        '%s',
+        `<span class="system_message_item_formatMessage" onclick=linkClick(${item.target_page})>【${item.title}】</span>`,
+      );
+    });
+    return <span dangerouslySetInnerHTML={{ __html: text }} />;
+  };
+
   useMounted(() => {
     setLoadingModel(true);
+    window.linkClick = linkClick;
   });
   useEffect(() => {
     if (!messageData) return;
@@ -122,11 +150,12 @@ export default () => {
                   </p>
                   {/*  内容*/}
                   <p style={{ position: 'relative' }}>
-                    <span>
-                      {currentShowId === message.id
-                        ? message.content
-                        : `${message.content.substring(0, 40)}`}
-                    </span>
+                    {currentShowId === message.id
+                      ? messageFormat(message.content, message)
+                      : messageFormat(
+                          message.content.substring(0, 40),
+                          message,
+                        )}
                     <UseNode rIf={message.content.length > 40}>
                       <span
                         className={'system_message_item_btn'}

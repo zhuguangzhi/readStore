@@ -68,11 +68,14 @@ const Header = () => {
       message.error('您还未登陆，请先登陆');
       return;
     }
+    // 是否已经成为作者
     if (userInfo.is_author === 1) {
-      router.push('/' + key);
+      // 作者后台
+      router.push('/' + key, {}, true);
       return;
     }
-    router.push('/authorGuid');
+    // 作者引导页
+    router.push('/authorGuid', {}, true);
   };
 
   const SearchInput = () => {

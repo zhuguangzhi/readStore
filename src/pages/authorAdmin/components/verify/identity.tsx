@@ -1,27 +1,31 @@
 //身份信息
 
-import { Form, FormInstance, Input, Select } from 'antd';
-import React from 'react';
+import { Button, Form, FormInstance, Input, message, Select } from 'antd';
+import React, { useEffect, useState } from 'react';
 import '../../style/formCommon.less';
 import './style/identity.less';
 import { UploadImg } from '@/components/module/UploadImg';
+import { Values } from 'async-validator';
+import {
+  useGetSignFaceVerifyInfo,
+  useSignFaceVerify,
+} from '@/utils/authorAdmin/personalInfo';
+import { useAuth } from '@/hook/useAuth';
 
 // type cityProps = {
 //   n: string; //名称
 //   y: string; //首个拼音
 // };
-interface IdentityProps extends FormInstance {
+interface IdentityFormProps extends FormInstance {
   idFace?: string; //身份证正面
   idBack?: string; //身份证反面
 }
-
-export const Identity = ({
-  form,
-  isFinish,
-}: {
-  form?: IdentityProps;
+type IdentityProps = {
+  form?: IdentityFormProps;
   isFinish: boolean;
-}) => {
+  setStep: Function;
+};
+export const Identity = ({ form, isFinish, setStep }: IdentityProps) => {
   // //省级数据
   // const [provinceData] = useState<cityProps[]>([]);
   // //市级数据
@@ -29,14 +33,53 @@ export const Identity = ({
   // //区级数据
   // const [areaData] = useState<cityProps[]>([]);
 
+  const { userInfo } = useAuth();
+  // bindStep 1：身份证认证 2，人脸识别步骤
+  const [bindStep, setBindStep] = useState(1);
+  // 绑定身份证
+  const { mutate: bindIdentity, isLoading: idLoading } = useSignFaceVerify(() =>
+    setBindStep(2),
+  );
+  // 校验人脸是否通过
+  const { mutate: verifyFace, isLoading: verifyLoading } =
+    useGetSignFaceVerifyInfo(setStep);
+  // 身份验证
+  const onAuth = (value: Values) => {
+    if (!userInfo) {
+      message.error('登陆信息有误请退出后重新登陆');
+      return;
+    }
+    // 绑定身份证
+    if (bindStep === 1) {
+      bindIdentity({
+        user_id: String(userInfo.id), //作者ID
+        id_card: value.idNumber,
+        name: value.name,
+      });
+      return;
+    }
+    //  人脸识别校验
+    verifyFace({ user_id: String(userInfo.id) });
+  };
+
+  useEffect(() => {
+    // 完成，跳到下一步
+    if (isFinish) setStep();
+  }, [isFinish]);
   return (
     <Form
       labelCol={{ span: 6 }}
       className={'identity'}
       form={form}
       disabled={isFinish}
+      onFinish={onAuth}
+      requiredMark={false}
     >
-      <Form.Item label={'真实姓名'} name={'name'}>
+      <Form.Item
+        label={'真实姓名'}
+        name={'name'}
+        rules={[{ required: true, message: '请填写姓名' }]}
+      >
         <Input placeholder={'请输入您的真实姓名'} autoComplete={'off'} />
       </Form.Item>
       <Form.Item label={'身份证号'}>
@@ -46,7 +89,10 @@ export const Identity = ({
             style={{ width: '131px' }}
             disabled={true}
           />
-          <Form.Item name={'idNumber'}>
+          <Form.Item
+            name={'idNumber'}
+            rules={[{ required: true, message: '请填写身份证号' }]}
+          >
             <Input
               maxLength={18}
               style={{ width: '256px' }}
@@ -96,7 +142,7 @@ export const Identity = ({
       {/*</Form.Item>*/}
       <div className={'identity_box'}>
         <p>
-          证件照片：上传后系统自动添加水印，仅限作品签约使用仅支持上传2M以内的jpg/png
+          证件照片：上传后系统自动添加水印，仅限作品签约使用仅支持上传5M以内的jpg/png
         </p>
         <div className={'justify_between'}>
           {/*身份证正面*/}
@@ -104,7 +150,7 @@ export const Identity = ({
             {form?.idFace ? (
               <img className={'identity_box_img'} src={form.idFace} alt={''} />
             ) : (
-              <UploadImg className={'identity_box_uploadFace'} />
+              <UploadImg className={'identity_box_uploadFace'} isFace={1} />
             )}
             <p>证件人像面（横向上传）</p>
           </div>
@@ -113,12 +159,22 @@ export const Identity = ({
             {form?.idBack ? (
               <img className={'identity_box_img'} src={form.idFace} alt={''} />
             ) : (
-              <UploadImg className={'identity_box_uploadBack'} />
+              <UploadImg className={'identity_box_uploadBack'} isFace={2} />
             )}
             <p>证件非人像面（横向上传）</p>
           </div>
         </div>
       </div>
+      <Button
+        className={'readModal_footerBtn'}
+        shape="round"
+        type={'primary'}
+        style={{ marginBottom: '76px' }}
+        htmlType={'submit'}
+        loading={idLoading || verifyLoading}
+      >
+        {bindStep === 1 ? '身份认证' : '人脸识别完成'}
+      </Button>
     </Form>
   );
 };

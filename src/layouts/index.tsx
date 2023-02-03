@@ -12,7 +12,12 @@ import { ConnectState } from '@/models/modelConnect';
 import { globalState } from '@/models/global';
 import EventBus from '@/common/EventBus';
 
-import { Bus_ClearUserInfo, Bus_OpenLogin, UserInfo } from '@/constants';
+import {
+  Bus_ClearUserInfo,
+  Bus_CloseLoading,
+  Bus_OpenLogin,
+  UserInfo,
+} from '@/constants';
 import { getStorage } from '@/common/publicFn';
 import { useAsync } from '@/hook/useAsync';
 import { ResponseData } from '@/common/http';
@@ -35,7 +40,7 @@ const Index = () => {
     (state: ConnectState) => state.global,
   ) as globalState;
   const { run } = useAsync<ResponseData<loginResultProps | authorProps>>();
-  const { setUserInfo, setToken, setLoginPopup } = useAuth();
+  const { setUserInfo, setToken, setLoginPopup, setLoadingModel } = useAuth();
 
   const getUserInfo = async () => {
     const oldToken = getToken();
@@ -69,6 +74,9 @@ const Index = () => {
       setLoginPopup(true);
       setToken(null);
       setUserInfo(null);
+    });
+    EventBus.on(Bus_CloseLoading, () => {
+      setLoadingModel(false);
     });
     getUserInfo();
   });

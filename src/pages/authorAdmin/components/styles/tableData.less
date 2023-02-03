@@ -5,6 +5,7 @@
   line-height: 18px;
   color: #656a7a;
   margin: 25px 0;
+  border: 1px solid #b5bcd7;
   & tr td:first-child {
     width: 166px;
   }
@@ -26,6 +27,22 @@
     vertical-align: middle;
     text-align: center;
     padding: 12px 0;
+  }
+  //  保底稿费不发放的样式
+  .feeNoSend {
+    color: #dad7d7;
+    background-color: #fafbff !important;
+    & td:first-child {
+      background-color: #fafbff !important;
+    }
+  }
+  //  发放
+  .feeSend {
+    color: #656a7a;
+    background-color: #ecf0fe;
+    & td {
+      background-color: #ecf0fe !important;
+    }
   }
 }
 .otherTable {

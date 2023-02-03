@@ -18,8 +18,8 @@ import { DefaultNoData } from '@/components/defaultNoData';
 
 const readType = [
   { key: 0, label: '全部' },
-  { key: 1, label: '男频' },
   { key: 2, label: '女频' },
+  { key: 1, label: '男频' },
 ];
 const statusList = [
   [

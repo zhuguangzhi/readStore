@@ -4,6 +4,19 @@ export type worksListProps = {
   data: bookInfoProps[];
   page_info: pageProps;
 };
+// 标签列表 ---- start
+export type tagsDataProps = {
+  channel_type: 1 | 2; //1男频 2女频
+  content: string; //标签内容 ,号隔开
+  id: number;
+  name: string; //分类描述
+};
+export type worksTagsProps = {
+  1: tagsDataProps[]; // 男频标签
+  2: tagsDataProps[]; // 女频标签
+};
+// 标签列表 ---- end
+
 // 创建、修改章节、保存草稿
 export type creatChapterProps = {
   book_id: number; //书籍ID

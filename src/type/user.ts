@@ -114,6 +114,7 @@ export interface authorInfoProps {
 export type authorPersonalProps = {
   id: number; //主键ID
   real_name: string; //真实姓名
+  pen_name: string; //笔名
   qq: number; //QQ号
   email: string; //邮箱
   address: string; //地址
@@ -123,6 +124,7 @@ export type authorPersonalProps = {
   bank_card_status: 1 | 2; //银行卡认证状态(1 否， 2 认证完成 ）
   mobile: string; //手机号
   is_password_set: 1 | 2; //密码是否设置( 1：是  2：否 ）
+  is_pen_name_set: 1 | 2; //笔名是否设置( 1：是  2：否 ）
 };
 // 粉丝和关注信息
 export type fansListProp = {

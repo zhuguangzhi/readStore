@@ -101,12 +101,16 @@ export const useGetMyBooks = (p: useGetMyBooksProps<pageRequestProps>) => {
 };
 
 // 移出我的书架
-export const useDelMyBook = (type: 'topicCase' | 'myBooks') => {
+export const useDelMyBook = (
+  type: 'topicCase' | 'myBooks',
+  delType: 'bookShelf' | 'history',
+) => {
   const queryClient = useQueryClient();
   const queryKey = [type];
+  const url = delType === 'bookShelf' ? 'delMyBooks' : 'delMyBooksHistory';
   return useMutation(
     ['delMyBook'],
-    (p: { book_id: string }) => PersonalCenter.delMyBooks(p),
+    (p: { book_id: string }) => PersonalCenter[url](p),
     {
       async onSuccess(val) {
         ErrorCheck(val);

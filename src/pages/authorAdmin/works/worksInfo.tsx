@@ -16,6 +16,7 @@ import { useGetBookCategory } from '@/utils/bookShelf';
 import { bookCategoryProps, createBooksProps } from '@/type/book';
 import { useGetTopicList } from '@/utils/topic';
 import { worksTabListProps } from '@/pages/authorAdmin/works/index';
+import { WorksTags } from '@/pages/authorAdmin/works/worksTags';
 
 const formItemLayout = {
   labelCol: {
@@ -37,10 +38,14 @@ export const worksInfo = ({
   // 作品信息
   const { data: worksInfo, isLoading: detailsLoading } =
     uesGetAuthorBookDetails({ id: Number(worksId) });
+  // 标签弹窗
+  const [openTagsModel, setTagsModel] = useState(false);
   // 分类列表
   const [parentCategory, setParentCategory] = useState<
     bookCategoryProps['child'] | null
   >(null);
+  // 当前标签
+  const [currentTags, setCurrentTags] = useState<string[]>([]);
   // 二级分类
   const [category, setCategory] = useState<bookCategoryProps['child'] | null>(
     null,
@@ -78,6 +83,7 @@ export const worksInfo = ({
     const key = worksInfo.keyword ? worksInfo.keyword.split(',') : [];
     // 表单设置默认值
     formValues.setFieldsValue({ ...worksInfo, keyword: key });
+    setCurrentTags(key);
   }, [worksInfo]);
   // 设置分类
   useEffect(() => {
@@ -118,6 +124,7 @@ export const worksInfo = ({
       category_id: '',
       keyword: [],
     });
+    setCurrentTags([]);
   };
 
   return (
@@ -257,22 +264,15 @@ export const worksInfo = ({
             <Form.Item name={'keyword'}>
               <Select
                 style={{ width: '100%' }}
-                placeholder="请输入标签(最多五个)"
-                showSearch
+                placeholder="请选择标签(最多五个)"
                 optionFilterProp="children"
                 mode="multiple"
-                getPopupContainer={() =>
-                  document.getElementById('formItemSelect') as HTMLDivElement
+                dropdownStyle={{ display: 'none' }}
+                onClick={() =>
+                  (worksInfo?.book_status || 0) < 1 ? setTagsModel(true) : ''
                 }
-                filterOption={(input, option) =>
-                  (option?.label ?? '')
-                    .toLowerCase()
-                    .includes(input.toLowerCase())
-                }
-                options={tagsList?.[channelType]?.map((tag) => ({
-                  value: tag,
-                  label: tag,
-                }))}
+                value={currentTags}
+                onChange={(e) => setCurrentTags(e)}
               />
             </Form.Item>
             {/*<span className={'worksInfo_right_tip'}>*/}
@@ -321,6 +321,15 @@ export const worksInfo = ({
           </Form.Item>
         </Form>
       </div>
+      <WorksTags
+        tagsList={tagsList?.[channelType]}
+        onOk={(tags) => {
+          formValues.setFieldValue('keyword', tags);
+        }}
+        openTagsModel={openTagsModel}
+        setTagsModel={(open) => setTagsModel(open)}
+        defaultTags={currentTags}
+      />
     </div>
   );
 };

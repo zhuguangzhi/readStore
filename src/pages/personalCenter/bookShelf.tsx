@@ -30,7 +30,10 @@ export default () => {
   const [bookList, setBookList] = useState<(myBookProps | null)[][]>([]);
   const { setLoadingModel } = useAuth();
   // 移出书架
-  const { mutate: deleteBooks } = useDelMyBook('myBooks');
+  const { mutate: deleteBooks } = useDelMyBook(
+    'myBooks',
+    currentTab === 'getMyBookList' ? 'bookShelf' : 'history',
+  );
   //需要删除的id list 删除 确认弹窗
   const [popupOption, setPopupOption] = useState({
     ids: [] as number[],

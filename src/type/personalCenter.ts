@@ -43,7 +43,7 @@ export type myBookListProps = {
 // 消息链接
 type messageLinkProps = {
   title: string; //链接标题
-  target_page: number | string; //链接跳转页面
+  target_page: 1 | 2 | 3; //1:收入查询 2:稿酬查询 3:开通/续费vip
 };
 // 消息列表
 export type messageListProps = {

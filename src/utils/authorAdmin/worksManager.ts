@@ -5,6 +5,7 @@ import {
   chapterDetailsProps,
   creatChapterProps,
   worksListProps,
+  worksTagsProps,
 } from '@/type/authorAdmin/worksManager';
 import router from '@/hook/url';
 import { message } from 'antd';
@@ -62,7 +63,7 @@ export const useModifyAuthorBook = () => {
 };
 // 获取标签列表
 export const useGetTageList = () => {
-  return useQuery<{ 1: string[]; 2: string[] }, Error>(['getTagsList'], () =>
+  return useQuery<worksTagsProps, Error>(['getTagsList'], () =>
     AuthorBook.getTagsList().then((value) => {
       ErrorCheck(value);
       return value.data;

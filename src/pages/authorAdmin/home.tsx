@@ -77,7 +77,7 @@ export default () => {
       </p>
       {/*报表面板*/}
       <div className={'justify_between'}>
-        <ContainerBox title={'上月稿费'}>
+        <ContainerBox title={'全部稿费'}>
           <div className={'adminHome_manuscript'}>
             <p>
               全部稿费为 &nbsp;

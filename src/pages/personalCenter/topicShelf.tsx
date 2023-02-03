@@ -23,7 +23,10 @@ export default () => {
   );
   const [edit, setEdit] = useState(false);
   // 移出书架
-  const { mutate: deleteBooks } = useDelMyBook('topicCase');
+  const { mutate: deleteBooks } = useDelMyBook(
+    'topicCase',
+    currentTab === 'topicShelf' ? 'bookShelf' : 'history',
+  );
   // 删除 确认弹窗
   const [popupOption, setPopupOption] = useState({
     ids: [] as number[],

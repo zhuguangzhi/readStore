@@ -11,3 +11,5 @@ export const Bus_ClearUserInfo = 'clearUserInfo';
 export const Bus_OpenLogin = 'openLogin';
 // 获取token
 export const Bus_GetToken = 'getToken';
+// 关闭loading
+export const Bus_CloseLoading = 'closeLoading';

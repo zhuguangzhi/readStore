@@ -27,7 +27,7 @@ const slideList = [
 export default () => {
   const { userInfo, setLoadingModel } = useAuth();
   const [sideOption, setSide] = useState({
-    channelType: 1 as 1 | 2, //频道类型( 1：男频  2：女频 ）
+    channelType: 2 as 1 | 2, //频道类型( 1：男频  2：女频 ）
     rankIndex: 0,
   });
   const { data: rankBookData, isLoading } = useGetBookRank(
@@ -49,31 +49,6 @@ export default () => {
       {/*侧边栏*/}
       <div className={'bookRank_side position_sticky'} style={{ top: 0 }}>
         <div>
-          <p className={'SYMedium'}>男生排行榜</p>
-          {slideList.map((item, index) => {
-            const { channelType, rankIndex } = sideOption;
-            return (
-              <p
-                className={
-                  `1-${index}` === `${channelType}-${rankIndex}`
-                    ? 'sideSelect'
-                    : 'color_b2'
-                }
-                key={item.key}
-                onClick={() => {
-                  setSide((val) => ({
-                    ...val,
-                    channelType: 1,
-                    rankIndex: index,
-                  }));
-                }}
-              >
-                {item.label}
-              </p>
-            );
-          })}
-        </div>
-        <div>
           <p className={'SYMedium'}>女生排行榜</p>
           {slideList.map((item, index) => {
             const { channelType, rankIndex } = sideOption;
@@ -89,6 +64,31 @@ export default () => {
                   setSide((val) => ({
                     ...val,
                     channelType: 2,
+                    rankIndex: index,
+                  }));
+                }}
+              >
+                {item.label}
+              </p>
+            );
+          })}
+        </div>
+        <div>
+          <p className={'SYMedium'}>男生排行榜</p>
+          {slideList.map((item, index) => {
+            const { channelType, rankIndex } = sideOption;
+            return (
+              <p
+                className={
+                  `1-${index}` === `${channelType}-${rankIndex}`
+                    ? 'sideSelect'
+                    : 'color_b2'
+                }
+                key={item.key}
+                onClick={() => {
+                  setSide((val) => ({
+                    ...val,
+                    channelType: 1,
                     rankIndex: index,
                   }));
                 }}

@@ -1,6 +1,6 @@
 // 连载状态
-import { contractType } from '@/type';
 import { contractProps } from '@/type/authorAdmin/personalInfo';
+import { incomeDistributeProps } from '@/type/authorAdmin/income';
 
 export const isFinish = (val: 1 | 2) => (val === 1 ? '完结' : '连载中');
 //字数转换万
@@ -14,14 +14,29 @@ export const numberToSerial = (num: number) => {
   return serialList[num - 1] || null;
 };
 //签约类型转换
-export const contractTranslate = (val: contractType) => {
-  const list: { [key in contractType]: string } = {
-    minimum: '保底签约',
-    hierarchy: '分成签约',
-    buyout: '买断签约',
+export const contractTranslate = (val: 1 | 2 | 3) => {
+  const list: { [key in typeof val]: string } = {
+    3: '保底签约',
+    2: '分成签约',
+    1: '买断签约',
   };
   return list[val];
 };
+// 收入查询饼图数据描述 ---------------------------------start
+export const pieDataTranslate = (val: incomeDistributeProps | undefined) => {
+  if (!val) return [] as { name: string; value: number }[];
+  const list: { key: Partial<keyof incomeDistributeProps>; label: string }[] = [
+    { key: 'base_royalties', label: '基础稿费' },
+    { key: 'channel', label: '渠道分成' },
+    { key: 'gift', label: '礼物收益' },
+    { key: 'vip', label: 'vip分成' },
+    { key: 'welfare', label: '网站福利' },
+  ];
+  return list.map((item) => {
+    return { name: item.label, value: Number(val[item.key]) };
+  });
+};
+// 收入查询饼图数据描述 ---------------------------------end
 // 合同状态
 export const contrastStatus = (val: contractProps['sign_status']) => {
   const list = {

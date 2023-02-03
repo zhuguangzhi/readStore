@@ -16,14 +16,14 @@ export default defineConfig({
     type: 'browser',
   },
   scripts: [
-    '//at.alicdn.com/t/c/font_3753867_xdeas3e2u7c.js', //阿里图标库
+    '//at.alicdn.com/t/c/font_3753867_785f9lx5t3u.js', //阿里图标库
   ],
-  // proxy: {
-  //   '/proxy': {
-  //     target: 'http://apipost.datangzww.com',
-  //     changeOrigin: true,
-  //     pathRewrite: { '^/proxy': '' },
-  //   },
-  // },
+  proxy: {
+    '/proxy': {
+      target: 'http://apipost.datangzww.com',
+      changeOrigin: true,
+      pathRewrite: { '^/proxy': '' },
+    },
+  },
   routes: routes,
 });

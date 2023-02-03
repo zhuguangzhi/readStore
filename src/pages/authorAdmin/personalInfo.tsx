@@ -21,8 +21,8 @@ export default () => {
   const [baseInfoList, setBaseInfo] = useState<InfoItemListProps[]>([]);
   //  认证信息
   const [approveInfoList, setApproveInfo] = useState<InfoItemListProps[]>([]);
-  //账号安全
-  const [accountSafeList, setAccountSafe] = useState<InfoItemListProps[]>([]);
+  // //账号安全
+  // const [accountSafeList, setAccountSafe] = useState<InfoItemListProps[]>([]);
   // 信息初始化
   const initInfo = () => {
     const {
@@ -30,17 +30,30 @@ export default () => {
       real_name,
       qq,
       email,
+      pen_name,
       id_card,
       id_card_status,
       bank_card,
       mobile,
-      is_password_set,
     } = personalInfo as authorPersonalProps;
     setBaseInfo([
       {
         label: '真实姓名',
         isFinish: !!real_name,
         value: real_name || '待完善',
+      },
+      {
+        label: '笔名',
+        isFinish: personalInfo?.is_pen_name_set === 1,
+        value:
+          personalInfo?.is_pen_name_set === 1
+            ? pen_name
+            : (pen_name || '待完善') + '（修改后无法再次修改哦）',
+        btnChild: (
+          <span onClick={() => changeModal('pen_name')}>
+            {personalInfo?.is_pen_name_set === 1 ? '' : '立即填写'}
+          </span>
+        ),
       },
       {
         label: 'QQ号码',
@@ -72,6 +85,16 @@ export default () => {
           </span>
         ),
       },
+      {
+        label: '手机号码',
+        isFinish: !!mobile,
+        value: !!mobile ? mobile : '待完善',
+        btnChild: (
+          <span onClick={() => changeModal('mobile')}>
+            {!!mobile ? '' : '立即绑定'}
+          </span>
+        ),
+      },
     ]);
     setApproveInfo([
       {
@@ -96,33 +119,33 @@ export default () => {
         value: bank_card || '待完善',
         btnChild: (
           <span onClick={() => changeModal('bank_card')}>
-            {!!bank_card ? '立即修改' : '前往认证'}
+            {!!bank_card ? '查看信息' : '前往认证'}
           </span>
         ),
       },
     ]);
-    setAccountSafe([
-      {
-        label: '登陆密码',
-        isFinish: is_password_set === 1,
-        value: is_password_set === 1 ? '已绑定' : '待完善',
-        btnChild: (
-          <span onClick={() => changeModal('is_password_set')}>
-            {is_password_set !== 1 ? '立即设置' : '前往修改'}
-          </span>
-        ),
-      },
-      {
-        label: '手机号码',
-        isFinish: !!mobile,
-        value: !!mobile ? mobile : '待完善',
-        btnChild: (
-          <span onClick={() => changeModal('mobile')}>
-            {!!mobile ? '' : '立即绑定'}
-          </span>
-        ),
-      },
-    ]);
+    // setAccountSafe([
+    //   {
+    //     label: '登陆密码',
+    //     isFinish: is_password_set === 1,
+    //     value: is_password_set === 1 ? '已绑定' : '待完善',
+    //     btnChild: (
+    //       <span onClick={() => changeModal('is_password_set')}>
+    //         {is_password_set !== 1 ? '立即设置' : '前往修改'}
+    //       </span>
+    //     ),
+    //   },
+    //   {
+    //     label: '手机号码',
+    //     isFinish: !!mobile,
+    //     value: !!mobile ? mobile : '待完善',
+    //     btnChild: (
+    //       <span onClick={() => changeModal('mobile')}>
+    //         {!!mobile ? '' : '立即绑定'}
+    //       </span>
+    //     ),
+    //   },
+    // ]);
   };
   //指定弹窗类型
   const [modalType, setModalType] = useState<modalTypes>('qq');
@@ -154,7 +177,7 @@ export default () => {
       <div className={'admin_container'}>
         <InfoItem title={'基础信息'} list={baseInfoList} />
         <InfoItem title={'认证信息'} list={approveInfoList} />
-        <InfoItem title={'账号安全'} list={accountSafeList} />
+        {/*<InfoItem title={'账号安全'} list={accountSafeList} />*/}
       </div>
       {/*信息修改弹窗*/}
       <ModifyInfo

@@ -63,6 +63,7 @@ import {
   creatChapterProps,
   signProcessProps,
   worksListProps,
+  worksTagsProps,
 } from '@/type/authorAdmin/worksManager';
 import { adminCommentRequestProps } from '@/type/authorAdmin/commentManager';
 import {
@@ -70,12 +71,24 @@ import {
   dataStatisticsProps,
 } from '@/type/authorAdmin/home';
 import {
+  authorMessageProps,
+  authorMessageRequestProps,
+  bankInfoProps,
+  bankListProps,
+  bankVerifyProps,
   contractListProps,
+  faceVerifyProps,
+  modifyAuthorBaseInfoProps,
   requestContractProps,
 } from '@/type/authorAdmin/personalInfo';
 import EventBars from '@/common/EventBus';
-import { Bus_OpenLogin } from '@/constants';
+import { Bus_CloseLoading, Bus_OpenLogin } from '@/constants';
 import { message } from 'antd';
+import {
+  incomeDistributeProps,
+  incomeListProps,
+  incomeListRequestProps,
+} from '@/type/authorAdmin/income';
 
 export const ErrorCheck = <T>(val: ResponseData<T> | null) => {
   if (val?.status_code === 200) return true;
@@ -83,7 +96,8 @@ export const ErrorCheck = <T>(val: ResponseData<T> | null) => {
   // token校验失败
   // API_COMM_011  未登录或登录状态失效
   // API_COMM_012 token不正确
-  // API_COMM_007 系统通知清空未读消息
+  // API_MESSAGE_007 系统通知清空未读消息
+  // API_COMM_013 作者后台查看身份信息失败
   switch (val?.error_code) {
     case 'API_COMM_011' || 'API_COMM_012': {
       //  弹出登陆框 清空用户数据
@@ -96,7 +110,13 @@ export const ErrorCheck = <T>(val: ResponseData<T> | null) => {
       msg = '暂没有未读消息哦~';
       break;
     }
+    case 'API_COMM_013': {
+      msg = '身份认证失败,请完成认证';
+      break;
+    }
   }
+  //  关闭loading
+  EventBars.emit(Bus_CloseLoading);
   message.error(msg);
   return false;
 };
@@ -254,6 +274,10 @@ export const PersonalCenter = {
   //  从我的书架移除
   delMyBooks: (p: { book_id: string }) =>
     http.post<ResponseData<myBookListProps>>(`${apiUrl}/bookcase/destroy`, p),
+  //  从我的书架历史中移除
+  delMyBooksHistory: (p: { book_id: string }) =>
+    http.post<ResponseData<myBookListProps>>(`${apiUrl}/userRead/destroy`, p),
+
   //  获取作者信息
   getAuthorInfo: (p: { id: number }) =>
     http.post<ResponseData<authorInfoProps>>(
@@ -349,7 +373,7 @@ export const AuthorBook = {
     ),
   //  获取标签分类
   getTagsList: () =>
-    http.post<ResponseData<{ 1: string[]; 2: string[] }>>(
+    http.post<ResponseData<worksTagsProps>>(
       `${apiUrl}/author/book/keyword`,
       {},
     ),
@@ -399,5 +423,53 @@ export const AuthorPersonal = {
   //  合同查询
   getContractList: (p: requestContractProps) =>
     http.post<ResponseData<contractListProps>>(`${apiUrl}/author/sign/list`, p),
+  //  身份认证
+  signFaceVerify: (p: faceVerifyProps) =>
+    http.post<ResponseData<{ link: string }>>(
+      `${apiUrl}/author/sign/faceverify`,
+      p,
+    ),
+  //  查看身份认证信息
+  getSignFaceVerifyInfo: (p: { user_id: string }) =>
+    http.post<ResponseData<{ id_card: string; real_name: string }>>(
+      `${apiUrl}/author/sign/faceverifyinfo`,
+      p,
+    ),
+  //  银行卡认证
+  bankVerify: (p: bankVerifyProps) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/author/sign/bankverify`, p),
+  //  查看银行卡信息
+  getBankVerifyInfo: (p: { user_id: string }) =>
+    http.post<ResponseData<bankInfoProps>>(
+      `${apiUrl}/author/sign/bankverifyinfo`,
+      p,
+    ),
+  //   查询支行列表
+  getBankList: (p: { keywords: string }) =>
+    http.post<ResponseData<bankListProps[]>>(
+      `${apiUrl}/author/sign/bankinfo`,
+      p,
+    ),
+  //  修改作者基础信息
+  modifyAuthorBaseInfo: (p: modifyAuthorBaseInfoProps) =>
+    http.post<ResponseData<{}>>(`${apiUrl}/author/edit`, p),
+  //   作者消息通知
+  authorMessage: (p: authorMessageRequestProps) =>
+    http.post<ResponseData<authorMessageProps>>(`${apiUrl}/author/messages`, p),
 };
+export const AuthorInCome = {
+  //  总收入趋势图
+  incomeTrend: (p: { year: string }) =>
+    http.post<ResponseData<number[]>>(`${apiUrl}/author/income/trend`, p),
+  //  收入明细
+  incomeList: (p: incomeListRequestProps) =>
+    http.post<ResponseData<incomeListProps>>(`${apiUrl}/author/income/list`, p),
+  //  收入分布
+  incomeDistribute: (p: { month: string | undefined }) =>
+    http.post<ResponseData<incomeDistributeProps>>(
+      `${apiUrl}/author/income/distribute`,
+      cleanObject(p),
+    ),
+};
+
 // --------------------------作者后台end-------------------------------------------------

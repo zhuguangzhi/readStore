@@ -86,6 +86,7 @@ export const ReadContainer = ({
       // 超过300会出现白屏
       bookData[countRender]?.forEach((data, index) => {
         const p = document.createElement('p');
+        p.style.userSelect = 'none';
         // if (content===undefined) return;
         p.id = (once * countRender + index + 1).toString();
         p.innerHTML = data;

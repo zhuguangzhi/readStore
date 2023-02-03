@@ -53,6 +53,8 @@ const PhoneInput = React.memo(
               placeholder={'请输入验证码'}
               autoComplete={'off'}
               prefix={<IconFont icon={'lock'} color={'#999999'} />}
+              maxLength={6}
+              name={'code'}
             />
           </Form.Item>
           <SendCode
@@ -72,15 +74,15 @@ const AccountInput = React.memo(({ isCode }: { isCode: boolean }) => {
         <Input
           className={'login_form_input'}
           placeholder={'请输入手机号码'}
-          autoComplete={'off'}
           prefix={<IconFont icon={'user'} color={'#999999'} />}
+          autoComplete="new-password"
         />
       </Form.Item>
       <Form.Item name={'password'}>
         <Input
           className={'login_form_input login_form_sendCode'}
           placeholder={'请输入密码'}
-          autoComplete={'false'}
+          autoComplete="new-password"
           type={'password'}
           prefix={<IconFont icon={'lock'} color={'#999999'} />}
         />
