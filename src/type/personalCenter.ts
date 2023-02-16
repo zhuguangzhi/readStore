@@ -41,9 +41,11 @@ export type myBookListProps = {
   page_info: pageProps;
 };
 // 消息链接
-type messageLinkProps = {
+export type messageLinkProps = {
   title: string; //链接标题
-  target_page: 1 | 2 | 3; //1:收入查询 2:稿酬查询 3:开通/续费vip
+  target_page: 1 | 2 | 3; //1:收入查询 2:作者后台 章节内容详情 3:开通/续费vip
+  book_id?: number; //target_page=2时才有字段 书籍id
+  chapter_id?: number; //target_page=2时才有字段 章节id
 };
 // 消息列表
 export type messageListProps = {

@@ -5,7 +5,7 @@ import {
   newsProps,
   topicProps,
 } from '@/type/home';
-import { Book, ErrorCheck, Home } from '@/common/api';
+import { Book, ErrorCheck, Home, PersonalCenter } from '@/common/api';
 import { approvalProps } from '@/type/book';
 import { ResponseData } from '@/common/http';
 import { authorProps } from '@/type/user';
@@ -107,4 +107,34 @@ export const useGetNewsInfo = (id: number) => {
       return value.data;
     }),
   );
+};
+// 移出书架
+export const useDelBookCase = (tabIndex: number) => {
+  const queryClient = useQueryClient();
+  const queryKey = ['home'];
+  return useMutation((p: { book_id: string }) => PersonalCenter.delMyBooks(p), {
+    onSuccess(val) {
+      if (ErrorCheck(val)) queryClient.invalidateQueries(queryKey);
+    },
+    onMutate(target) {
+      let previousItems = queryClient.getQueryData(queryKey);
+      queryClient.setQueriesData(['home'], (old?: homeChartProps[]) => {
+        let arr = old ? [...old] : [];
+        if (arr.length > 0 && tabIndex !== undefined) {
+          arr[tabIndex].data = arr[tabIndex].data.map((data) =>
+            data.id === Number(target.book_id)
+              ? { ...data, in_user_case: 2 }
+              : data,
+          );
+          return arr;
+        }
+        return [];
+      });
+      return { previousItems };
+    },
+    //错误回滚
+    onError(error, newItem, context) {
+      queryClient.setQueriesData(queryKey, context?.previousItems);
+    },
+  });
 };

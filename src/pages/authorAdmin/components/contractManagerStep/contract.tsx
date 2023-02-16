@@ -75,7 +75,7 @@ export const Contract = ({
         <p className={'font_bold'}>签约说明</p>
         <div className={'font_500 contract_desc_item SYMedium'}>
           <p>
-            当作品字数达到三千字或以上，可发起作品签约，将有编辑进行签约评估{' '}
+            当作品字数达到两千字或以上，可发起作品签约，将有编辑进行签约评估{' '}
           </p>
           <p>
             签约后的作品，会授权到各大平台进推荐曝光，请作者大大用心创作，努力更新

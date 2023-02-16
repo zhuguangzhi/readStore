@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import './style/index.less';
 import router, { useGetUrlPath } from '@/hook/url';
 import { Outlet } from 'react-router';
-import { useAuth } from '@/hook/useAuth';
+import { getToken, useAuth } from '@/hook/useAuth';
 import { Properties } from 'csstype';
 import { useAsync } from '@/hook/useAsync';
 import { ErrorCheck, PersonalCenter } from '@/common/api';
 import { ResponseData } from '@/common/http';
 import { authorInfoProps } from '@/type/user';
+import { useGetPersonalInfo } from '@/utils/authorAdmin/personalInfo';
 
 type operationProps = {
   label: string;
@@ -29,8 +30,10 @@ const adminOperationList: operationProps[] = [
 export default () => {
   const routerInfo = useGetUrlPath();
   // 用户信息
-  const { userInfo, setAuthorInfo } = useAuth();
+  const { userInfo, setAuthorInfo, setAuthorPersonalInfo } = useAuth();
   const { run } = useAsync<ResponseData<authorInfoProps>>();
+  // 获取个人信息
+  const { data: personalInfo } = useGetPersonalInfo();
 
   const [currentOperate, setOperate] = useState('home');
 
@@ -42,14 +45,19 @@ export default () => {
 
   useEffect(() => {
     if (routerInfo.length > 0) setOperate(routerInfo[2]);
-  }, [routerInfo.length]);
+  }, [routerInfo]);
   useEffect(() => {
+    if (!getToken()) router.push('/home');
     if (!userInfo) return;
     run(PersonalCenter.getAuthorInfo({ id: userInfo.id })).then((res) => {
       if (!ErrorCheck(res)) return;
       setAuthorInfo(res?.data || null);
     });
   }, [userInfo]);
+  useEffect(() => {
+    if (!personalInfo) return;
+    setAuthorPersonalInfo(personalInfo);
+  }, [personalInfo]);
 
   // 首页缩放为1980
   // style={{

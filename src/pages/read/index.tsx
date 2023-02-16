@@ -93,11 +93,11 @@ export default () => {
     });
   };
   // 关注
-  const onAttention = () => {
+  const onAttention = (type: 1 | 2) => {
     if (!bookInfo) return;
     attentionUser({
       attention_user_id: bookInfo.author.id,
-      is_attention: bookInfo.is_attention === 1 ? 2 : 1,
+      is_attention: type,
     });
   };
   // 重置评论列表
@@ -188,23 +188,26 @@ export default () => {
               <span>作者：</span>
               <span>{bookInfo?.author.pen_name}</span>
             </p>
-            <UseNode
-              rIf={
-                bookInfo?.is_attention !== 1 &&
-                bookInfo?.author.id !== userInfo?.id
-              }
-            >
-              <div
-                className={'readBook_author_right_btn'}
-                onClick={() => onAttention()}
-              >
-                <IconFont
-                  icon={'jia'}
-                  width={'10px'}
-                  height={'10px'}
-                  marginRight={'2px'}
-                />
-                <span className={'font_12'}>关注</span>
+            <UseNode rIf={bookInfo?.author.id !== userInfo?.id}>
+              <div className={'readBook_author_right_btn'}>
+                {bookInfo?.is_attention !== 1 ? (
+                  <div
+                    onClick={() => onAttention(1)}
+                    className={'flex flex_align'}
+                  >
+                    <IconFont
+                      icon={'jia'}
+                      width={'10px'}
+                      height={'10px'}
+                      marginRight={'2px'}
+                    />
+                    <span className={'font_12'}>关注</span>
+                  </div>
+                ) : (
+                  <span onClick={() => onAttention(2)} className={'font_12'}>
+                    已关注
+                  </span>
+                )}
               </div>
             </UseNode>
           </div>

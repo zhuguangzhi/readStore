@@ -25,6 +25,8 @@ export const ReadContainer = ({
 }: ReadContainerProps) => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
+  // 自动加入书架
+  // const { mutate: addBookCase } = useAddBookCase('rank');
   // 保存阅读记录
   const { mutate: saveHistory } = useSaveReadHistory();
   const timerRef = useRef<NodeJS.Timer | null>(null);

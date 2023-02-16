@@ -17,3 +17,21 @@ export type dataStatisticsProps = {
   approval_count: number; //作品点赞
   collection_count: number; //加入书架数
 };
+// 写作课堂
+export type writeClassProps = {
+  id: number; //主键ID
+  title: string; //标题
+  content: string; //内容
+  create_time: string; //创建时间
+  picture: string; //图片
+};
+// 全部稿费
+export type incomeTotalProps = {
+  base_royalties: number; //基础稿费
+  vip: number; //vip
+  gift: number; //礼物
+  channel: number; //渠道
+  welfare: number; //福利
+  advert: number; //广告
+  summary_total: number; //全部稿费
+};

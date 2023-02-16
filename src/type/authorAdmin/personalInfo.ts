@@ -7,6 +7,7 @@ export type modifyAuthorBaseInfoProps = {
   email?: string;
   address?: string;
   pen_name?: string;
+  postcode?: string;
 };
 
 export type contractProps = {

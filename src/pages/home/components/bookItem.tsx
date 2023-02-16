@@ -14,7 +14,7 @@ type BookItemProps = {
   onClick?: (book: bookInfoProps) => void;
   onApprove?: (param: approvalProps) => void;
   onComment?: (param: bookInfoProps) => void;
-  onAddBookCase?: (bookId: number) => void;
+  onAddBookCase?: (bookId: number, isAdd: 1 | 2) => void; //1加入 2移出
   clickTitle?: (topicId: number) => void;
 };
 export const BookItem = ({
@@ -69,25 +69,29 @@ export const BookItem = ({
               </div>
               {/*    底部选项*/}
               <div
-                className={`book_right_bottom ${
-                  book.in_user_case === 1 ? '' : 'justify_between'
-                }`}
+                className={`book_right_bottom justify_between`}
                 onClick={(e) => stopProp(e, () => {})}
               >
                 {/*是否加入书架*/}
-                <UseNode rIf={book.in_user_case !== 1}>
-                  <div
-                    className={'book_right_bookshelf'}
-                    onClick={() => onAddBookCase?.(book.id)}
-                  >
-                    <IconFont
-                      width={'10px'}
-                      height={'10px'}
-                      icon={book.is_vip ? 'shujia' : 'topic'}
-                    />
-                    <span>{book.is_vip ? '加入书架' : '加入话题'}</span>
-                  </div>
-                </UseNode>
+                <div className={'book_right_bookshelf'}>
+                  {book.in_user_case !== 1 ? (
+                    <div onClick={() => onAddBookCase?.(book.id, 1)}>
+                      <IconFont
+                        width={'10px'}
+                        height={'10px'}
+                        icon={book.is_vip ? 'shujia' : 'topic'}
+                      />
+                      <span>{book.is_vip === 1 ? '加入书架' : '加入话题'}</span>
+                    </div>
+                  ) : (
+                    <span
+                      onClick={() => onAddBookCase?.(book.id, 2)}
+                      style={{ color: '#E85D01' }}
+                    >
+                      {book.is_vip === 1 ? '已加入书架' : '已加入话题'}
+                    </span>
+                  )}
+                </div>
                 <div className={'book_right_options'}>
                   <div className={'operation'} onClick={() => setApprove(book)}>
                     <IconFont

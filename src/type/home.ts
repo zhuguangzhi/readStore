@@ -18,7 +18,7 @@ export interface homeChartProps extends homeProps {
 //公告
 export type newsProps = {
   id: number; //主键ID
-  category_id: number; //分类ID
+  category_id: number; //分类ID 4:写作小课堂
   title: string; //标题
   content?: string; //内容
   create_time: string;

@@ -145,9 +145,11 @@ export default () => {
           <BookItem
             bookList={topicBooks}
             onApprove={(param) => setApproval(param)}
-            onClick={(book) => router.push('/read', { [BookId]: book.id })}
+            onClick={(book) =>
+              router.push('/read', { [BookId]: book.id }, true)
+            }
             onComment={(book) => {
-              router.push('/read', { [BookId]: book.id });
+              router.push('/read', { [BookId]: book.id }, true);
               disPatch({ type: 'global/setCommentBox', payload: true });
             }}
             onAddBookCase={(bookId) => addBookCase({ book_id: bookId })}

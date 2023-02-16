@@ -80,10 +80,8 @@ export const useGetChapterDetails = (p: {
       data: undefined,
       isLoading: false,
     };
-  console.log('chapter_id', p.chapter_id);
   return useQuery<chapterDetailsProps, Error>(['getChapterDetails', p], () =>
     AuthorBook.worksChapterDetails(p).then((value) => {
-      console.log('chapter_id11111111111', p.chapter_id);
       ErrorCheck(value);
       return value.data;
     }),

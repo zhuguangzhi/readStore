@@ -49,6 +49,7 @@ export const BookLayer = ({ bookList, ...props }: BookLayerProps) => {
                           selectIds={props.selectIds}
                           onDelete={props.onDelete}
                           onCheckBox={props.onCheckBox}
+                          isHiddenDel={props.isHiddenDel}
                         >
                           <div
                             style={{ width: '100%', height: '100%' }}

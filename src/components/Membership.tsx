@@ -2,13 +2,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './style/membership.less';
 import { useAuth } from '@/hook/useAuth';
-import { Carousel, Skeleton } from 'antd';
+import { Button, Carousel, message, Skeleton } from 'antd';
 import { UseNode } from '@/components/UseNode';
 import { IconFont } from '@/components/IconFont';
 import { CarouselRef } from 'antd/es/carousel';
 import { vipRechargeProps } from '@/type/user';
-import { useGetVipMoneyList } from '@/utils/personalCenter';
+import { useGetVipMoneyList, useToPay } from '@/utils/personalCenter';
 import { targetColumnArray } from '@/common/publicFn';
+import { BookId } from '@/constants/url';
+import { useSearchParam } from '@/hook/url';
+import ReadPopup from '@/components/module/ReadPopup';
 
 const interestList = [
   { url: 'iconVip', label: '尊贵标识' },
@@ -19,6 +22,7 @@ const interestList = [
 export const Membership = () => {
   const { userInfo } = useAuth();
   const carouselRef = useRef<CarouselRef>(null);
+  const [{ [BookId]: bookId }] = useSearchParam([BookId]);
   // 充值选项
   const [moneyList, setMoneyList] = useState<vipRechargeProps[][] | null>(null);
   //  当前轮播的页数
@@ -27,15 +31,39 @@ export const Membership = () => {
   const [currentOption, setCurrentOption] = useState<vipRechargeProps | null>();
   // 选择的支付方式
   const [payWay, setPayWay] = useState<'zfb' | 'wx'>('zfb');
+  // 支付完成确认弹窗
+  const [payFinishModel, setFinishModel] = useState(false);
   //  获取充值选项
   const { data: vipMoneyList, isLoading: vipLoading } =
     useGetVipMoneyList(userInfo);
+  const { mutate: payMutate, isLoading: payLoading } = useToPay(() =>
+    setFinishModel(true),
+  );
+  const onPayFinish = () => {
+    window.location.reload();
+  };
 
   // 切换
   const slickCarousel = () => {
     const page = carouselPage === 1 ? 2 : 1;
     setCarouselPage(page);
     carouselRef.current?.goTo(page - 1);
+  };
+  // 支付
+  const toPay = () => {
+    if (!currentOption) return;
+    if (payWay === 'wx') {
+      message.error('微信支付暂未开通');
+      return;
+    }
+    payMutate({
+      book_id: bookId ? Number(bookId) : 0,
+      fromtype: bookId ? 2 : 1,
+      pay_way: payWay === 'zfb' ? '1' : '2',
+      pay_type: '1',
+      money: String(currentOption.money),
+      is_cont: String(currentOption.is_continuous) as '1' | '2',
+    });
   };
 
   useEffect(() => {
@@ -61,8 +89,11 @@ export const Membership = () => {
         />
         <div className={'membership_userInfo_box'}>
           <p>{userInfo?.nickname}</p>
-          {/*TODO 会员到期时间*/}
-          <p className={'font_12'}>你还不是会员，开通会员可享更多特权</p>
+          <p className={'font_12'}>
+            {userInfo?.vip_expire_time
+              ? `您的会员将在${userInfo.vip_expire_time}到期`
+              : '您还不是会员，开通会员可享更多特权'}
+          </p>
         </div>
       </div>
       {/*    充值选项*/}
@@ -111,13 +142,15 @@ export const Membership = () => {
           </Carousel>
         )}
 
-        <div className={'membership_money_control'} onClick={slickCarousel}>
-          <IconFont
-            icon={carouselPage === 1 ? 'right' : 'left'}
-            width={'21px'}
-            height={'21px'}
-          />
-        </div>
+        <UseNode rIf={payWay && payWay.length > 3}>
+          <div className={'membership_money_control'} onClick={slickCarousel}>
+            <IconFont
+              icon={carouselPage === 1 ? 'right' : 'left'}
+              width={'21px'}
+              height={'21px'}
+            />
+          </div>
+        </UseNode>
         {/* 充值提示*/}
         <div className={'membership_money_tip'}>
           <span>{currentOption?.description}</span>
@@ -169,7 +202,13 @@ export const Membership = () => {
       </div>
       {/*    提交*/}
       <div className={'membership_submit'}>
-        <button className={'membership_submit_btn'}>确认支付</button>
+        <Button
+          className={'membership_submit_btn'}
+          loading={payLoading}
+          onClick={() => toPay()}
+        >
+          确认支付
+        </Button>
         <div>
           <span>已阅读并同意</span>&nbsp;&nbsp;
           <span className={'cursor'} style={{ color: 'var(--themeColor)' }}>
@@ -181,6 +220,15 @@ export const Membership = () => {
           </span>
         </div>
       </div>
+      <ReadPopup
+        onClose={() => setFinishModel(false)}
+        title={`支付完成？`}
+        open={payFinishModel}
+        showClose={false}
+        onOk={onPayFinish}
+      >
+        <p>确认支付是否完成</p>
+      </ReadPopup>
     </div>
   );
 };

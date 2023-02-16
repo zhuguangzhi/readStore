@@ -4,6 +4,7 @@ import { BookBox } from '@/pages/bookRank/bookBox';
 import { useGetBookRank } from '@/utils/rank';
 import { useAuth } from '@/hook/useAuth';
 import { toRead } from '@/common/publicFn';
+import { DefaultNoData } from '@/components/defaultNoData';
 
 const slideList = [
   { key: 1, label: '大热榜', subTitle: '根据七天内阅读人气进行排行' },
@@ -111,10 +112,17 @@ export default () => {
           </span>
         </div>
         {/*  书籍  */}
-        <BookBox
-          bookList={rankBookData}
-          toRead={(book) => toRead(book.chapter_id, book.id)}
-        />
+        {!isLoading && rankBookData?.data.length === 0 ? (
+          <DefaultNoData
+            type={'noData'}
+            className={'bookRank_container_noData'}
+          />
+        ) : (
+          <BookBox
+            bookList={rankBookData}
+            toRead={(book) => toRead(book.chapter_id, book.id)}
+          />
+        )}
       </div>
     </div>
   );

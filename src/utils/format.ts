@@ -1,6 +1,7 @@
 // 连载状态
 import { contractProps } from '@/type/authorAdmin/personalInfo';
 import { incomeDistributeProps } from '@/type/authorAdmin/income';
+import { incomeTotalProps } from '@/type/authorAdmin/home';
 
 export const isFinish = (val: 1 | 2) => (val === 1 ? '完结' : '连载中');
 //字数转换万
@@ -35,6 +36,21 @@ export const pieDataTranslate = (val: incomeDistributeProps | undefined) => {
   return list.map((item) => {
     return { name: item.label, value: Number(val[item.key]) };
   });
+};
+// 全部稿费
+export const allFeeTranslate = (
+  val: Partial<keyof incomeTotalProps> | undefined,
+) => {
+  if (!val) return '';
+  const list: { key: Partial<keyof incomeTotalProps>; label: string }[] = [
+    { key: 'base_royalties', label: '基础签约稿费' },
+    { key: 'channel', label: '三方渠道分成' },
+    { key: 'gift', label: '礼物打赏分成' },
+    { key: 'advert', label: '广告投放分成' },
+    { key: 'vip', label: 'vip分成' },
+    { key: 'welfare', label: '网站福利' },
+  ];
+  return list.find((item) => item.key === val)?.label || '';
 };
 // 收入查询饼图数据描述 ---------------------------------end
 // 合同状态

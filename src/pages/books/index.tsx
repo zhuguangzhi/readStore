@@ -32,14 +32,14 @@ const statusList = [
     { key: 4, label: '最新' },
   ],
 ];
-const textNum = [
-  { key: 0, label: '全部' },
-  { key: 1, label: '30万以下' },
-  { key: 2, label: '30万—50万' },
-  { key: 3, label: '50万—100万' },
-  { key: 4, label: '100万—200万' },
-  { key: 5, label: '200万以上' },
-];
+// const textNum = [
+//   { key: 0, label: '全部' },
+//   { key: 1, label: '30万以下' },
+//   { key: 2, label: '30万—50万' },
+//   { key: 3, label: '50万—100万' },
+//   { key: 4, label: '100万—200万' },
+//   { key: 5, label: '200万以上' },
+// ];
 //书库配置信息
 type bookLibraryConfig = {
   readKey: 0 | 1 | 2; //选中读者key
@@ -130,6 +130,7 @@ const Books = () => {
   const changeKey = (type: keyof bookLibraryConfig, val: unknown) => {
     if (JSON.stringify(state[type]) === JSON.stringify(val)) return;
     changeState({ [type]: val });
+    setPage(1);
     setBookShelfData([]);
   };
 
@@ -318,22 +319,22 @@ const Books = () => {
           </div>
         </div>
         {/*    字数*/}
-        <div className={'bookShelf_box_type color_33'}>
-          <span className={'bookShelf_label'}>字数：</span>
-          {textNum.map((type) => {
-            return (
-              <span
-                className={`bookShelf_box_type_item ${
-                  type.key === state.textKey ? 'bookShelf_select' : ''
-                }`}
-                onClick={() => changeKey('textKey', type.key)}
-                key={'textNum' + type.key}
-              >
-                {type.label}
-              </span>
-            );
-          })}
-        </div>
+        {/*<div className={'bookShelf_box_type color_33'}>*/}
+        {/*  <span className={'bookShelf_label'}>字数：</span>*/}
+        {/*  {textNum.map((type) => {*/}
+        {/*    return (*/}
+        {/*      <span*/}
+        {/*        className={`bookShelf_box_type_item ${*/}
+        {/*          type.key === state.textKey ? 'bookShelf_select' : ''*/}
+        {/*        }`}*/}
+        {/*        onClick={() => changeKey('textKey', type.key)}*/}
+        {/*        key={'textNum' + type.key}*/}
+        {/*      >*/}
+        {/*        {type.label}*/}
+        {/*      </span>*/}
+        {/*    );*/}
+        {/*  })}*/}
+        {/*</div>*/}
       </div>
       {noData ? (
         <DefaultNoData type={'noData'} className={'bookShelf_noData'} />

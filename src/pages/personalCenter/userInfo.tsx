@@ -248,6 +248,7 @@ export default () => {
               bookList={[myBooks?.data || []]}
               edit={false}
               selectIds={[]}
+              isHiddenDel={true}
               onDelete={() => {}}
               onCheckBox={() => {}}
               goToRead={(book) => toRead(book.chapter_id, book.book_id)}

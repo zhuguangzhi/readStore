@@ -1,5 +1,6 @@
 .adminHome {
   color: #ffffff;
+  user-select: none;
   &_header {
     color: #ffffff !important;
     .message_tip {
@@ -8,6 +9,15 @@
     .adminSearch_search,
     .ant-input {
       background-color: #1e47af !important;
+    }
+  }
+  &_feePlate {
+    display: flex;
+    align-items: center;
+    &_icon {
+      width: 10px;
+      height: 10px;
+      cursor: pointer;
     }
   }
   &_manuscript {
@@ -202,20 +212,57 @@
       background: #ffffff;
       box-shadow: 0 2px 21px 0 rgba(52, 100, 224, 0.1);
       overflow: hidden;
-      &_title {
+      &_header {
         display: flex;
         align-items: center;
-        width: 115px;
-        margin-bottom: 12px;
-        span {
-          display: inline-block;
-          margin-right: 9px;
-          cursor: pointer;
-        }
+        justify-content: space-between;
       }
     }
   }
-
+  //写作小课堂
+  &_classRoom {
+    &_item {
+      display: flex !important;
+      justify-content: space-between;
+      padding: 16px 20px 34px 36px;
+      &_left {
+        flex: 1;
+      }
+      &_container {
+        color: #a6a5a5;
+        line-height: 24px;
+        max-height: 169px;
+        overflow: hidden;
+      }
+      &_img {
+        width: 132px;
+        height: 169px;
+        margin-left: 56px;
+        margin-top: 43px;
+      }
+    }
+    &_carousel {
+      margin-left: 36px !important;
+      justify-content: left !important;
+      bottom: 40px !important;
+      li.slick-active button:before {
+        content: '' !important;
+        width: 22px;
+        height: 10px;
+        margin-top: 5px;
+        background-color: #ececec !important;
+        border-radius: 20px;
+      }
+    }
+  }
+  // 无数据
+  &_noData {
+    width: 200px !important;
+    height: 200px !important;
+    margin: auto;
+    font-size: 18px;
+    text-align: center;
+  }
   .YearPopoverContent {
     p {
       width: 100%;

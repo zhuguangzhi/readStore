@@ -31,6 +31,9 @@ export const BindInput = ({ form, label, setStep, type }: BindInputProps) => {
       case 'email':
         param = { email: value.bindValue };
         break;
+      case 'postcode':
+        param = { postcode: value.bindValue };
+        break;
     }
     editAuthorInfo(param);
   };

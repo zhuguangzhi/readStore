@@ -7,8 +7,6 @@ import React from 'react';
 import { useMounted } from '@/hook';
 import { useAuth } from '@/hook/useAuth';
 import { fnGetCpmisWords } from '@/common/publicFn';
-import { translateNumber } from '@/utils/format';
-import { UseNode } from '@/components/UseNode';
 
 type ReadEditorProps = {
   setEditorEl: (el: TinyMCEEditor) => void;
@@ -19,13 +17,12 @@ type ReadEditorProps = {
 };
 export const ReadEditor = ({
   setEditorEl,
-  wordCount,
   defaultContent,
   setWordCount,
   isEdit = true,
 }: ReadEditorProps) => {
   const { setLoadingModel } = useAuth();
-  const [wordNum, setWordNum] = useState(wordCount);
+  // const [ setWordNum] = useState<Number>(wordCount);
   const editorRef = useRef<TinyMCEEditor | null>(null);
   const [editorOption] = useState<
     RawEditorOptions & { selector?: undefined; target?: undefined }
@@ -35,11 +32,13 @@ export const ReadEditor = ({
     // height: "100%",
     menubar: false, //隐藏菜单栏
     plugins: ['image'],
-    toolbar: `undo redo image`,
+    // toolbar: `undo redo image`,
+    toolbar: false,
     toolbar_mode: 'wrap',
     images_upload_url: '/demo/upimg.php',
     content_style:
       'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+    entity_encoding: 'raw', //避免字符自动转换
   });
 
   const onInit = (editor: TinyMCEEditor) => {
@@ -56,28 +55,28 @@ export const ReadEditor = ({
       const num = fnGetCpmisWords(
         editorRef.current?.getContent({ format: 'text' }) || '',
       );
-      setWordNum(num);
+      // setWordNum(num);
       setWordCount?.(num);
     });
-  }, [editorRef.current]);
+  }, [editorRef.current, isEdit]);
   useMounted(() => {
     setLoadingModel(true);
   });
 
   return (
-    <div className="readEditor">
+    <div className={`readEditor`}>
       <Editor
         id={'textEditor'}
         apiKey={TinyKeyApi}
         onInit={(evt, editor) => onInit(editor)}
         init={editorOption}
       />
-      <UseNode rIf={editorRef.current}>
-        <span className={'readEditor_wordNum'}>
-          {' '}
-          总字数：{translateNumber(Number(wordNum))}
-        </span>
-      </UseNode>
+      {/*<UseNode rIf={editorRef.current}>*/}
+      {/*  <span className={'readEditor_wordNum'}>*/}
+      {/*    {' '}*/}
+      {/*    总字数：{translateNumber(Number(wordNum))}*/}
+      {/*  </span>*/}
+      {/*</UseNode>*/}
     </div>
   );
 };

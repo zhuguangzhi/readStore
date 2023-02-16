@@ -1,5 +1,5 @@
 import { homeZoom } from '@/pages/authorAdmin';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import * as echarts from 'echarts';
 import { EChartsOption, EChartsType } from 'echarts';
 import { useMounted } from '@/hook';
@@ -62,11 +62,14 @@ export const ChartsColum = ({ data, ...props }: columProps) => {
     } as EChartsOption,
     props,
   );
+  useEffect(() => {
+    if (!data || !chartsRef.current) return;
+    chartsRef.current.setOption(colConfig);
+  }, [data, chartsRef.current]);
   useMounted(() => {
     chartsRef.current = echarts.init(
       document.getElementById('echartsColumn') as HTMLElement,
     );
-    chartsRef.current.setOption(colConfig);
   });
   return (
     <div

@@ -35,5 +35,6 @@ export type incomeDistributeProps = {
   gift: number; //礼物收益
   vip: number; //vip分成
   welfare: number; //网站福利
+  advert?: number; //广告福利
   month: string; //收入月份
 };

@@ -15,6 +15,7 @@ import {
   fansProps,
   vipRechargeProps,
   authorProps,
+  payProps,
 } from '@/type/user';
 
 interface getMyCommentProps extends pageRequestProps {
@@ -104,6 +105,7 @@ export const useGetMyBooks = (p: useGetMyBooksProps<pageRequestProps>) => {
 export const useDelMyBook = (
   type: 'topicCase' | 'myBooks',
   delType: 'bookShelf' | 'history',
+  call?: Function,
 ) => {
   const queryClient = useQueryClient();
   const queryKey = [type];
@@ -118,10 +120,10 @@ export const useDelMyBook = (
       },
       onMutate(target) {
         let previousItems = queryClient.getQueriesData(queryKey);
-        console.log('queryClient', queryClient.getQueryCache());
         queryClient.setQueriesData(queryKey, (old?: myBookListProps) => {
           if (!old) return {} as myBookListProps;
           const delIds = target.book_id?.split(',') || [];
+          call?.();
           return {
             page_info: old.page_info,
             data: old.data.filter(
@@ -291,4 +293,15 @@ export const useGetVipMoneyList = (userInfo: authorProps | null) => {
       return value.data;
     }),
   );
+};
+// 充值
+export const useToPay = (call?: Function) => {
+  return useMutation(['pay'], (p: payProps) => PersonalCenter.pay(p), {
+    onSuccess(val) {
+      if (!ErrorCheck(val)) return;
+      const html = window.open();
+      html?.document.write(val.data);
+      call?.();
+    },
+  });
 };

@@ -25,6 +25,7 @@ export type authorProps = {
   user_status_desc: string; //用户状态描述
   chart_description: string; //推荐语
   is_vip: 1 | 2; //是否是vip(1：是 2：否)
+  vip_expire_time: string; //VIP到期时间
   fans: number; //粉丝数
   follows: number; //关注数
   approvals: number; //获赞数
@@ -118,6 +119,7 @@ export type authorPersonalProps = {
   qq: number; //QQ号
   email: string; //邮箱
   address: string; //地址
+  postcode: string; //邮编
   id_card: string; //身份证号
   id_card_status: 1 | 3; //身份认证状态(1：否 3 完成 ）
   bank_card: string; //银行卡号
@@ -160,4 +162,13 @@ export type vipRechargeProps = {
   type: 1 | 2 | 3; //充值类型( 1:月卡 2:季卡 3:年卡 ）
   is_continuous: 2 | 1; //是否连续( 1:是  2:否 )
   description: string; //描述
+};
+// 充值
+export type payProps = {
+  book_id: number; //充值的书籍id 没有则为0
+  fromtype: 1 | 2 | 3; //充值来源( 1：直接充值  2：阅读充值 3:打赏充值 ）
+  pay_way: '1' | '2'; //充值方式 1支付宝 2微信
+  pay_type: '1' | '2' | '3'; //充值客户端类型 1pc 2wap 3app
+  money: string; //充值金额
+  is_cont: '1' | '2'; //是否是连续会员充值  1是  2 不是
 };

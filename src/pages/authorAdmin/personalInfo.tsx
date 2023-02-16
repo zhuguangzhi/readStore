@@ -9,9 +9,9 @@ import {
   modalTypes,
   ModifyInfo,
 } from '@/pages/authorAdmin/components/modifyInfo';
-import { useGetPersonalInfo } from '@/utils/authorAdmin/personalInfo';
 import { useAuth } from '@/hook/useAuth';
 import { authorPersonalProps } from '@/type/user';
+import { message } from 'antd';
 
 const SubIcon = () => (
   <IconFont width={'37px'} height={'42px'} icon={'personal'} />
@@ -35,6 +35,7 @@ export default () => {
       id_card_status,
       bank_card,
       mobile,
+      postcode,
     } = personalInfo as authorPersonalProps;
     setBaseInfo([
       {
@@ -82,6 +83,16 @@ export default () => {
         btnChild: (
           <span onClick={() => changeModal('address')}>
             {!!address ? '立即修改' : '立即填写'}
+          </span>
+        ),
+      },
+      {
+        label: '邮编代码',
+        isFinish: !!postcode,
+        value: postcode || '待完善',
+        btnChild: (
+          <span onClick={() => changeModal('postcode')}>
+            {!!postcode ? '立即修改' : '立即填写'}
           </span>
         ),
       },
@@ -151,13 +162,15 @@ export default () => {
   const [modalType, setModalType] = useState<modalTypes>('qq');
   //展示弹窗
   const [openModal, setOpen] = useState(false);
-  // 获取个人信息
-  const { data: personalInfo, isLoading: personalLoading } =
-    useGetPersonalInfo();
-  const { setLoadingModel } = useAuth();
+
+  const { authorPersonalInfo: personalInfo } = useAuth();
 
   //打开弹窗
   const changeModal = (val: modalTypes) => {
+    if (val === 'bank_card' && personalInfo?.id_card_status !== 3) {
+      message.error('请先通过身份信息认证！');
+      return;
+    }
     setOpen(true);
     setModalType(val);
   };
@@ -166,9 +179,6 @@ export default () => {
     if (!personalInfo) return;
     initInfo();
   }, [personalInfo]);
-  useEffect(() => {
-    setLoadingModel(personalLoading);
-  }, [personalLoading]);
   return (
     <div>
       <div style={{ paddingRight: '69px' }}>

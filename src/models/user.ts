@@ -1,9 +1,10 @@
 import { Effect, Reducer } from 'umi';
-import { authorInfoProps, authorProps } from '@/type/user';
+import { authorInfoProps, authorPersonalProps, authorProps } from '@/type/user';
 
 export type userState = {
   userInfo: authorProps | null; //用户信息
   authorInfo: authorInfoProps | null; //作者书籍信息
+  authorPersonalInfo: authorPersonalProps | null; //作者个人信息
   token: string | null; //token
   loginPopup: boolean; //是否打开登陆弹窗
 };
@@ -13,6 +14,7 @@ type userModelPopup = {
   effects: {
     setUserInfo: Effect;
     setAuthorInfo: Effect;
+    setAuthorPersonalInfo: Effect;
     setToken: Effect;
     setLoginPopup: Effect;
   };
@@ -25,6 +27,7 @@ export default {
   state: {
     userInfo: null,
     authorInfo: null,
+    authorPersonalInfo: null,
     token: null,
     loginPopup: false,
   },
@@ -42,6 +45,14 @@ export default {
         type: 'save',
         payload: {
           authorInfo: payload,
+        },
+      });
+    },
+    *setAuthorPersonalInfo({ payload }, { put }) {
+      yield put({
+        type: 'save',
+        payload: {
+          authorPersonalInfo: payload,
         },
       });
     },

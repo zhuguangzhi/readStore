@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { IconFont } from '@/components/IconFont';
-import { Badge, Input } from 'antd';
+import { Input } from 'antd';
 import { inputEvent } from '@/type';
 import { UseNode } from '@/components/UseNode';
 import './styles/adminHeader.less';
@@ -45,16 +45,20 @@ export const AdminHeader = ({
         </UseNode>
       </div>
       <div className={'flex flex_align'}>
-        <Badge count={100} size="small">
-          <i className={'message_tip'} style={{ color: 'var(--adminTheme)' }}>
-            <IconFont
-              className={'cursor'}
-              width={'25px'}
-              height={'27px'}
-              icon={'tip'}
-            />
-          </i>
-        </Badge>
+        {/*<Badge count={100} size="small">*/}
+        {/*  <i className={'message_tip'} style={{ color: 'var(--adminTheme)' }}>*/}
+        {/*    */}
+        {/*  </i>*/}
+        {/*</Badge>*/}
+        <IconFont
+          className={'cursor'}
+          width={'25px'}
+          height={'27px'}
+          icon={'tip'}
+          onClick={() => {
+            router.push('/admin/message');
+          }}
+        />
         <IconFont
           className={'cursor'}
           width={'23px'}

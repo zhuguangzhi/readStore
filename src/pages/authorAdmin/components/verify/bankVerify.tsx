@@ -66,7 +66,12 @@ export const BankVerify = ({
       const searchRes = await run(
         AuthorPersonal.getBankList({ keywords: (bankName || '') + keywords }),
       );
-      setBankList(searchRes?.data || []);
+      if (
+        !searchRes ||
+        Object.prototype.toString.call(searchRes.data) === '[object Object]'
+      )
+        setBankList([]);
+      else setBankList(searchRes.data);
     }, 200);
   };
 
@@ -151,7 +156,7 @@ export const BankVerify = ({
           notFoundContent={null}
           onSearch={searchBank}
         >
-          {(bankList || []).map((bank, index) => (
+          {bankList?.map((bank, index) => (
             <Select.Option
               key={index + bank.id}
               value={bank.district + bank.name}

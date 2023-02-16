@@ -4,7 +4,7 @@ import { ConnectState } from '@/models/modelConnect';
 import { userState } from '@/models/user';
 import { getStorage, removeStorage, setStorage } from '@/common/publicFn';
 import { Bus_ClearUserInfo, TOKEN, UserInfo } from '@/constants';
-import { authorInfoProps, authorProps } from '@/type/user';
+import { authorInfoProps, authorPersonalProps, authorProps } from '@/type/user';
 import EventBus from '@/common/EventBus';
 
 export const useAuth = () => {
@@ -33,6 +33,17 @@ export const useAuth = () => {
     (p: authorInfoProps | null) => {
       dispatch({
         type: 'userModel/setAuthorInfo',
+        payload: p,
+      });
+      setStorage(UserInfo, p);
+    },
+    [dispatch],
+  );
+  // 作者个人信息
+  const setAuthorPersonalInfo = useCallback(
+    (p: authorPersonalProps | null) => {
+      dispatch({
+        type: 'userModel/setAuthorPersonalInfo',
         payload: p,
       });
       setStorage(UserInfo, p);
@@ -69,6 +80,7 @@ export const useAuth = () => {
     setAuthorInfo,
     setLoginPopup,
     setLoadingModel,
+    setAuthorPersonalInfo,
   };
 };
 

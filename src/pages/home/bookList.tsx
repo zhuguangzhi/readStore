@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { TabBar, tabProps } from '@/components/module/tabBar';
 import { BookItem } from '@/pages/home/components/bookItem';
 import './style/bookList.less';
-import { useHomeChart, useModifyApproval } from '@/utils/home';
+import { useDelBookCase, useHomeChart, useModifyApproval } from '@/utils/home';
 import { homeChartProps } from '@/type/home';
 import { useAuth } from '@/hook/useAuth';
 import { useMounted } from '@/hook';
@@ -46,6 +46,8 @@ const BookList = ({ saveScroll }: BookListProps) => {
   };
   // 加入书架
   const { mutate: addBookCase } = useAddBookCase('home', currentTabIndex);
+  // 移出书架
+  const { mutate: deleteBooks } = useDelBookCase(currentTabIndex);
 
   // tabBarList 选择改变
   const tabChange = (tab: tabProps) => {
@@ -61,6 +63,13 @@ const BookList = ({ saveScroll }: BookListProps) => {
       },
     });
   };
+
+  // 加入书架？移出书架
+  const bookOperation = (bookId: number, type: 1 | 2) => {
+    if (type === 1) addBookCase({ book_id: bookId });
+    else deleteBooks({ book_id: String(bookId) });
+  };
+
   useEffect(() => {
     setLoadingModel(true);
     tabChange(globalState.homeTab.tab);
@@ -93,7 +102,7 @@ const BookList = ({ saveScroll }: BookListProps) => {
         onComment={(book) => {
           toRead(book.chapter_id, book.id, { [OpenComment]: 1 });
         }}
-        onAddBookCase={(bookId) => addBookCase({ book_id: bookId })}
+        onAddBookCase={(bookId, type) => bookOperation(bookId, type)}
       />
     </div>
   );

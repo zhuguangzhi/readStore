@@ -17,6 +17,7 @@ export type modalTypes =
   | 'bank_card'
   | 'is_password_set'
   | 'address'
+  | 'postcode'
   | 'mobile';
 
 interface ModifyInfoProps extends ModalProps {
@@ -31,6 +32,7 @@ const titleList: { [key in modalTypes]: string } = {
   qq: 'QQ',
   email: '邮箱',
   address: '地址',
+  postcode: '邮编',
   id_card: '身份信息',
   bank_card: '银行卡信息',
   is_password_set: '密码',
@@ -162,6 +164,34 @@ export const ModifyInfo = ({
         <Finish onCancel={() => onFinish()} text={'恭喜你！地址填写完成！'} />
       ),
     },
+  ]; // address
+  const postcodeItems: stepItemsProps[] = [
+    {
+      label: '手机号码验证',
+      stepElement: (
+        <MobileVerify
+          form={stepOneForm}
+          setStep={() => setStep((val) => val + 1)}
+        />
+      ),
+    },
+    {
+      label: '填写邮编',
+      stepElement: (
+        <BindInput
+          label={'邮编'}
+          form={stepTwoForm}
+          type={'postcode'}
+          setStep={() => setStep((val) => val + 1)}
+        />
+      ),
+    },
+    {
+      label: '填写完成',
+      stepElement: (
+        <Finish onCancel={() => onFinish()} text={'恭喜你！邮编填写完成！'} />
+      ),
+    },
   ];
   // identity
   const identityItems: stepItemsProps[] = [
@@ -276,6 +306,7 @@ export const ModifyInfo = ({
     qq: qqItems,
     email: emailItems,
     address: addressItems,
+    postcode: postcodeItems,
     id_card: identityItems,
     bank_card: bankCardItems,
     is_password_set: passwordItems,

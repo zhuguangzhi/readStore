@@ -39,6 +39,7 @@ import {
   editPasswordProps,
   authorPersonalProps,
   vipRechargeProps,
+  payProps,
 } from '@/type/user';
 import { clearToken } from '@/hook/useAuth';
 import { cleanObject } from '@/common/publicFn';
@@ -69,6 +70,8 @@ import { adminCommentRequestProps } from '@/type/authorAdmin/commentManager';
 import {
   codewordCalendarProps,
   dataStatisticsProps,
+  incomeTotalProps,
+  writeClassProps,
 } from '@/type/authorAdmin/home';
 import {
   authorMessageProps,
@@ -98,8 +101,10 @@ export const ErrorCheck = <T>(val: ResponseData<T> | null) => {
   // API_COMM_012 token不正确
   // API_MESSAGE_007 系统通知清空未读消息
   // API_COMM_013 作者后台查看身份信息失败
+  // API_ESIGN_007  API_ESIGN_008 API_ESIGN_015  签约身份认证不通过
   switch (val?.error_code) {
     case 'API_COMM_011' || 'API_COMM_012': {
+      msg = '您还未登陆，请先登陆';
       //  弹出登陆框 清空用户数据
       EventBars.emit(Bus_OpenLogin);
       // 清空token
@@ -112,6 +117,10 @@ export const ErrorCheck = <T>(val: ResponseData<T> | null) => {
     }
     case 'API_COMM_013': {
       msg = '身份认证失败,请完成认证';
+      break;
+    }
+    case 'API_ESIGN_007' || 'API_ESIGN_008' || 'API_ESIGN_015': {
+      msg = '身份认证未通过，请完善身份信息';
       break;
     }
   }
@@ -311,6 +320,8 @@ export const PersonalCenter = {
   //  获取vip金额配置
   getVipMoneyOption: () =>
     http.get<ResponseData<vipRechargeProps[]>>(`${apiUrl}/config/recharge`, {}),
+  //  充值
+  pay: (p: payProps) => http.post<ResponseData<string>>(`${apiUrl}/pay/pay`, p),
 };
 export const Topic = {
   // 话题书架
@@ -396,6 +407,18 @@ export const AuthorHome = {
   dataStatistics: () =>
     http.post<ResponseData<dataStatisticsProps>>(
       `${apiUrl}/author/statistics`,
+      {},
+    ),
+  //  写作课堂
+  writeClass: () =>
+    http.get<ResponseData<writeClassProps[]>>(
+      `${apiUrl}/author/writingClass`,
+      {},
+    ),
+  //  全部稿费
+  getAllFee: () =>
+    http.post<ResponseData<incomeTotalProps>>(
+      `${apiUrl}/author/income/total`,
       {},
     ),
 };

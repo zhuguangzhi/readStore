@@ -1,5 +1,4 @@
 // 书籍信息
-import { authorProps } from '@/type/user';
 import { topicProps } from '@/type/topic';
 
 // 书的信息(所有接口书籍信息汇总)
@@ -47,6 +46,7 @@ export type bookInfoProps = {
   audit_content: string; //审核内容
   empowers: empowerProps[]; // 上架渠道信息
   signing_flow: signingFlowProps; //签约流程
+  chapter_word_count: number; //章节总字数
 };
 // 签约流程
 export type signingFlowProps = {
@@ -72,22 +72,6 @@ export type bookExtension = {
 };
 
 // __________________________________
-
-//用户阅读书本类型 TODO:对接口时替换成book
-export interface bookProps {
-  id: number;
-  title: string;
-  description: string; //摘要
-  face: string; //封面
-  content: string;
-  authorInfo: Partial<authorProps>; //作者信息  content: string //内容
-  comment: number; //评论数
-  vip: boolean; //是否是vip书籍
-  support: boolean; //已赞
-  tags?: string[]; //标签列表
-  bookshelf: boolean; //是否加入书架
-  progress?: number; //阅读进度
-}
 
 //书库主题分类
 export type booksThemeProps = {

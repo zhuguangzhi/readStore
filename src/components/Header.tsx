@@ -123,8 +123,11 @@ const Header = () => {
           <div className={'header_card_top_vipPay'}>
             <div className={'header_card_top_vipPay_info'}>
               <img src={require('@/assets/image/home/vipSign.png')} alt="" />
-              {/*TODO 会员到期时间*/}
-              <span className={'font_12'}>您还不是会员</span>
+              <span className={'font_12'}>
+                {userInfo?.vip_expire_time
+                  ? `您的会员将在${userInfo.vip_expire_time}到期`
+                  : '您还不是会员'}
+              </span>
             </div>
             <div
               className={'header_card_top_vipPay_btn'}

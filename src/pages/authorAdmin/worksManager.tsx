@@ -17,7 +17,7 @@ import { ContractManager } from '@/pages/authorAdmin/components/contractManager'
 import { contractLeastNumber } from '../../../public/config';
 
 // 审核描述
-const auditDesc = {
+export const auditDesc = {
   '1': '已发布',
   '0': '待审',
   '-1': '驳回',
@@ -175,32 +175,32 @@ export default () => {
                     {/*    底部*/}
                     <div className={'worksManager_list_item_container_footer'}>
                       <div>
-                        <p>
-                          <span className={'color_99'}>本月更新：</span>
-                          <span>{item.month_word}字</span>
-                        </p>
+                        {/*<p>*/}
+                        {/*  <span className={'color_99'}>本月更新：</span>*/}
+                        {/*  <span>{item.month_word}字</span>*/}
+                        {/*</p>*/}
                         <p className={'flex flex_align'} id={'worksNum'}>
                           <span className={'color_99'}>作品字数：</span>
-                          <span>{item.word_count}字</span>
-                          <Popover
-                            placement="bottom"
-                            content={'已通过审核的章节的总字数'}
-                            getPopupContainer={() =>
-                              document.getElementById(
-                                'worksNum',
-                              ) as HTMLDivElement
-                            }
-                          >
-                            <i className={'flex flex_align'}>
-                              <IconFont
-                                className={'color_99 cursor'}
-                                marginLeft={'8px'}
-                                width={'20px'}
-                                height={'20px'}
-                                icon={'tishi'}
-                              />
-                            </i>
-                          </Popover>
+                          <span>{item.chapter_word_count}字</span>
+                          {/*<Popover*/}
+                          {/*  placement="bottom"*/}
+                          {/*  content={'已通过审核的章节的总字数'}*/}
+                          {/*  getPopupContainer={() =>*/}
+                          {/*    document.getElementById(*/}
+                          {/*      'worksNum',*/}
+                          {/*    ) as HTMLDivElement*/}
+                          {/*  }*/}
+                          {/*>*/}
+                          {/*  <i className={'flex flex_align'}>*/}
+                          {/*    <IconFont*/}
+                          {/*      className={'color_99 cursor'}*/}
+                          {/*      marginLeft={'8px'}*/}
+                          {/*      width={'20px'}*/}
+                          {/*      height={'20px'}*/}
+                          {/*      icon={'tishi'}*/}
+                          {/*    />*/}
+                          {/*  </i>*/}
+                          {/*</Popover>*/}
                         </p>
                       </div>
                       <div
@@ -214,22 +214,18 @@ export default () => {
                             });
                           }}
                         >
-                          <UseNode rIf={item.book_status > 0}>
-                            <>
-                              <IconFont
-                                width={'26px'}
-                                height={'26px'}
-                                icon={'upload'}
-                              />
-                              <span>
-                                {item.is_finish === 1
-                                  ? '查看内容'
-                                  : item.chapter_id !== 0
-                                  ? '内容修改'
-                                  : '上传内容'}
-                              </span>
-                            </>
-                          </UseNode>
+                          <IconFont
+                            width={'26px'}
+                            height={'26px'}
+                            icon={'upload'}
+                          />
+                          <span>
+                            {item.is_finish === 1
+                              ? '查看内容'
+                              : item.chapter_id !== 0
+                              ? '内容修改'
+                              : '上传内容'}
+                          </span>
                         </div>
                         <UseNode
                           rIf={
@@ -268,22 +264,24 @@ export default () => {
                           />
                           <span>管理</span>
                         </div>
-                        <div
-                          onClick={() =>
-                            setPopupOption({
-                              title: item.name,
-                              id: item.id,
-                              open: true,
-                            })
-                          }
-                        >
-                          <IconFont
-                            width={'18px'}
-                            height={'18px'}
-                            icon={'cha'}
-                          />
-                          <span>删除</span>
-                        </div>
+                        <UseNode rIf={item.is_signing === 2}>
+                          <div
+                            onClick={() =>
+                              setPopupOption({
+                                title: item.name,
+                                id: item.id,
+                                open: true,
+                              })
+                            }
+                          >
+                            <IconFont
+                              width={'18px'}
+                              height={'18px'}
+                              icon={'cha'}
+                            />
+                            <span>删除</span>
+                          </div>
+                        </UseNode>
                       </div>
                     </div>
                   </div>

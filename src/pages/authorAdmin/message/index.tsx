@@ -6,7 +6,6 @@ import { MessageBox } from '@/pages/authorAdmin/message/messageBox';
 import { ReadPagination } from '@/components/module/ReadPagination';
 import { useGetAuthorMessage } from '@/utils/authorAdmin/personalInfo';
 import { useAuth } from '@/hook/useAuth';
-import { useMounted } from '@/hook';
 
 const SubIcon = () => (
   <IconFont width={'31px'} height={'35px'} icon={'tongzhi'} />
@@ -65,17 +64,10 @@ export default () => {
   ];
   const { setLoadingModel } = useAuth();
 
-  // 占位点击
-  const linkClick = (source: 1 | 2 | 3) => {
-    console.log(source);
-  };
-
   useEffect(() => {
     setLoadingModel(messageLoading);
   }, [messageLoading]);
-  useMounted(() => {
-    window.linkClick = linkClick;
-  });
+
   return (
     <div className={''}>
       <div style={{ paddingRight: '69px' }}>

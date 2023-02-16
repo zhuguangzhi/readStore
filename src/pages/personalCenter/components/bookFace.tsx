@@ -4,6 +4,7 @@ import { Checkbox } from 'antd';
 import { IconFont } from '@/components/IconFont';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import '../style/bookShelf.less';
+import { UseNode } from '@/components/UseNode';
 
 export type BookFaceProps = {
   book: myBookProps;
@@ -13,6 +14,7 @@ export type BookFaceProps = {
   selectIds: number[];
   onDelete: (title: string, id: number) => void; //删除
   onCheckBox: (event: CheckboxChangeEvent, bookId: number) => void; //多选框选中
+  isHiddenDel?: boolean; //隐藏删除按钮
 };
 export const BookFace = ({
   book,
@@ -20,6 +22,7 @@ export const BookFace = ({
   children,
   edit,
   selectIds,
+  isHiddenDel = false,
   ...props
 }: BookFaceProps) => {
   return (
@@ -39,14 +42,20 @@ export const BookFace = ({
             // onChange={(e) => delPopup.onChangeCheckBox(e, book.book_id)}
           />
         ) : (
-          <IconFont
-            onClick={
-              () => props.onDelete(book.book_title, book.book_id)
-              // delPopup.onDelChange(book.book_title, book.book_id)
-            }
-            className={'myBookShelf_face_icon'}
-            icon={'delete'}
-          />
+          <>
+            <UseNode rIf={!isHiddenDel}>
+              <i>
+                <IconFont
+                  onClick={
+                    () => props.onDelete(book.book_title, book.book_id)
+                    // delPopup.onDelChange(book.book_title, book.book_id)
+                  }
+                  className={'myBookShelf_face_icon'}
+                  icon={'delete'}
+                />
+              </i>
+            </UseNode>
+          </>
         )}
         {children}
       </div>
