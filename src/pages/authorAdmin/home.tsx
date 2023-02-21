@@ -33,14 +33,15 @@ import { bookInfoProps } from '@/type/book';
 import { DefaultNoData } from '@/components/defaultNoData';
 import { useGetWorks } from '@/utils/authorAdmin/worksManager';
 import { auditDesc } from '@/pages/authorAdmin/worksManager';
-import router from '@/hook/url';
-import { NewsId, WorksChapterId, WorksId } from '@/constants/url';
+import router, { useSearchParam } from '@/hook/url';
+import { AuthorToken, NewsId, WorksChapterId, WorksId } from '@/constants/url';
 import { incomeTotalProps } from '@/type/authorAdmin/home';
 import { targetColumnArray } from '@/common/publicFn';
 import { allFeeTranslate } from '@/utils/format';
 import { UseNode } from '@/components/UseNode';
 import { CarouselRef } from 'antd/es/carousel';
 import { IconFont } from '@/components/IconFont';
+import { TOKEN } from '@/constants';
 
 const colorList = {
   base_royalties: '#FF0028',
@@ -51,6 +52,11 @@ const colorList = {
   advert: '#FF612A',
 };
 export default () => {
+  const [{ [AuthorToken]: authorToken }] = useSearchParam([AuthorToken]);
+  // 地址栏有token进行更新
+  if (authorToken) {
+    window.localStorage.setItem(TOKEN, JSON.stringify(authorToken));
+  }
   // 码字日历月份
   // const [codeDate, setCodeDate] = useState(moment().format('YYYY-MM'));
   // 获取更新日历
@@ -184,7 +190,7 @@ export default () => {
     if (!worksList) return;
     let index = currentShowBook;
     if (currentShowBook >= worksList.data.length - 1) {
-      index = 1;
+      index = 0;
       setCurrentShowBook(0);
     }
     setWorkData(worksList.data[index]);

@@ -35,6 +35,7 @@ export const ReadContainer = ({
   const { userInfo } = useAuth();
   //滚动到记录的行数
   const toScroll = () => {
+    if (!bookInfo || bookInfo.read_line < 10) return;
     const y =
       readBox.current?.children[
         (bookInfo?.read_line || 1) - 1

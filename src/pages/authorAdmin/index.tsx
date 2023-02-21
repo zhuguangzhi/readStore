@@ -47,8 +47,12 @@ export default () => {
     if (routerInfo.length > 0) setOperate(routerInfo[2]);
   }, [routerInfo]);
   useEffect(() => {
-    if (!getToken()) router.push('/home');
+    if (!getToken()) {
+      router.push('/home');
+      return;
+    }
     if (!userInfo) return;
+    // 获取作者信息
     run(PersonalCenter.getAuthorInfo({ id: userInfo.id })).then((res) => {
       if (!ErrorCheck(res)) return;
       setAuthorInfo(res?.data || null);

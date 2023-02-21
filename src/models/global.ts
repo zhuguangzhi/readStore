@@ -1,14 +1,12 @@
 import { Effect, Reducer } from 'umi';
-import { tabProps } from '@/components/module/tabBar';
-import { tabBarList } from '@/pages/home/bookList';
-import { homeChartProps } from '@/type/home';
+import { homeBookListProps } from '@/type/home';
 
 export type globalState = {
   loading: boolean; //加载
   homeTab: {
     scroll: number;
-    tab: tabProps;
-    bookList: homeChartProps | null;
+    tab: 2 | 3 | 4;
+    bookList: homeBookListProps['data'] | null;
     noticeList: {
       top: number;
       height: string;
@@ -35,7 +33,7 @@ export default {
     loading: false,
     homeTab: {
       scroll: 0,
-      tab: tabBarList[0],
+      tab: 2,
       bookList: null,
       noticeList: {
         top: 0,

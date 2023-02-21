@@ -49,7 +49,11 @@ import {
   myCommentProps,
   personalMessageProps,
 } from '@/type/personalCenter';
-import { newsProps } from '@/type/home';
+import {
+  homeBookListProps,
+  homeBookListRequestProps,
+  newsProps,
+} from '@/type/home';
 import {
   topCaseProps,
   topicDetailsProps,
@@ -103,7 +107,8 @@ export const ErrorCheck = <T>(val: ResponseData<T> | null) => {
   // API_COMM_013 作者后台查看身份信息失败
   // API_ESIGN_007  API_ESIGN_008 API_ESIGN_015  签约身份认证不通过
   switch (val?.error_code) {
-    case 'API_COMM_011' || 'API_COMM_012': {
+    case 'API_COMM_011':
+    case 'API_COMM_012': {
       msg = '您还未登陆，请先登陆';
       //  弹出登陆框 清空用户数据
       EventBars.emit(Bus_OpenLogin);
@@ -132,8 +137,14 @@ export const ErrorCheck = <T>(val: ResponseData<T> | null) => {
 
 const apiUrl = baseApiUrl;
 export const Home = {
-  //首页书本推荐
+  //首页书本推荐 <弃用>
   getHomeBook: <T>() => http.get<T>(`${apiUrl}/chart`, {}),
+  // 首页书本推荐 <新>
+  getHomeBookList: (p: homeBookListRequestProps) =>
+    http.get<ResponseData<homeBookListProps>>(
+      `${apiUrl}/chart/list/${p.chart_place}`,
+      p,
+    ),
   //轮播书本
   getSwiperBook: <T>() => http.get<T>(`${apiUrl}/chart/banner`, {}, false),
   //新闻

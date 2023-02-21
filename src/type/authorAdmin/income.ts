@@ -22,6 +22,7 @@ export type incomeListDataProps = {
   total: number; //总计
   release_time: string; //发放时间
   actual_royalties: number; //实发稿费
+  searchDate: string; //时间
 };
 export type incomeListProps = {
   page_info: pageProps;

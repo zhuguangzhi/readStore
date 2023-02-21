@@ -203,10 +203,10 @@ export const NoticeList = ({
                 >
                   <img
                     className={'author_item_photo'}
-                    src={author.user_image}
+                    src={author.user_image_url}
                     alt=""
                   />
-                  <p className={'author_item_name'}>{author.name}</p>
+                  <p className={'author_item_name'}>{author.pen_name}</p>
                   <p className={'author_item_tag'}>
                     {author.chart_description}
                   </p>

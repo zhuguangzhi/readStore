@@ -52,7 +52,7 @@ export default () => {
     incomeListRequestProps['is_finish'] | null
   >(null);
   // 日期
-  const [date, setDate] = useState<string | null>(null);
+  const [date, setDate] = useState<string>(moment().format('YYYY-MM'));
   // 签约方式
   const [signType, setSignType] = useState<
     incomeListRequestProps['signing_type'] | null
@@ -264,7 +264,7 @@ export default () => {
             />
           ) : (
             tableData?.data.map((data) => {
-              return <TableData key={data.id} {...data} />;
+              return <TableData key={data.id} {...data} searchDate={date} />;
             })
           )}
         </div>

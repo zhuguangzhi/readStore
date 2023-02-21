@@ -12,7 +12,7 @@ import { translateNumber } from '@/utils/format';
 import { NoticeList } from '@/pages/home/noticeList';
 import './style/topicInfo.less';
 import { BookItem } from '@/pages/home/components/bookItem';
-import { useModifyApproval } from '@/utils/home';
+import { useDelBookCase, useModifyApproval } from '@/utils/home';
 import { useDispatch } from '@@/exports';
 import { useAddBookCase } from '@/utils/rank';
 import { scrollToBottom, setArrayForId } from '@/common/publicFn';
@@ -41,11 +41,18 @@ export default () => {
   const { mutate: setApproval } = useModifyApproval('topicBookList');
   // 加入书架
   const { mutate: addBookCase } = useAddBookCase('topicBookList');
+  // 移出书架
+  const { mutate: delBookCase } = useDelBookCase('topicBookList');
   // 修改排序
   const changeSort = (type: 1 | 2) => {
     if (sortType === type) return;
     setSortType(type);
     setTopicBooks([]);
+  };
+  // 加入书架？移出书架
+  const bookOperation = (bookId: number, type: 1 | 2) => {
+    if (type === 1) addBookCase({ book_id: bookId });
+    else delBookCase({ book_id: String(bookId) });
   };
 
   useEffect(() => {
@@ -152,7 +159,7 @@ export default () => {
               router.push('/read', { [BookId]: book.id }, true);
               disPatch({ type: 'global/setCommentBox', payload: true });
             }}
-            onAddBookCase={(bookId) => addBookCase({ book_id: bookId })}
+            onAddBookCase={(bookId, type) => bookOperation(bookId, type)}
           />
         </div>
       </div>

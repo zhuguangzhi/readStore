@@ -1,8 +1,13 @@
 import React, { useMemo } from 'react';
 import './styles/tableData.less';
 import { incomeListDataProps } from '@/type/authorAdmin/income';
+import moment from 'moment';
 
-export const TableData = ({ name, ...props }: incomeListDataProps) => {
+export const TableData = ({
+  name,
+  searchDate,
+  ...props
+}: incomeListDataProps) => {
   //保底
   const MinimumComponent = () => {
     // 基础稿费是否大于等于其他合计
@@ -20,7 +25,7 @@ export const TableData = ({ name, ...props }: incomeListDataProps) => {
               <p>（{props.signing_type_text}）</p>
             </td>
             <td colSpan={6} className={baseIsMore ? 'feeSend' : 'feeNoSend'}>
-              基础稿费 {props.base_royalties}
+              基础稿费：{props.base_royalties}
               <span style={{ color: '#656a7a' }}>
                 {' '}
                 (分成稿费低于基础稿费时，发放基础稿费){' '}
@@ -30,12 +35,16 @@ export const TableData = ({ name, ...props }: incomeListDataProps) => {
             <td className={baseIsMore ? 'feeSend' : 'feeNoSend'}>实发稿费</td>
           </tr>
           <tr className={!baseIsMore ? 'feeSend' : 'feeNoSend'}>
-            <td>vip分成 {props.vip}</td>
-            <td>礼物收益 {props.gift}</td>
-            <td>渠道分成 {props.channel}</td>
-            <td>网站福利 {props.welfare}</td>
-            <td>广告 {props.advert}</td>
-            <td>总计 {props.total}</td>
+            <td>vip分成：{props.vip}</td>
+            <td>
+              礼物收益
+              {moment(searchDate) < moment('2023-02') ? '(订阅+打赏)' : ''}：
+              {props.gift}
+            </td>
+            <td>渠道分成：{props.channel}</td>
+            <td>网站福利：{props.welfare}</td>
+            <td>广告：{props.advert}</td>
+            <td>总计：{props.total}</td>
             <td>{props.release_time}</td>
             <td>{props.actual_royalties}</td>
           </tr>
@@ -54,7 +63,10 @@ export const TableData = ({ name, ...props }: incomeListDataProps) => {
               <p>（{props.signing_type_text}）</p>
             </td>
             <td>基础稿费</td>
-            <td>礼物收益</td>
+            <td>
+              礼物收益
+              {moment(searchDate) < moment('2023-02') ? '（订阅+打赏）' : ''}
+            </td>
             <td>渠道分成</td>
             <td>网站福利</td>
             <td>广告</td>
@@ -87,7 +99,10 @@ export const TableData = ({ name, ...props }: incomeListDataProps) => {
               <p>（{props.signing_type_text}）</p>
             </td>
             <td>VIP分成</td>
-            <td>礼物收益</td>
+            <td>
+              礼物收益
+              {moment(searchDate) < moment('2023-02') ? '（订阅+打赏）' : ''}
+            </td>
             <td>渠道分成</td>
             <td>网站福利</td>
             <td>广告</td>

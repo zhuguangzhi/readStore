@@ -31,7 +31,7 @@ export const ReadEditor = ({
     // selector: "#textEditor",
     // height: "100%",
     menubar: false, //隐藏菜单栏
-    plugins: ['image'],
+    plugins: ['image', 'paste'],
     // toolbar: `undo redo image`,
     toolbar: false,
     toolbar_mode: 'wrap',
@@ -39,6 +39,11 @@ export const ReadEditor = ({
     content_style:
       'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
     entity_encoding: 'raw', //避免字符自动转换
+    paste_auto_cleanup_on_paste: true,
+    paste_remove_styles: true,
+    paste_remove_styles_id_webkit: true,
+    paste_strip_class_attributes: true,
+    paste_as_text: true,
   });
 
   const onInit = (editor: TinyMCEEditor) => {

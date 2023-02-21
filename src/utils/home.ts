@@ -1,6 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
   authorRecommend,
+  homeBookListProps,
+  homeBookListRequestProps,
   homeChartProps,
   newsProps,
   topicProps,
@@ -11,10 +13,22 @@ import { ResponseData } from '@/common/http';
 import { authorProps } from '@/type/user';
 import { setApprovalMutate } from '@/utils/mutate/setApproval';
 
-// 获取书本推荐
+// 获取书本推荐<弃用>
 export const useHomeChart = (userInfo: authorProps | null) => {
   return useQuery<homeChartProps[], Error>(['home', userInfo?.id], () => {
     return Home.getHomeBook<ResponseData<homeChartProps[]>>().then((value) => {
+      ErrorCheck(value);
+      return value.data;
+    });
+  });
+};
+// 获取书本推荐<新>
+export const useGetHomeChartList = (
+  userInfo: authorProps | null,
+  p: homeBookListRequestProps,
+) => {
+  return useQuery<homeBookListProps, Error>(['home', userInfo?.id, p], () => {
+    return Home.getHomeBookList(p).then((value) => {
       ErrorCheck(value);
       return value.data;
     });
@@ -68,7 +82,6 @@ export const useGetTopic = () => {
 // 点赞、取消点赞
 export const useModifyApproval = (
   type: 'home' | 'readBookInfo' | 'topicBookList',
-  tabIndex?: number,
 ) => {
   const queryClient = useQueryClient();
   const queryKey = [type];
@@ -78,21 +91,22 @@ export const useModifyApproval = (
     {
       //请求成功时则刷新，触发home
       onSuccess: (val, target) => {
-        queryClient.invalidateQueries(queryKey);
-        if (ErrorCheck(val)) {
-          // huan
-          setApprovalMutate[type]({ target, queryClient, tabIndex });
+        // queryClient.invalidateQueries(queryKey);
+        if (!ErrorCheck(val)) {
+          let query = { ...target };
+          query.is_approval = query.is_approval === 1 ? 2 : 1;
+          setApprovalMutate[type]({ target: query, queryClient });
+          return;
         }
       },
       //    实现乐观更新
       onMutate: function (target) {
         let previousItems = queryClient.getQueryData(type);
-        setApprovalMutate[type]({ target, queryClient, tabIndex });
+        setApprovalMutate[type]({ target, queryClient });
         return { previousItems };
       },
       //错误回滚
       onError(error, newItem, context) {
-        console.log('error');
         queryClient.setQueriesData(queryKey, context?.previousItems);
       },
     },
@@ -109,27 +123,31 @@ export const useGetNewsInfo = (id: number) => {
   );
 };
 // 移出书架
-export const useDelBookCase = (tabIndex: number) => {
+export const useDelBookCase = (query: 'home' | 'topicBookList' = 'home') => {
   const queryClient = useQueryClient();
-  const queryKey = ['home'];
+  const queryKey = [query];
+  const setQuery = (target: { book_id: string }, type: 1 | 2) => {
+    queryClient.setQueriesData([query], (old?: homeBookListProps) => {
+      let arr = old ? { ...old } : ({} as homeBookListProps);
+      if (arr.data.length > 0) {
+        arr.data = arr.data.map((data) =>
+          data.id === Number(target.book_id)
+            ? { ...data, in_user_case: type }
+            : data,
+        );
+      }
+      return arr;
+    });
+  };
   return useMutation((p: { book_id: string }) => PersonalCenter.delMyBooks(p), {
-    onSuccess(val) {
-      if (ErrorCheck(val)) queryClient.invalidateQueries(queryKey);
+    onSuccess(val, target) {
+      if (ErrorCheck(val)) return;
+      //  请求失败
+      setQuery(target, 1);
     },
     onMutate(target) {
       let previousItems = queryClient.getQueryData(queryKey);
-      queryClient.setQueriesData(['home'], (old?: homeChartProps[]) => {
-        let arr = old ? [...old] : [];
-        if (arr.length > 0 && tabIndex !== undefined) {
-          arr[tabIndex].data = arr[tabIndex].data.map((data) =>
-            data.id === Number(target.book_id)
-              ? { ...data, in_user_case: 2 }
-              : data,
-          );
-          return arr;
-        }
-        return [];
-      });
+      setQuery(target, 2);
       return { previousItems };
     },
     //错误回滚

@@ -1,26 +1,31 @@
 import { QueryClient } from 'react-query';
-import { approvalProps, readBookInfoProps } from '@/type/book';
-import { homeChartProps } from '@/type/home';
+import { approvalProps, bookExtension, readBookInfoProps } from '@/type/book';
+import { homeBookListProps } from '@/type/home';
 import { topicBookListProps } from '@/type/topic';
 
 type approvalMutateProps = {
   target: approvalProps;
   queryClient: QueryClient;
-  tabIndex?: number;
 };
 export const setApprovalMutate = {
-  home: ({ target, queryClient, tabIndex }: approvalMutateProps) => {
-    queryClient.setQueriesData(['home'], (old?: homeChartProps[]) => {
-      let arr = old ? [...(old as homeChartProps[])] : [];
-      if (arr.length > 0 && tabIndex !== undefined) {
-        arr[tabIndex].data = arr[tabIndex].data.map((data) =>
-          data.id === target.book_id
-            ? { ...data, is_user_approval: target.is_approval }
-            : data,
-        );
-        return arr;
-      }
-      return [];
+  home: ({ target, queryClient }: approvalMutateProps) => {
+    queryClient.setQueriesData(['home'], (old?: homeBookListProps) => {
+      if (!old) return {} as homeBookListProps;
+      return {
+        ...old,
+        data: old.data.map((item) => {
+          if (item.id === target.book_id) {
+            item.is_user_approval = target.is_approval;
+            const currentApproval = (item.book_extension as bookExtension)
+              .all_approval;
+            (item.book_extension as bookExtension).all_approval =
+              target.is_approval === 1
+                ? currentApproval + 1
+                : currentApproval - 1;
+          }
+          return item;
+        }),
+      };
     });
   },
   readBookInfo: ({ queryClient, target }: approvalMutateProps) => {

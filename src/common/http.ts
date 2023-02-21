@@ -58,7 +58,6 @@ async function apiAxios<T>(
 
   // 从store中获取token
   const token = getToken();
-
   header = {
     ...header,
     Authorization: token && useToken ? `Bearer ${token}` : '',
@@ -104,13 +103,15 @@ async function apiAxios<T>(
 export default {
   get: <T>(
     url: string,
-    params: { [key: string]: unknown },
+    params: object,
     useToken?: boolean,
     header?: { [key: string]: unknown },
   ) =>
     apiAxios<T>(
       'GET',
-      url + '?' + qs.stringify(cleanObject(params)),
+      url +
+        '?' +
+        qs.stringify(cleanObject(params as { [key: string]: unknown })),
       {},
       header,
       useToken,

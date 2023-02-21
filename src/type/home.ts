@@ -1,5 +1,5 @@
 // 首页 推荐位 vip 新书书籍集合
-import { bookInfoProps } from '@/type/book';
+import { bookInfoProps, pageProps, pageRequestProps } from '@/type/book';
 import { authorProps } from '@/type/user';
 
 type homeProps = {
@@ -15,6 +15,15 @@ type homeProps = {
 export interface homeChartProps extends homeProps {
   data: bookInfoProps[];
 }
+// 首页书本推荐 <新>
+export interface homeBookListRequestProps extends pageRequestProps {
+  chart_place: 2 | 3 | 4; //首页推荐位位置(2:推荐 3:VIP精选 4:新书）
+}
+export type homeBookListProps = {
+  page_info: pageProps;
+  data: bookInfoProps[];
+};
+
 //公告
 export type newsProps = {
   id: number; //主键ID

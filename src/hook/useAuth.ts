@@ -15,6 +15,7 @@ export const useAuth = () => {
         type: 'userModel/setToken',
         payload: token,
       });
+      console.log('token', token);
       setStorage(TOKEN, token);
     },
     [dispatch],

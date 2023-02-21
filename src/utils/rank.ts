@@ -2,7 +2,6 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Book, ErrorCheck } from '@/common/api';
 import { authorProps } from '@/type/user';
 import { rankBookInfoProps, rankParamProps } from '@/type/book';
-import { addBookCaseMutate } from '@/utils/mutate/setBookMutate';
 
 // 获取书本推荐
 export const useGetBookRank = (
@@ -23,16 +22,31 @@ export const useGetBookRank = (
 // 加入书架
 export const useAddBookCase = (
   queryType: 'rank' | 'home' | 'topicBookList',
-  tabIndex?: number,
 ) => {
   const queryClient = useQueryClient();
+  const setQuery = <T extends rankBookInfoProps>(
+    target: { book_id: number },
+    type: 1 | 2,
+  ) => {
+    queryClient.setQueriesData([queryType], (old?: T) => {
+      let arr = old ? { ...old } : ({} as T);
+      if (arr.data.length > 0) {
+        arr.data = arr.data.map((data) =>
+          data.id === target.book_id ? { ...data, in_user_case: type } : data,
+        );
+      }
+      return arr;
+    });
+  };
   return useMutation((p: { book_id: number }) => Book.addBookCase(p), {
-    onSuccess(val) {
-      if (ErrorCheck(val)) queryClient.invalidateQueries([queryType]);
+    onSuccess(val, target) {
+      if (ErrorCheck(val)) return;
+      setQuery(target, 2);
     },
     onMutate(target) {
       let previousItems = queryClient.getQueryData([queryType]);
-      addBookCaseMutate?.[queryType](target, queryClient, tabIndex);
+      setQuery(target, 1);
+      // addBookCaseMutate?.[queryType](target, queryClient);
       return { previousItems };
     },
     //错误回滚

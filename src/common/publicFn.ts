@@ -109,9 +109,26 @@ export const imgToBase64 = (img: RcFile, callback: (url: string) => void) => {
 };
 //复制文字
 export const copy = (context: string) => {
-  navigator.clipboard.writeText(context).then(() => {
-    message.success('复制成功');
-  });
+  // 创建一个文本输入框元素
+  const inputElement = document.createElement('input');
+  inputElement.type = 'text';
+  inputElement.value = context;
+
+  // 将文本输入框元素添加到文档中
+  document.body.appendChild(inputElement);
+
+  // 选中文本输入框中的文本
+  inputElement.select();
+
+  // 复制选中的文本
+  document.execCommand('copy');
+
+  // 从文档中移除文本输入框元素
+  document.body.removeChild(inputElement);
+  message.success('复制成功');
+  // navigator.clipboard.writeText(context).then(() => {
+  //   message.success('复制成功');
+  // });
 };
 // 阅读
 export const toRead = (

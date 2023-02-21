@@ -184,9 +184,13 @@ export const useAttentionUser = (
     ['attentionUser'],
     (p: attentionUserProps) => User.attentionUser(p),
     {
-      onSuccess(val) {
-        ErrorCheck(val);
+      onSuccess(val, target) {
         if (type === 'readBookInfo') queryClient.invalidateQueries(queryKey);
+        if (!ErrorCheck(val)) {
+          let query = { ...target };
+          query.is_attention = query.is_attention === 1 ? 2 : 1;
+          setAttention[type](query, queryClient, bookId);
+        }
       },
       onMutate(target) {
         let previousItems = queryClient.getQueriesData(queryKey);

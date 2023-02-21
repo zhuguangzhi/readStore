@@ -1,15 +1,18 @@
 .bookLibrary {
   width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  //display: grid;
+  //grid-template-columns: 1fr 1fr 1fr;
   &_item {
-    width: 96%;
+    width: 33.3%;
     padding: 0 2%;
     box-sizing: border-box;
     height: 176px;
     display: flex;
     align-items: flex-start;
+    justify-content: space-between;
     margin-bottom: 34px;
     cursor: pointer;
     &_img {

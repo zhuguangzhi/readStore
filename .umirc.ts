@@ -29,15 +29,16 @@ export default defineConfig({
   history: {
     type: 'browser',
   },
+  links: [{ rel: 'icon', href: './favico.png' }],
   scripts: [
     '//at.alicdn.com/t/c/font_3753867_785f9lx5t3u.js', //阿里图标库
   ],
   // proxy: {
-  //   '/proxy': {
-  //     target: 'http://apipost.datangzww.com',
-  //     changeOrigin: true,
-  //     pathRewrite: { '^/proxy': '' },
-  //   },
+  //   '/api': {
+  // target: 'http://api-web.kdxgs.com',
+  // changeOrigin: true,
+  // pathRewrite: { '^/proxy': '' },
+  // },
   // },
   routes: routes,
 });
