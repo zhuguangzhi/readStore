@@ -61,7 +61,7 @@ export const ChartsPie = ({
       },
     };
     chartsRef.current.setOption(option);
-  }, [data, chartsRef.current]);
+  }, [data, bookNum, chartsRef.current]);
 
   useMounted(() => {
     chartsRef.current = echarts.init(
