@@ -11,7 +11,7 @@ import {
   useGetTopic,
   useGetVane,
 } from '@/utils/home';
-import { authorPenName, NewsId, TopicId } from '@/constants/url';
+import { AuthorId, NewsId, TopicId } from '@/constants/url';
 import { ConnectState } from '@/models/modelConnect';
 import { globalState } from '@/models/global';
 import { useDispatch, useSelector } from 'umi';
@@ -197,7 +197,9 @@ export const NoticeList = ({
                   className={'author_item'}
                   key={index}
                   onClick={() => {
-                    router.push('/books', { [authorPenName]: author.pen_name });
+                    router.push('/personal/authorInfo', {
+                      [AuthorId]: author.author_id,
+                    });
                     saveScroll?.();
                   }}
                 >
@@ -210,6 +212,7 @@ export const NoticeList = ({
                   <p className={'author_item_tag'}>
                     {author.chart_description}
                   </p>
+                  <p>{author.id}</p>
                 </div>
               );
             })}
@@ -221,7 +224,10 @@ export const NoticeList = ({
           title={'热门话题'}
           Icon={<TopicIcon />}
           useMore={true}
-          onSelectMore={() => router.push('/topicList')}
+          onSelectMore={() => {
+            router.push('/topicList');
+            saveScroll?.();
+          }}
         >
           <div className={'news'}>
             {topicList?.data.map((topic, index) => {

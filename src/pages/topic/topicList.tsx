@@ -12,38 +12,34 @@ import { TopicId } from '@/constants/url';
 
 export default () => {
   const [page, setPage] = useState(1);
+  const pageSize = 20;
   const { data: topicListData, isLoading: topicListLoading } = useGetTopicList({
     page: page,
-    page_size: 20,
+    page_size: pageSize,
   });
   const [topicList, setTopicList] = useState<topicListProps['data'] | null>(
     null,
   );
   const { setLoadingModel } = useAuth();
-  const [noData, setNoData] = useState(false);
+
   useEffect(() => {
     setLoadingModel(topicListLoading);
+  }, [topicListLoading]);
+
+  useEffect(() => {
+    if (!topicListData) return;
     const webContainerRef = document.querySelector(
       '.webContainer',
     ) as HTMLElement;
     webContainerRef.onscroll = () => {
       scrollToBottom(300, () => {
         const total = topicListData?.page_info?.total || 0;
-        if (page * 10 >= total) return;
+        if (page * pageSize >= total) return;
         setPage(page + 1);
       });
     };
-  }, [topicListLoading]);
-  useEffect(() => {
-    if (!topicListData) return;
-
     let arr = [...(topicList || []), ...topicListData.data];
-    if (
-      topicListData.data.length === 0 &&
-      (!topicList || topicList?.length === 0)
-    )
-      setNoData(true);
-    else setNoData(false);
+    console.log('arr', topicListData);
     //根据id去重
     arr = setArrayForId(arr);
     setTopicList(arr);
@@ -87,7 +83,7 @@ export default () => {
   };
   return (
     <div className={'topicList'}>
-      {noData ? (
+      {!topicListLoading && topicList?.length === 0 ? (
         <DefaultNoData type={'noData'} text={'暂时还没有话题哦~'} />
       ) : (
         <TopicListItem />

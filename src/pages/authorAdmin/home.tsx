@@ -189,7 +189,7 @@ export default () => {
   useEffect(() => {
     if (!worksList) return;
     let index = currentShowBook;
-    if (currentShowBook >= worksList.data.length - 1) {
+    if (currentShowBook > worksList.data.length - 1) {
       index = 0;
       setCurrentShowBook(0);
     }

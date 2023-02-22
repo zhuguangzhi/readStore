@@ -54,7 +54,9 @@ export const BookItem = ({
                 className={'font_18 font_500 SYMedium cursor'}
                 onClick={(e) => stopProp(e, () => clickTitle?.(book.topic?.id))}
               >
-                {book.topic.title ? `来自话题：${book.topic.title}` : book.name}
+                {book.is_vip === 2
+                  ? `来自话题：${book.topic.title || '暂无话题'}`
+                  : book.name}
               </p>
               {/*内容*/}
               <div className={'container'}>

@@ -108,7 +108,7 @@ export default () => {
           <DefaultNoData
             className={'authorInfo_noData'}
             type={'noData'}
-            text={'该用户暂无作品'}
+            text={'该作者暂无作品'}
           />
         ) : (
           <AuthorBook bookList={authorInfo?.books} />

@@ -3,6 +3,7 @@ import { bookInfoProps, pageProps } from '@/type/book';
 //用户信息
 export type authorProps = {
   id: number; //主键ID
+  author_id: number; //作者id
   name: string; //名称
   nickname: string; //昵称
   is_author: 1 | 2; //是否是作者(1：是 2：否)
