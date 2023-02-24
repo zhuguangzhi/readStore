@@ -23,7 +23,6 @@ export const BookItem = ({
   onComment,
   onApprove,
   onAddBookCase,
-  clickTitle,
 }: BookItemProps) => {
   const setApprove = (book: bookInfoProps) => {
     const param: approvalProps = {
@@ -39,7 +38,7 @@ export const BookItem = ({
         return (
           <div className={'book'} key={book.id} onClick={() => onClick?.(book)}>
             {/*左侧书皮*/}
-            <UseNode rIf={book.cover !== ''}>
+            <UseNode rIf={book.cover_url !== ''}>
               <div className={'book_left'}>
                 <img className={'face'} src={book.cover_url} alt="封面" />
                 <p className={'font_14 font_600 SYBold textOverflow'}>
@@ -52,14 +51,12 @@ export const BookItem = ({
               {/*标题*/}
               <p
                 className={'font_18 font_500 SYMedium cursor'}
-                onClick={(e) => stopProp(e, () => clickTitle?.(book.topic?.id))}
+                // onClick={(e) => book.is_vip === 2?stopProp(e, () => clickTitle?.(book.topic?.id)):{}}
               >
-                {book.is_vip === 2
-                  ? `来自话题：${book.topic.title || '暂无话题'}`
-                  : book.name}
+                {`来自话题：${book.topic.title || '暂无话题'}`}
               </p>
               {/*内容*/}
-              <div className={'container'}>
+              <div className={'container'} onTouchStart={() => onClick?.(book)}>
                 {book.tag?.map((tags, index) => {
                   return (
                     <span className={'container_tags'} key={index}>

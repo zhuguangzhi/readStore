@@ -4,11 +4,6 @@ const useHeaderRouter = {
   component: '@/layouts/useHeader',
   routes: [
     {
-      path: '/home',
-      title: '首页',
-      component: '@/pages/home/index',
-    },
-    {
       path: '/home/news',
       title: '公告',
       component: '@/pages/home/newsInfo',
@@ -149,9 +144,22 @@ const noUseHeaderRouter = {
 export const routes = [
   {
     path: '/',
-    redirect: '/home',
-    component: '@/layouts/index',
+    component: '@/layouts/useHeader',
+    routes: [
+      {
+        path: '/',
+        title: '首页',
+        component: '@/pages/home/index',
+      },
+    ],
   },
+  // {
+  //   path: '/',
+  //   component: '@/layouts/index',
+  //   routes: [
+  //
+  //   ]
+  // },
 
   //使用头部的路由
   { ...useHeaderRouter },

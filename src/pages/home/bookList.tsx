@@ -97,6 +97,7 @@ const BookList = ({ saveScroll }: BookListProps) => {
       });
     };
     // 数据处理
+
     if (!chartData)
       // bookShelfData.toString() === bookShelf.data.toString()
       return;
@@ -133,7 +134,9 @@ const BookList = ({ saveScroll }: BookListProps) => {
       <BookItem
         bookList={bookList}
         onApprove={(param) => setApproval(param)}
-        onClick={(book) => toRead(book.chapter_id, book.id)}
+        onClick={(book) => {
+          toRead(book.chapter_id, book.id);
+        }}
         clickTitle={(topicId) =>
           topicId ? toTopic(topicId, currentTabIndex) : ''
         }

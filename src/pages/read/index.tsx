@@ -6,7 +6,7 @@ import {
   useGetCommentData,
 } from '@/utils/read';
 import { useCoverUrlParams, useSearchParam } from '@/hook/url';
-import { AuthorId, BookId, OpenComment } from '@/constants/url';
+import { AuthorId, BookId, OpenComment, TopicId } from '@/constants/url';
 import { useAuth } from '@/hook/useAuth';
 import { isFinish, translateNumber } from '@/utils/format';
 import { IconFont } from '@/components/IconFont';
@@ -163,7 +163,20 @@ export default () => {
           <span>{netName}</span>&nbsp;{'>'}&nbsp;
           <span>{bookInfo?.name}</span>
         </p>
-        <p className={'readBook_title font_24 font_bold'}>{bookInfo?.name}</p>
+        <p
+          className={'readBook_title cursor font_24 font_bold'}
+          onClick={() =>
+            router.push('/topicInfo', { [TopicId]: bookInfo?.topic.id })
+          }
+        >
+          来自话题：#{bookInfo?.topic.title}#
+        </p>
+        <p
+          className={'readBook_title font_18 SYMedium'}
+          style={{ marginTop: '16px', color: 'var(--themeColor)' }}
+        >
+          书名：{bookInfo?.name}
+        </p>
         <div className={'readBook_bookInfo'}>
           <span>类型：{bookInfo?.category_name}</span>
           <span>字数：{translateNumber(bookInfo?.word_count || 0)}</span>

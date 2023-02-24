@@ -41,6 +41,7 @@ export const useAddBookCase = (
   return useMutation((p: { book_id: number }) => Book.addBookCase(p), {
     onSuccess(val, target) {
       if (ErrorCheck(val)) return;
+      // 报错了，归位
       setQuery(target, 2);
     },
     onMutate(target) {

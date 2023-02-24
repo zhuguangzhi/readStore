@@ -30,27 +30,39 @@ export const useGetContractList = (p: requestContractProps) => {
   );
 };
 // 身份证认证
-export const useSignFaceVerify = (call?: Function) => {
+export const useSignFaceVerify = (call?: Function, openPopup?: Function) => {
   return useMutation(
     ['signFaceVerify'],
     (p: faceVerifyProps) => AuthorPersonal.signFaceVerify(p),
     {
       onSuccess(val) {
-        window.open(val.data.link);
+        openPopup?.({
+          open: true,
+          link: val.data.link,
+        });
+        // const newWindow = window.open("_blank") as Window
+        // newWindow.location = val.data.link
+        // window.open(val.data.link);
         if (ErrorCheck(val)) call?.();
       },
     },
   );
 };
 // 查看身份证认证信息
-export const useGetSignFaceVerifyInfo = (call?: Function) => {
+export const useGetSignFaceVerifyInfo = (
+  call?: Function,
+  errorCall?: (step: 1 | 2) => void,
+) => {
   const queryClient = useQueryClient();
   return useMutation(
     ['getSignFaceVerifyInfo'],
     (p: { user_id: string }) => AuthorPersonal.getSignFaceVerifyInfo(p),
     {
       onSuccess(val) {
-        if (!ErrorCheck(val)) return;
+        if (!ErrorCheck(val)) {
+          errorCall?.(1);
+          return;
+        }
         call?.();
         queryClient.invalidateQueries(['getAuthorPersonalInfo']);
       },
@@ -71,12 +83,15 @@ export const useGetBankInfo = () => {
 };
 // 银行卡认证
 export const useBankVerify = (call?: Function) => {
+  const queryClient = useQueryClient();
   return useMutation(
     ['BankVerify'],
     (p: bankVerifyProps) => AuthorPersonal.bankVerify(p),
     {
       onSuccess(val) {
-        if (ErrorCheck(val)) call?.();
+        if (!ErrorCheck(val)) return;
+        call?.();
+        queryClient.invalidateQueries(['getAuthorPersonalInfo']);
       },
     },
   );

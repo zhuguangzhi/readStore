@@ -52,7 +52,7 @@ export default () => {
     incomeListRequestProps['is_finish'] | null
   >(null);
   // 日期
-  const [date, setDate] = useState<string>(moment().format('YYYY-MM'));
+  const [date, setDate] = useState<string>('');
   // 签约方式
   const [signType, setSignType] = useState<
     incomeListRequestProps['signing_type'] | null
@@ -69,6 +69,7 @@ export default () => {
     [date ? 'date' : '']: date,
     [signType ? 'signing_type' : '']: signType,
   });
+  const [tableForm] = Form.useForm();
   // 表格数据 -------------- end-----------------------------------------------------------------------------
   // 获取作者书籍列表
   const { data: worksDataList, isLoading: worksLoading } = useGetWorks({
@@ -88,7 +89,6 @@ export default () => {
   //设置有数据的饼图月份
   useEffect(() => {
     if (!pieData) return;
-    console.log('pieData', pieData);
     setPieMonth(moment(pieData.month));
   }, [pieData]);
   useEffect(() => {
@@ -105,6 +105,11 @@ export default () => {
     });
     setWorkList(arr);
   }, [worksDataList]);
+  useEffect(() => {
+    if (!tableData || tableData.data.length === 0) return;
+    const incomeDate = tableData.data[0].date;
+    tableForm.setFieldValue('date', moment(incomeDate));
+  }, [tableData]);
   return (
     <div className={'inCome flex flex_column'}>
       {/*折线图、饼图*/}
@@ -190,6 +195,7 @@ export default () => {
             className={'inCome_data_form'}
             initialValues={{ book_id: 0 }}
             onFinish={onSearch}
+            form={tableForm}
           >
             <Form.Item name="book_id" label="作品名">
               <Select
@@ -207,31 +213,31 @@ export default () => {
                 })}
               </Select>
             </Form.Item>
-            <Form.Item name="contractType" label="签约方式">
-              <Select
-                placeholder={'请输入'}
-                getPopupContainer={() =>
-                  document.getElementById('inCome_data_box') as HTMLElement
-                }
-                className={'inCome_data_formItem'}
-              >
-                <Select.Option value={3}>保底签约</Select.Option>
-                <Select.Option value={1}>买断签约</Select.Option>
-                <Select.Option value={2}>分成签约</Select.Option>
-              </Select>
-            </Form.Item>
-            <Form.Item name="isFinish" label="状态">
-              <Select
-                placeholder={'请输入'}
-                getPopupContainer={() =>
-                  document.getElementById('inCome_data_box') as HTMLElement
-                }
-                className={'inCome_data_formItem'}
-              >
-                <Select.Option value={2}>连载中</Select.Option>
-                <Select.Option value={1}>已完结</Select.Option>
-              </Select>
-            </Form.Item>
+            {/*<Form.Item name="contractType" label="签约方式">*/}
+            {/*  <Select*/}
+            {/*    placeholder={'请输入'}*/}
+            {/*    getPopupContainer={() =>*/}
+            {/*      document.getElementById('inCome_data_box') as HTMLElement*/}
+            {/*    }*/}
+            {/*    className={'inCome_data_formItem'}*/}
+            {/*  >*/}
+            {/*    <Select.Option value={3}>保底签约</Select.Option>*/}
+            {/*    <Select.Option value={1}>买断签约</Select.Option>*/}
+            {/*    <Select.Option value={2}>分成签约</Select.Option>*/}
+            {/*  </Select>*/}
+            {/*</Form.Item>*/}
+            {/*<Form.Item name="isFinish" label="状态">*/}
+            {/*  <Select*/}
+            {/*    placeholder={'请输入'}*/}
+            {/*    getPopupContainer={() =>*/}
+            {/*      document.getElementById('inCome_data_box') as HTMLElement*/}
+            {/*    }*/}
+            {/*    className={'inCome_data_formItem'}*/}
+            {/*  >*/}
+            {/*    <Select.Option value={2}>连载中</Select.Option>*/}
+            {/*    <Select.Option value={1}>已完结</Select.Option>*/}
+            {/*  </Select>*/}
+            {/*</Form.Item>*/}
             <Form.Item label={'日期'} name={'date'}>
               <DatePicker
                 locale={locale}

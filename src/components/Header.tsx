@@ -36,7 +36,7 @@ const Header = () => {
   ) as globalState;
   //路由选项跳转
   const optionList = [
-    { title: '首页', key: 'home' },
+    { title: '首页', key: '' },
     { title: '书库', key: 'books' },
     { title: '排行', key: 'bookRank' },
     { title: '作者专区', key: 'admin/home' },
@@ -190,7 +190,8 @@ const Header = () => {
           onClick={() => router.push('/personal/notice')}
         />
         <Popover
-          placement="bottom"
+          placement="bottomLeft"
+          trigger={'click'}
           content={<UserCard />}
           getPopupContainer={() =>
             document.getElementById('userInfoHeader') as HTMLDivElement

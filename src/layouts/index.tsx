@@ -32,6 +32,10 @@ import { LoginPopup } from '@/components/login';
 moment.locale('zh-cn');
 
 const Index = () => {
+  // 设置less zoom变量
+  const scale = document.documentElement.clientWidth / 1200;
+  document.documentElement.style.setProperty('--app-scale', String(scale));
+
   // 全局配置message
   message.config({
     maxCount: 1,
@@ -63,7 +67,6 @@ const Index = () => {
     if (!ErrorCheck(userInfoRes)) return false;
     setUserInfo(userInfoRes.data);
   };
-
   useMounted(() => {
     //   注册销毁用户信息事件
     EventBus.on(Bus_ClearUserInfo, () => {

@@ -80,6 +80,17 @@ ul {
     width: var(--width);
   }
 }
+@media screen and (max-width: 1100px) {
+  body {
+    transform: scale(var(--app-scale));
+    transform-origin: left top;
+    //zoom: var(--app-scale);
+    height: calc(100vh / var(--app-scale));
+  }
+  .webContainer {
+    height: calc(100vh / var(--app-scale));
+  }
+}
 
 .icon {
   width: 1em;

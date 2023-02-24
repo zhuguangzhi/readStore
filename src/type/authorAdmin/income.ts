@@ -11,6 +11,7 @@ export interface incomeListRequestProps extends pageRequestProps {
 export type incomeListDataProps = {
   id: number; //书籍ID
   name: string; //书籍
+  date: string; //发放日期
   signing_type: 1 | 2 | 3; //签约类型
   signing_type_text: string; //签约类型
   base_royalties: number; //基础稿费

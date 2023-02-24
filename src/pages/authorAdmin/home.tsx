@@ -105,7 +105,7 @@ export default () => {
   });
   // 获取本月收益分成数据
   const { data: pieData, isLoading: pieLoading } = useGetIncomeDistribute({
-    month: moment().format('YYYY-MM'),
+    month: '',
   });
   // 获取作品列表
   const { data: worksList, isLoading: worksLoading } = useGetWorks({
