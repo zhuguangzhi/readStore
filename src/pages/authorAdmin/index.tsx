@@ -28,6 +28,10 @@ const adminOperationList: operationProps[] = [
   { key: 'personalInfo', label: '个人信息' },
 ];
 export default () => {
+  document.documentElement.style.setProperty(
+    '--admin-home-zoom',
+    String(homeZoom),
+  );
   const routerInfo = useGetUrlPath();
   // 用户信息
   const { userInfo, setAuthorInfo, setAuthorPersonalInfo } = useAuth();
@@ -75,9 +79,9 @@ export default () => {
       className={'author_admin'}
       style={
         {
-          zoom: homeZoom,
+          // zoom: homeZoom,
           transformOrigin: 'left top',
-          MozTransform: `scale(${homeZoom})`,
+          transform: `scale(${homeZoom})`,
           height: document.documentElement.clientHeight / homeZoom,
         } as Properties<string | number, string & {}>
       }

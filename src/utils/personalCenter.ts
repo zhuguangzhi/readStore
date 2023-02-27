@@ -44,7 +44,7 @@ export const useGetMyComment = (p: getMyCommentProps) => {
 };
 // 作者信息
 export const useGetAuthorInfo = (p: { id: number }) => {
-  return useQuery<authorInfoProps, Error>(['geuAuthorInfo', p], () =>
+  return useQuery<authorInfoProps, Error>(['getAuthorInfo', p], () =>
     PersonalCenter.getAuthorInfo(p).then((value) => {
       ErrorCheck(value);
       return value.data;

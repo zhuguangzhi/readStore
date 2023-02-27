@@ -123,9 +123,10 @@ export default () => {
               defaultValue={currentYear}
               locale={locale}
               picker="year"
-              getPopupContainer={() =>
-                document.getElementById('charts_line') as HTMLElement
-              }
+              inputReadOnly={true}
+              // getPopupContainer={() =>
+              //   document.getElementById('charts_line') as HTMLElement
+              // }
               placement={'bottomRight'}
               style={{ width: 138 }}
               disabledDate={(currentDate) => moment(currentDate) > moment()}
@@ -171,13 +172,16 @@ export default () => {
               value={pieCurrentMonth}
               locale={locale}
               picker="month"
-              getPopupContainer={() =>
-                document.getElementById('charts_pie') as HTMLElement
-              }
+              // getPopupContainer={() =>
+              //   document.getElementById('charts_pie') as HTMLElement
+              // }
               placement={'bottomRight'}
               style={{ width: 138 }}
               disabledDate={(currentDate) => moment(currentDate) > moment()}
-              onChange={(month) => setPieMonth(moment(month))}
+              inputReadOnly={true}
+              onChange={(month) =>
+                setPieMonth(month ? moment(month) : moment())
+              }
             />
           </div>
           {/*    内容*/}
@@ -199,9 +203,9 @@ export default () => {
           >
             <Form.Item name="book_id" label="作品名">
               <Select
-                getPopupContainer={() =>
-                  document.getElementById('inCome_data_box') as HTMLDivElement
-                }
+                // getPopupContainer={() =>
+                //   document.getElementById('inCome_data_box') as HTMLDivElement
+                // }
                 style={{ width: 180 }}
               >
                 {worksList?.map((item) => {
@@ -240,11 +244,12 @@ export default () => {
             {/*</Form.Item>*/}
             <Form.Item label={'日期'} name={'date'}>
               <DatePicker
+                inputReadOnly={true}
                 locale={locale}
                 picker="month"
-                getPopupContainer={() =>
-                  document.getElementById('inCome_data_box') as HTMLElement
-                }
+                // getPopupContainer={() =>
+                //   document.getElementById('inCome_data_box') as HTMLElement
+                // }
                 disabledDate={(currentDate) => moment(currentDate) > moment()}
                 className={'inCome_data_formItem'}
               />

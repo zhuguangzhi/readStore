@@ -10,13 +10,23 @@ import { useAuth } from '@/hook/useAuth';
 import { UseNode } from '@/components/UseNode';
 import { AuthorBook } from '@/pages/personalCenter/components/authorBook';
 import { DefaultNoData } from '@/components/defaultNoData';
+import { useAttentionUser } from '@/utils/read';
 
 export default () => {
   const [{ [AuthorId]: authorId }] = useSearchParam([AuthorId]);
+  // 获取作者信息
   const { data: authorInfo, isLoading: authorLoading } = useGetAuthorInfo({
     id: Number(authorId),
   });
+  const { mutate: attentionChange } = useAttentionUser('getAuthorInfo');
   const { setLoadingModel } = useAuth();
+  // 关注
+  const onAttention = (type: 1 | 2) => {
+    attentionChange({
+      is_attention: type,
+      attention_user_id: Number(authorId),
+    });
+  };
 
   useEffect(() => {
     setLoadingModel(authorLoading);
@@ -74,10 +84,16 @@ export default () => {
           alt=""
         />
         <div
-          className={'authorInfo_info_btn'}
-          onClick={() => router.push('/personal/userInfo')}
+          className={`authorInfo_info_btn ${
+            authorInfo?.is_attention === 1
+              ? 'authorInfo_cancelAttention'
+              : 'authorInfo_attention'
+          }`}
+          onClick={() => onAttention(authorInfo?.is_attention === 2 ? 1 : 2)}
         >
-          <span>切换到个人中心</span>
+          <span>
+            {authorInfo?.is_attention === 1 ? '取消关注' : '关注作者'}
+          </span>
         </div>
       </div>
       {/*    连载作品*/}

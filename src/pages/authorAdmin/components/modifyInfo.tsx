@@ -195,15 +195,15 @@ export const ModifyInfo = ({
   ];
   // identity
   const identityItems: stepItemsProps[] = [
-    // {
-    //   label: '手机号码验证',
-    //   stepElement: (
-    //     <MobileVerify
-    //       form={stepOneForm}
-    //       setStep={() => setStep((val) => val + 1)}
-    //     />
-    //   ),
-    // },
+    {
+      label: '手机号码验证',
+      stepElement: (
+        <MobileVerify
+          form={stepOneForm}
+          setStep={() => setStep((val) => val + 1)}
+        />
+      ),
+    },
     {
       label: '填写身份证信息',
       stepElement: (

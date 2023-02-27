@@ -177,9 +177,9 @@ export default () => {
         >
           <Form.Item label={'作品评论'} name={'book_id'}>
             <Select
-              getPopupContainer={() =>
-                document.getElementById('commentAdmin') as HTMLDivElement
-              }
+              // getPopupContainer={() =>
+              //   document.getElementById('commentAdmin') as HTMLDivElement
+              // }
               style={{ width: 180 }}
             >
               {worksList?.map((item) => {
@@ -193,10 +193,11 @@ export default () => {
           </Form.Item>
           <Form.Item label={'日期设置'} name={'date'}>
             <DatePicker.RangePicker
+              inputReadOnly={true}
               format={dateFormat}
-              getPopupContainer={() =>
-                document.getElementById('commentAdmin') as HTMLDivElement
-              }
+              // getPopupContainer={() =>
+              //   document.getElementById('commentAdmin') as HTMLDivElement
+              // }
               onChange={() => setPage(1)}
             />
           </Form.Item>

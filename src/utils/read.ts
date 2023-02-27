@@ -175,7 +175,7 @@ export const useReport = () => {
 };
 // 关注
 export const useAttentionUser = (
-  type: 'readBookInfo' | 'getFans' = 'readBookInfo',
+  type: 'readBookInfo' | 'getFans' | 'getAuthorInfo' = 'readBookInfo',
   bookId?: number,
 ) => {
   const queryClient = useQueryClient();

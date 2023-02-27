@@ -1,5 +1,5 @@
 import { QueryClient } from 'react-query';
-import { attentionUserProps, fansProps } from '@/type/user';
+import { attentionUserProps, authorInfoProps, fansProps } from '@/type/user';
 import { readBookInfoProps } from '@/type/book';
 
 export const setAttention = {
@@ -27,6 +27,12 @@ export const setAttention = {
           return item;
         }),
       };
+    });
+  },
+  getAuthorInfo: (target: attentionUserProps, queryClient: QueryClient) => {
+    queryClient.setQueriesData(['getAuthorInfo'], (old?: authorInfoProps) => {
+      if (!old) return {} as authorInfoProps;
+      return { ...old, is_attention: target.is_attention };
     });
   },
 };

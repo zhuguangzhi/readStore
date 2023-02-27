@@ -4,6 +4,8 @@
   --headerHeight: 79px;
   --adminTheme: #3464e0;
   --width: 1198px;
+  --app-scale: 1;
+  --admin-home-zoom: 1;
   //--pingFangMedium: pingfangsc-medium, sans-serif; //苹方-简 中黑体
   //--pingFangRegular: pingfangsc-regular, sans-serif; //苹方-简 常规体
   //--pingFangUltralight: PingFangSC-Ultralight, sans-serif; //苹方-简 极细体
@@ -42,6 +44,13 @@ body {
   height: 100vh;
   overflow-y: auto;
   cursor: default;
+
+  /* 允许用户手势缩放 */
+  -webkit-text-size-adjust: 100%;
+  /* 禁止用户选择文本 */
+  -webkit-user-select: none;
+  /* 禁止用户长按链接 */
+  -webkit-touch-callout: none;
 }
 #root {
   position: relative !important;
@@ -90,6 +99,10 @@ ul {
   .webContainer {
     height: calc(100vh / var(--app-scale));
   }
+  //.ant-picker-dropdown {
+  //  transform: scale(var(--app-scale));
+  //  transform-origin: left top;
+  //}
 }
 
 .icon {
@@ -117,4 +130,14 @@ ul {
   z-index: 99999;
   background: none;
   //background-color: rgba(255, 255, 255, 50%);
+}
+
+// 作者后台ant组件缩放
+.ant-picker-dropdown,
+.ant-popover,
+.ant-select-dropdown,
+//.ant-modal,
+.ant-pagination {
+  transform: scale(var(--admin-home-zoom)) !important;
+  transform-origin: left top;
 }

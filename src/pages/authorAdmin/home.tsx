@@ -448,9 +448,10 @@ export default () => {
               defaultValue={currentYear}
               locale={locale}
               picker="year"
-              getPopupContainer={() =>
-                document.getElementById('charts_fee') as HTMLElement
-              }
+              inputReadOnly={true}
+              // getPopupContainer={() =>
+              //   document.getElementById('charts_fee') as HTMLElement
+              // }
               placement={'bottomRight'}
               style={{ width: 138 }}
               disabledDate={(currentDate) => moment(currentDate) > moment()}

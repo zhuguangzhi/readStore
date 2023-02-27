@@ -65,7 +65,7 @@ export const AdminHeader = ({
           height={'23px'}
           icon={'tuichu'}
           marginLeft={'28px'}
-          onClick={() => router.push('/')}
+          onClick={() => router.push('/', {}, true)}
         />
       </div>
     </div>

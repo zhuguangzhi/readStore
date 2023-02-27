@@ -195,11 +195,11 @@ export const worksInfo = ({
                       });
                     }}
                     style={{ width: '120px' }}
-                    getPopupContainer={() =>
-                      document.getElementById(
-                        'formItemSelect',
-                      ) as HTMLDivElement
-                    }
+                    // getPopupContainer={() =>
+                    //   document.getElementById(
+                    //     'formItemSelect',
+                    //   ) as HTMLDivElement
+                    // }
                   >
                     {parentCategory?.map((item) => {
                       return (
@@ -216,11 +216,11 @@ export const worksInfo = ({
                 >
                   <Select
                     style={{ width: '120px', marginLeft: '12px' }}
-                    getPopupContainer={() =>
-                      document.getElementById(
-                        'formItemSelect',
-                      ) as HTMLDivElement
-                    }
+                    // getPopupContainer={() =>
+                    //   document.getElementById(
+                    //     'formItemSelect',
+                    //   ) as HTMLDivElement
+                    // }
                   >
                     {category?.map((item) => {
                       return (
@@ -250,9 +250,9 @@ export const worksInfo = ({
             <Select
               showSearch
               optionFilterProp="children"
-              getPopupContainer={() =>
-                document.getElementById('formItemSelect') as HTMLDivElement
-              }
+              // getPopupContainer={() =>
+              //   document.getElementById('formItemSelect') as HTMLDivElement
+              // }
               filterOption={(input, option) =>
                 (option?.label ?? '')
                   .toLowerCase()

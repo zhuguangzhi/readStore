@@ -145,11 +145,11 @@ export default () => {
                             placement="bottomRight"
                             content={<WorksChannel works={item} />}
                             trigger="click"
-                            getPopupContainer={() =>
-                              document.getElementById(
-                                'worksManager_list',
-                              ) as HTMLDivElement
-                            }
+                            // getPopupContainer={() =>
+                            //   document.getElementById(
+                            //     'worksManager_list',
+                            //   ) as HTMLDivElement
+                            // }
                           >
                             <i className={'flex flex_align'}>
                               <IconFont

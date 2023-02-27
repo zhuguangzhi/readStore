@@ -33,8 +33,10 @@ moment.locale('zh-cn');
 
 const Index = () => {
   // 设置less zoom变量
-  const scale = document.documentElement.clientWidth / 1200;
-  document.documentElement.style.setProperty('--app-scale', String(scale));
+  if (document.documentElement.clientWidth <= 1100) {
+    const scale = document.documentElement.clientWidth / 1200;
+    document.documentElement.style.setProperty('--app-scale', String(scale));
+  }
 
   // 全局配置message
   message.config({
