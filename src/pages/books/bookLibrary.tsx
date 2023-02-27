@@ -1,6 +1,6 @@
 import React from 'react';
 import { rankBook } from '@/type/book';
-import { isFinish, translateNumber } from '@/utils/format';
+import { translateNumber } from '@/utils/format';
 import './style/bookLibrary.less';
 
 type BookLibraryProps = {
@@ -31,7 +31,7 @@ export const BookLibrary = ({ bookList, onClick }: BookLibraryProps) => {
               </p>
               <p>作者：{book.author?.pen_name}</p>
               <div className={'bookLibrary_item_container_infoBox'}>
-                <span>{isFinish(book.is_finish)}</span>
+                <span>{book.is_finish_text}</span>
                 <span>{translateNumber(book.word_count)}</span>
               </div>
               <p className={'textOverflow_2'} style={{ marginBottom: '6px' }}>

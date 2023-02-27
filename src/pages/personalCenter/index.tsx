@@ -30,7 +30,7 @@ export const PersonalCenter = () => {
   };
 
   useEffect(() => {
-    if (!getToken()) router.push('/home');
+    if (!getToken()) router.push('/');
   }, [userInfo]);
   useEffect(() => {
     if (routeInfo) changeState({ currentMenuKey: routeInfo[2] });
@@ -41,7 +41,7 @@ export const PersonalCenter = () => {
       {/*    面包屑*/}
       <div className={'personal_breadcrumb'}>
         <span>当前位置：</span>
-        <span className={'cursor'} onClick={() => router.push('/home')}>
+        <span className={'cursor'} onClick={() => router.push('/')}>
           {netName}
           {'>'}
         </span>

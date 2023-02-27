@@ -104,6 +104,7 @@ export interface authorInfoProps {
   id: number; //主键ID
   pen_name: string; //笔名
   is_signing_author: 1 | 2; //是否是签约作者( 1：是  2：否 ）
+  is_attention: 1 | 2; // 是否关注该作者（1：是，2否）
   user_image_url: string; //头像
   book_count: number; //作品总数
   word_count: string; //总字数

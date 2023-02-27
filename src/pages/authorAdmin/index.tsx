@@ -48,7 +48,7 @@ export default () => {
   }, [routerInfo]);
   useEffect(() => {
     if (!getToken()) {
-      router.push('/home');
+      router.push('/');
       return;
     }
     if (!userInfo) return;

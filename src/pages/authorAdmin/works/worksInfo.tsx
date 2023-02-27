@@ -97,6 +97,10 @@ export const worksInfo = ({
   }, [channelType, cateGoryData, worksInfo]);
 
   const onSubmit = (values: Values) => {
+    if (values.description.length < 60 || values.description.length > 300) {
+      message.error('作品简介字数请控制在60字~300字之间');
+      return;
+    }
     if (values.keyword && values.keyword.length > 5) {
       message.error('作品标签数量超过5个');
       return;
@@ -290,8 +294,16 @@ export const worksInfo = ({
             <span>0</span>
           </Form.Item>
           <Form.Item label="作品简介">
-            <Form.Item name={'description'}>
-              <TextArea rows={4} style={{ resize: 'none', height: '155px' }} />
+            <Form.Item
+              name={'description'}
+              rules={[{ required: true, message: '' }]}
+            >
+              <TextArea
+                rows={4}
+                minLength={60}
+                maxLength={300}
+                style={{ resize: 'none', height: '155px' }}
+              />
             </Form.Item>
             <span
               style={{ color: '#E74E4E', bottom: '-25px' }}
